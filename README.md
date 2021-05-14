@@ -9,6 +9,8 @@ Meta-analysis is a tool that provides comparative physiologists with powerful, u
 # Survey
 We searched for meta-analyses tackling comparative physiological questions that relied on data compiled from n = 5 or more studies using plants or animals. Studies need to have measured a physiological trait, including traits such as hormones, thermal physiology (CTmax, CTmin, Thermal Preferences, Thermal Breadth, LT50, Lethal Thresholds), metabolic rates (routine, maximum, and minimum metabolic rate, aerobic scope), enzyme reaction rates and concentrations, oxidative stress, performance measurements (heart rates, sprint speed, swim speed, growth rates), immune traits (disease load in plants, cell function, antibodies, ect), nitrogen fixation or plant photosynthetic performance, plant biomass (*NOTE WE MAY WANT TO REMOVE THIS TO AVOID TOO MUCH AGRICULTURE), leaf area growth and plant enzyme reactions. We excluded meta-analyses that were focused on ecological questions that quantified changes in abundance and distribution of species and studies that measured microbial or soil function (methane output, soil carbon sequestration, greenhouse gas emissions) because these meta-analyses were not using studies focused on plant and animal physiological function. 
 
+** NOTE: DN: I went through 3 issues of JEB. Every single paper is on animals, no plants at all. So, I think a simple solution would be to limit meta-analyses to animal physiology studies. It will drop down a lot though
+
 ### Journals
 ##### Primary
     - Functional Ecology
