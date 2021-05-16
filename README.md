@@ -25,6 +25,11 @@ We searched for meta-analyses tackling comparative physiological questions that 
     - Journal of Arid Environments
     - Oecologia
     - Oikos
+    - Proceedings of the Royal Society B. 
+    - Biology Letters
+    - Science
+    - Nature
+    - Nature Climate Change
 
 ## Secondary
     - Global Ecology and Biogeography
