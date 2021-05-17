@@ -48,7 +48,7 @@ We excluded plant meta-analyses because they were often focused on ecological (e
 
 #### *Current Meta-analytic Practices in Comparative Physiology*
 
-## **Opening up New Opportunities in Comparative Physiology: Expanding the Breadth of Effect Sizes and Sampling Variances**
+## **Opening up New Opportunities in Comparative Physiology: Expanding the Breadth of Effect Sizes and Sampling Variances to deal with Treatment Differences Across Studies**
 
 #### *Brief Introduction to Common Effect Sizes and Sampling Errors that are Useful in Comparative Physiology*
 #### *Expanding the Scope of Effect Size Metrics in Comparative Physiology*
