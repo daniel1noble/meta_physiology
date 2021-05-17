@@ -41,7 +41,7 @@ The goal of our review is to reassure comparative physiologists that heterogenei
 
 ## **Survey of Meta-Analytic Practices in Comparative Physiology**
 
-#### *Literature Search and Data Collection*
+#### *Literature Search and Survey Data Collection*
 To understand meta-analytic practices in comparative physiology, we searched for meta-analyses tackling comparative physiological questions that relied on data compiled from studies using animal model systems with more than a single species. All searches were conducted......**write details here**. 
   
 We excluded plant meta-analyses because they were often focused on ecological (e.g., quantified changes in abundance and distribution of species) or agricultural questions (e.g., studies on soil microbial function, nitrogen and phosphorus capture, methane output and greenhouse gas emissions) that did not focus on organism physiological function across species. Meta-analyses needed to have collected physiological trait data from the literature including traits, such as hormones, thermal physiology (CTmax, CTmin, thermal preferences, thermal breadth, LT50, lethal thresholds), metabolic rates (routine, maximum, and minimum metabolic rate, aerobic scope), enzyme reaction rates and concentrations, oxidative stress and consequences (e.g., DNA damage, teleomere attrition), performance measurements (heart rates, sprint speed, swim speed, growth rates) and immune traits (cell function, antibodies, ect). Studies were also included if they measured reproductive allocation, survival / mortality or quantified scaling relationships with body size (e.g., metabolic scaling) across taxa. Studies on behavior were only included if they were explicitly interested in proximate physiological drivers of behavioral variation. Meta-analyses quantifying phenology, differences in body sizes between the sexes (i.e., SSD) and those focused on validating physiological methodology were excluded because the underlying question was not physiological in nature. 
@@ -58,10 +58,10 @@ We excluded plant meta-analyses because they were often focused on ecological (e
 
 #### *Multi-level Meta-Analysis when the Overall Effect is of Interest*
 #### *Heterogenity Analysis: How Much Effect Size Variation Actually Exists?*
+Quantifying effect size heterogenity (i.e., effect size variance) provides a pathway to explore hypotheses thought to explain why effect might vary across studies.
+
 #### *Multi-level Metaregression to Understand Variation and Imrpove Interpretation*
 
 ## **Conclusions and Future Directions**
-
-Quantifying effect size heterogenity (i.e., effect size variance) provides a pathway to explore hypotheses thought to explain why effect might vary across studies.
 
 ## **References**
