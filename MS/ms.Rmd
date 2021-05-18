@@ -35,9 +35,9 @@ Meta-analysis is a tool that provides comparative physiologists with powerful, u
 ## **Introduction**
 Meta-analysis provides quantitatively informed answers to research questions by using a transparent and reproducible search strategy to synthesise research results across studies and identify sources of variation [@Nakagawa2017; @Gurevitch1999; @Gurevitch2018; @Cooper2009; @Arnqvist1995; @Koricheva2013]. Meta-analysing independent studies provides greater statistical power and precision than what any individual study on its own would be able to provide on a given question - particularly given that most empirical studies are already under-powered in many areas of biology [@Forstmeier2017; @Jennions2003; @Button2013]. By expressing study effects on a common scale (i.e., standardised effect size) a meta-analyst can gain broader insight into the direction and efficacy of a particular treatment effect or the strength of a relationship between two variables of interest [@Gurevitch2018; @Koricheva2013]. Quntitative syntheses, including meta-analyses, have provided comparative physiologists with powerful insights on pressing global challenges - from testing whether physiological plasticity can buffer orgamisms against climate change [e.g, @Seebacher2015] to the degree to which endocrine disrupting chemicals, such as bisphenol A (BPA), impact aquatic organisms [e.g., @WuSeebacher2020].
 
-A critically important feature of meta-analaysis that provides improved precision when estimating overall effects is the ability to account for sampling error - this can be derived assuming the sampling distribution of a given effect size is known []. 
+Meta-analysis is a well-developed research field with a long history in the fields of statistics, medicine, psychology and ecology [@Gurevitch2018; @Nakagawa2017]. It has emerged as the 'gold-standard' across various disciplines for quantitative synthesis, and is becoming increasingly more prominant the field of comparative physiology. Meta-analysis involves strict literature-based search protocols and data extraction (i.e., following the PRISMA protocol, e.g., [@ODea2021]) to achieve two major goals, 1) to provide an overall mean estimate of a treatment effect or relationship and 2) to quantify effect size variance and understand key drivers explaining differences in effects across studies [@Nakagawa2017; @Gurevitch1999; @Gurevitch2018; @Cooper2009; @Koricheva2013]. A critically important feature of meta-analaysis is its ability to account for sampling error []. The inverse sampling error is used to weight higher powered studies in the analysis and make overall esatimtes more precise. While many meta-analyses might employ unweighted analyses, these studies will not gain greater precision on esatimytes, even if the overall mean itself is unbiased. 
 
-Despite the widespread adoption and well established methodological procedures of meta-analysis it is often criticised for mixing 'apples and oranges' - in otherwords, mixing effects from studies that lack comparability [@Gurevitch2018; @Arnqvist1995; @Gallo1979; @Carpenter2020; @Stewart2010]. Lack of comparability could result from studies differing in experimental design, species, measurement variables and sampling units, which can impact the generalisability of meta-analytic results [@Arnqvist1995; @Stewart2010]. Indeed, study specific differences in comparative physiology are widspread. For example, experimental designs can vary in the temperatures that they apply or in the dosages of chemical modifiers used in experimental treatments [e.g., ]. In adidtion, they often inlcude a diversity of study species which can vary in responses. 
+Despite the widespread adoption and well established methodological procedures of meta-analysis it is often criticised for mixing 'apples and oranges' - in otherwords, mixing effects from studies that lack comparability [@Gurevitch2018; @Arnqvist1995; @Gallo1979; @Carpenter2020; @Stewart2010]. Lack of comparability could result from studies differing in experimental design, species, measurement variables and sampling units, which can impact the generalisability of meta-analytic results [@Arnqvist1995; @Stewart2010]. Indeed, study specific differences in comparative physiology are widspread. For example, experimental designs can vary in the temperatures that they apply or in the dosages of chemical modifiers used in experimental treatments [e.g., @WuSeebacher2020]. In addition, they often include a diversity of study species which can vary in responses. 
 
 The goal of our review is to briefly overview meta-analytic practices and reassure comparative physiologists that heterogeneity among effect sizes can be comfortably dealt with by modifying existing effect sizes measures and using multilevel meta-regression models. We first conduct a survey of published meta-analyses in the field of comparative physiology to gauge methodological and meta-analytic approaches - assessing what types of effect sizes are commonly used, how often effect size estimates are impacted by continuous treatment differences and whether meta-analytic models (i.e., models that account for sampling variance) are commonly applied. We then introduce new effect sizes and their assocaited sampling variance to provide comparative physiologists opportunities to explictly incorperate treatment differences into the effect size estimates to easy their interpretation. We then describe how more complex treatment differences, such as dosage differences, which may have more complex non-linear effects, can be accomodated using multilevel meta-regression models. Expanding the meta-analtic toolkit for comparative physiologists will provide new opportunities to address global scale problems that attempt to undersatnd how organisms will cope with rapidly changing environments in the future.  
 
@@ -46,7 +46,7 @@ The goal of our review is to briefly overview meta-analytic practices and reassu
 #### *Literature Search and Survey Data Collection*
 To understand meta-analytic practices in comparative physiology, we searched for meta-analyses tackling comparative physiological questions that relied on data compiled from studies using animal model systems with more than a single species. All searches were conducted......**write details here**. 
   
-We excluded plant meta-analyses because they were often focused on ecological (e.g., quantified changes in abundance and distribution of species) or agricultural questions (e.g., studies on soil microbial function, nitrogen and phosphorus capture, methane output and greenhouse gas emissions) that did not focus on organism physiological function across species. Meta-analyses needed to have collected physiological trait data from the literature including traits, such as hormones, thermal physiology (CTmax, CTmin, thermal preferences, thermal breadth, LT50, lethal thresholds), metabolic rates (routine, maximum, and minimum metabolic rate, aerobic scope), enzyme reaction rates and concentrations, oxidative stress and consequences (e.g., DNA damage, teleomere attrition), performance measurements (heart rates, sprint speed, swim speed, growth rates) and immune traits (cell function, antibodies, ect). Studies were also included if they measured reproductive allocation, survival / mortality or quantified scaling relationships with body size (e.g., metabolic scaling) across taxa. Studies on behavior were only included if they were explicitly interested in proximate physiological drivers of behavioral variation. Meta-analyses quantifying phenology, differences in body sizes between the sexes (i.e., SSD) and those focused on validating physiological methodology were excluded because the underlying question was not physiological in nature. 
+We excluded plant meta-analyses because they were often focused on ecological (e.g., quantified changes in abundance and distribution of species) or agricultural questions (e.g., studies on soil microbial function, nitrogen and phosphorus capture, methane output and greenhouse gas emissions) that did not focus on organism physiological function across species. Meta-analyses needed to have collected physiological trait data from the literature including traits, such as hormones, thermal physiology (CTmax, CTmin, thermal preferences, thermal breadth, LT50, lethal thresholds), metabolic rates (routine, maximum, and minimum metabolic rate, aerobic scope), enzyme reaction rates and concentrations, oxidative stress and consequences (e.g., DNA damage, teleomere attrition), performance measurements (heart rates, sprint speed, swim speed, growth rates) and immune traits (cell function, antibodies, ect). Studies were also included if they measured reproductive allocation, survival / mortality or quantified scaling relationships with body size (e.g., metabolic scaling) across taxa. Studies on behavior were only included if they were explicitly interested in proximate physiological drivers of behavioral variation. Meta-analyses quantifying phenology, differences in body sizes between the sexes (i.e., SSD) and those focused on validating physiological methodology were excluded because the underlying question was not physiological in nature. While many studies in comparative physiology collect data as part of a comparative analysis, we focus here only on studies collating data from existing literature.
 
 #### *Current Meta-analytic Practices in Comparative Physiology*
 
@@ -55,8 +55,87 @@ We excluded plant meta-analyses because they were often focused on ecological (e
 #### *Brief Introduction to Common Effect Sizes and Sampling Errors that are Useful in Comparative Physiology*
 #### *Expanding the Scope of Effect Size Metrics in Comparative Physiology*
 
+A very common occurance in comparative physiology is to manipulate the tempearture organisms experience and measure some physiologcal rate (e.g., metabolic rate). Physiological rates are often compared using $Q_{10}$ values (e.g., [@Rodger2021]), which describe the multiplicative change in physiological rates across a 10&deg;C temperature change. Higher $Q_{10}$ values indicate larger changes in physiological rates. Currently, however, we do not have associated sampling variances derived for $Q_{10}$ making it challenging to weight effect size estimates by sampling variance as is typical in meta-analysis. Recognition of the similarity between *lnRR* and $Q_{10}$ means that we can derive $Q_{10}$ based effect sizes using the well known mathematical properties of *lnRR*, and improve upon our ability to account for sources of non-independence that are typical in meta-analysis [@Lajeunesse2011; @Noble2017]. As such, here we derive a series of $Q_{10}$ based effect sizes along with their associated sampling variances that allow one to compare both changes in mean and variance of physiological rates. 
 
-#### *New Effect Size Metrics that Account for Variability in Treatments*
+#### *Comparing changes in mean physiological rates*
+
+Prior to showing how the relevant $Q_{10}$ effect size can be calculated it can be helpful to understand its similarities to *lnRR*. The *lnRR* described by @Hedges1999 and extended by  @Lajeunesse2011 and can be calculated as follows:
+
+$$
+\begin{equation} 
+  \begin{aligned}
+  lnRR = ln\left ( \frac{X_{1}}{X_{2}}\right )
+  \end{aligned}
+  (\#eq:lnRR)
+\end{equation} 
+$$
+
+$$
+\begin{equation} 
+  s_{lnRR} = \left ( \frac{SD_{1}^2}{N_{1}X_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}X_{2}^2}\right )
+  (\#eq:slnRR)
+\end{equation} 
+$$
+In equation \@ref(eq:lnRR), $X_{1}$ is the mean of group 1, often a control group, where as $X_{2}$ is the mean of group 2 (e.g., a treatment group). The mean of $X_{i}$ for group *i* can be any measurement type (e.g. a physiological rate, mass etc) so long as the measurement variable is ratio scale. Log transformation of this ratio makes the effect size normally distributed. Equation \@ref(eq:slnRR) is the analytical solution for *lnRR*'s sampling variance where, $SD_{1}^2$ and $SD_{2}^2$ is the variance in group 1 and 2, respectively and $N_{1}$ and $N_{2}$ is the sample size in group 1 and 2. 
+
+The equations for *lnRR* and its sampling variance allow us to easily extend this to $Q_{10}$ based effect sizes. Recall that $Q_{10}$ is described as follows:
+
+$$
+\begin{equation} 
+  Q_{10} = \left( \frac{R_{2}}{R_{1}} \right)^{ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }
+  (\#eq:q10)
+\end{equation} 
+$$
+Here, $R_{1}$ and  $R_{2}$ are mean physiological rates and  $T_{1}$ and  $T_{2}$ are the temperatures that these rates are measured. Log transformation of equation \@ref(eq:q10) leads to the following log transformed $Q_{10}$:
+
+$$
+\begin{equation} 
+  lnRR_{Q_{10}} = ln\left( \frac{R_{2}}{R_{1}} \right){ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }
+(\#eq:lnq10)
+\end{equation} 
+$$
+Equation \@ref(eq:lnq10) is essentially a temperature corrected equivalent to lnRR when the numerator and denomenator are measured at different temperatures. This allows one to compare the mean of two temperature treatments directly regardless of the temperatures that these groups have been measured. Here, we will refer to this as the log $Q_{10}$ response ratio, $lnRR_{Q_{10}}$. Recognition of this equivalence means that we can easily calculate the sampling variance for equation \@ref(eq:lnq10) as follows:
+
+$$
+\begin{equation} 
+  s_{lnRR_{Q_{10}}} = \left( \frac{SD_{2}^2}{R^2_{2}N_{2}} + \frac{SD_{1}^2}{R^2_{1}N_{1}} \right){ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }^2
+  (\#eq:Vlnq10)
+\end{equation} 
+$$
+
+#### *New Effect Size Metrics that Compare Changes in Variability Across Treatments*
+
+@Nakagawa2015 recently proposed analogous effect size estimates to *lnRR* that allow for comparisons of changes in variance between two groups, the log variance ratio (*lnVR*) and the log coefficient of variation (*lnCVR*). Like *lnRR*, *lnVR* and *lnCVR* are ratios that describe the relative difference in trait variablity between two groups. We refer readers to @Nakagawa2015 for the equations describing *lnVR* and *lnCVR*, but these can easily be extended to their $Q_{10}$ analogues (and associated sampling varaince) as follows:
+
+$$
+\begin{equation} 
+lnVR_{Q_{10}} = ln\left( \frac{SD_{2}}{SD_{1}} \right){ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }
+(\#eq:lnq10VR)
+\end{equation} 
+$$
+$$
+\begin{equation} 
+s_{lnVR_{Q_{10}}} = \left( \frac{1}{2\left( N_{2}-1 \right)} + \frac{1}{2\left(N_{1} - 1\right)} \right){ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }^2
+(\#eq:slnq10VR)
+\end{equation} 
+$$
+
+Equations \@ref(eq:lnq10VR) and \@ref(eq:slnq10VR) describe the change in physiological rate variance (eqn \@ref(eq:lnq10VR)) across a 10&deg;C temperature change along with its sampling variance (eqn \@ref(eq:slnq10VR)). While this is a useful metric, as discussed by Nakagawa *et al* @nakagawa2015meta there is often a strong mean-variance relationship that needs to be accounted for in analysing changes in variance. As such, we can calculate the coefficient of variation, which standardises changes in variance for changes in means as follows:
+
+$$
+\begin{equation} 
+lnCVR_{Q_{10}} = ln\left( \frac{\text{CV}_{2}}{\text{CV}_{1}} \right){ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }
+(\#eq:lnq10CVR)
+\end{equation} 
+$$
+$$
+\begin{equation} 
+s_{lnCVR_{Q_{10}}} = \left[ \frac{(\text{SD}_{1})^2}{N_{1}({R}_{1})^2} + \frac{(\text{SD}_{2})^2}{N_{2} ({R}_{2})^2} + \frac{1}{2\left( N_{1}-1 \right)} + \frac{1}{2\left(N_{2} - 1\right)} \right]{ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }^2
+(\#eq:slnq10CVR)
+\end{equation} 
+$$
+
+where $CV$ is the coefficient of variation defined as $SD / R$. 
 
 ## **Meta-Analytic Models that Control for Treatment Differences Within and Across Studies**
 
