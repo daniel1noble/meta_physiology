@@ -1,0 +1,37 @@
+
+---
+title: "Supplemental Materials for "Meta-analytic approaches and 'new' effect sizes to account for heterogeneous effects in comparative physiology""
+author: Daniel W.A. Noble, Patrice Potter, Sammy Burke, Szymek Drobniak, Malgorzata Lagisz, Rose O’Dea, Shinichi Nakagawa
+date: "`r Sys.Date()`"
+bibliography: ../bib/refs.bib
+csl: ../bib/the-journal-of-experimental-biology.csl
+output: 
+  bookdown::word_document2:
+    toc: no
+    toc_depth: 6
+    number_sections: false
+    reference_docx: template.docx
+  bookdown::html_document2:
+    code_folding: hide
+    number_sections: no
+    toc: yes
+    toc_depth: 6
+    toc_float: yes
+    bibliography: refs.bib
+editor_options: 
+  chunk_output_type: console
+---
+```{r loadpackages, echo = FALSE, results = 'hide'}
+pacman::p_load(png, jpeg, cowplot)
+```
+
+
+
+```{r figS1, fig.cap="PRISMA flowchart for study selection and inclusion"}
+
+img1 <- readPNG("../figs/PRISMA_diagram_v0.png")
+
+p1 <- cowplot::ggdraw()+
+        cowplot::draw_image(img1)
+
+```
