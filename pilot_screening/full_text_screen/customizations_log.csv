@@ -1,0 +1,301 @@
+created_at,user_id,user_email,article_id,key,value
+2021-05-21T07:48:38.913Z,8867,losialagisz@gmail.com,671138550,included,1
+2021-05-21T07:48:53.257Z,8867,losialagisz@gmail.com,671138551,included,1
+2021-05-21T07:53:10.774Z,8867,losialagisz@gmail.com,671138555,included,1
+2021-05-21T07:53:18.430Z,8867,losialagisz@gmail.com,671138574,included,1
+2021-05-21T07:53:22.743Z,8867,losialagisz@gmail.com,671138577,included,1
+2021-05-21T07:54:22.243Z,8867,losialagisz@gmail.com,671138546,included,1
+2021-05-21T07:54:27.852Z,8867,losialagisz@gmail.com,671138563,included,1
+2021-05-21T07:57:15.697Z,8867,losialagisz@gmail.com,671138561,included,1
+2021-05-21T07:57:36.353Z,8867,losialagisz@gmail.com,671138565,included,1
+2021-05-21T12:36:07.714Z,8867,losialagisz@gmail.com,671138539,included,1
+2021-05-21T12:44:15.248Z,8867,losialagisz@gmail.com,671138541,included,1
+2021-05-21T12:46:48.827Z,8867,losialagisz@gmail.com,671138540,included,1
+2021-05-21T12:48:54.921Z,8867,losialagisz@gmail.com,671138542,included,1
+2021-05-21T12:50:56.062Z,8867,losialagisz@gmail.com,671138544,included,1
+2021-05-21T12:52:27.907Z,8867,losialagisz@gmail.com,671138543,included,1
+2021-05-21T12:55:16.876Z,8867,losialagisz@gmail.com,671138547,included,1
+2021-05-21T12:57:04.330Z,8867,losialagisz@gmail.com,671138545,included,1
+2021-05-21T13:06:10.239Z,8867,losialagisz@gmail.com,671138549,included,1
+2021-05-21T13:06:17.802Z,8867,losialagisz@gmail.com,671138549,"""multitrait""",1
+2021-05-21T13:06:33.146Z,8867,losialagisz@gmail.com,671138544,"""multitrait""",1
+2021-05-21T13:06:44.927Z,8867,losialagisz@gmail.com,671138541,"""multitrait""",1
+2021-05-21T13:06:51.599Z,8867,losialagisz@gmail.com,671138540,"""multitrait""",1
+2021-05-21T13:06:59.865Z,8867,losialagisz@gmail.com,671138539,"""multitrait""",1
+2021-05-21T13:07:11.412Z,8867,losialagisz@gmail.com,671138542,"""multitrait""",1
+2021-05-21T13:07:41.193Z,8867,losialagisz@gmail.com,671138551,"""multitrait""",1
+2021-05-21T13:10:23.069Z,8867,losialagisz@gmail.com,671138556,included,1
+2021-05-21T13:10:25.647Z,8867,losialagisz@gmail.com,671138556,"""multitrait""",1
+2021-05-21T21:45:49.480Z,8867,losialagisz@gmail.com,671138548,included,-1
+2021-05-21T21:46:01.495Z,8867,losialagisz@gmail.com,671138548,"""__EXR__not meta-analytic model""",1
+2021-05-21T21:46:01.542Z,8867,losialagisz@gmail.com,671138548,included,-1
+2021-05-21T21:56:00.045Z,8867,losialagisz@gmail.com,671138552,included,-1
+2021-05-21T21:56:05.999Z,8867,losialagisz@gmail.com,671138552,"""__EXR__ecology""",1
+2021-05-21T21:56:06.030Z,8867,losialagisz@gmail.com,671138552,included,-1
+2021-05-21T21:56:28.374Z,8867,losialagisz@gmail.com,671138552,"""__EXR__colour""",1
+2021-05-21T21:56:28.421Z,8867,losialagisz@gmail.com,671138552,included,-1
+2021-05-21T21:57:03.155Z,8867,losialagisz@gmail.com,671138552,"""__EXR__no physiology""",1
+2021-05-21T21:57:03.186Z,8867,losialagisz@gmail.com,671138552,included,-1
+2021-05-21T21:57:17.218Z,8867,losialagisz@gmail.com,671138552,"""__EXR__ecology""",deleted
+2021-05-21T22:01:38.907Z,8867,losialagisz@gmail.com,671138553,included,0
+2021-05-21T22:01:55.719Z,8867,losialagisz@gmail.com,671138553,"""linear models""",1
+2021-05-21T22:06:14.611Z,8867,losialagisz@gmail.com,671138554,included,1
+2021-05-21T22:06:17.330Z,8867,losialagisz@gmail.com,671138554,"""multitrait""",1
+2021-05-21T22:07:16.784Z,8867,losialagisz@gmail.com,671138557,included,1
+2021-05-21T22:10:15.832Z,8867,losialagisz@gmail.com,671138558,included,1
+2021-05-21T22:19:06.882Z,8867,losialagisz@gmail.com,671138559,included,1
+2021-05-21T22:27:08.603Z,8867,losialagisz@gmail.com,671138560,included,-1
+2021-05-21T22:27:11.228Z,8867,losialagisz@gmail.com,671138560,"""__EXR__no physiology""",1
+2021-05-21T22:27:11.275Z,8867,losialagisz@gmail.com,671138560,included,-1
+2021-05-21T22:27:53.557Z,8867,losialagisz@gmail.com,671138560,"""body condition""",1
+2021-05-21T22:29:32.635Z,8867,losialagisz@gmail.com,671138562,included,-1
+2021-05-21T22:30:03.573Z,8867,losialagisz@gmail.com,671138562,"""__EXR__not literature based""",1
+2021-05-21T22:30:03.714Z,8867,losialagisz@gmail.com,671138562,included,-1
+2021-05-21T22:32:27.777Z,8867,losialagisz@gmail.com,671138564,included,0
+2021-05-21T22:32:36.918Z,8867,losialagisz@gmail.com,671138564,"""partial redundancy analysis""",1
+2021-05-21T22:41:33.155Z,8867,losialagisz@gmail.com,671138566,included,0
+2021-05-21T22:41:39.718Z,8867,losialagisz@gmail.com,671138566,"""mechanics""",1
+2021-05-21T22:43:26.437Z,8867,losialagisz@gmail.com,671138567,included,1
+2021-05-21T22:43:30.047Z,8867,losialagisz@gmail.com,671138567,"""multitrait""",1
+2021-05-22T01:33:03.184Z,8867,losialagisz@gmail.com,671138569,included,1
+2021-05-22T01:33:05.481Z,8867,losialagisz@gmail.com,671138569,"""multitrait""",1
+2021-05-22T01:34:51.138Z,8867,losialagisz@gmail.com,671138568,included,1
+2021-05-22T01:35:48.982Z,8867,losialagisz@gmail.com,671138570,included,1
+2021-05-22T03:08:45.435Z,8867,losialagisz@gmail.com,671138571,included,-1
+2021-05-22T03:08:47.514Z,8867,losialagisz@gmail.com,671138571,"""__EXR__no physiology""",1
+2021-05-22T03:08:47.529Z,8867,losialagisz@gmail.com,671138571,included,-1
+2021-05-22T03:08:52.857Z,8867,losialagisz@gmail.com,671138571,"""dispersal distance""",1
+2021-05-22T03:10:27.358Z,8867,losialagisz@gmail.com,671138572,included,1
+2021-05-22T03:11:34.265Z,8867,losialagisz@gmail.com,671138573,included,1
+2021-05-22T07:54:41.189Z,8867,losialagisz@gmail.com,671138575,included,1
+2021-05-22T07:59:32.972Z,8867,losialagisz@gmail.com,671138576,included,1
+2021-05-22T07:59:34.893Z,8867,losialagisz@gmail.com,671138576,"""multitrait""",1
+2021-05-22T08:00:34.222Z,8867,losialagisz@gmail.com,671138578,included,1
+2021-05-22T08:02:19.019Z,8867,losialagisz@gmail.com,671138579,included,1
+2021-05-22T08:02:21.035Z,8867,losialagisz@gmail.com,671138579,"""multitrait""",1
+2021-05-22T08:04:43.630Z,8867,losialagisz@gmail.com,671138581,included,-1
+2021-05-22T08:04:54.958Z,8867,losialagisz@gmail.com,671138581,"""__EXR__no meta-analysis""",1
+2021-05-22T08:04:54.989Z,8867,losialagisz@gmail.com,671138581,included,-1
+2021-05-22T08:06:03.021Z,8867,losialagisz@gmail.com,671138580,included,1
+2021-05-22T08:06:05.005Z,8867,losialagisz@gmail.com,671138580,"""multitrait""",1
+2021-05-22T08:06:55.037Z,8867,losialagisz@gmail.com,671138582,included,1
+2021-05-22T08:07:53.756Z,8867,losialagisz@gmail.com,671138583,included,1
+2021-05-22T08:09:46.007Z,8867,losialagisz@gmail.com,671138584,included,1
+2021-05-22T08:10:37.148Z,8867,losialagisz@gmail.com,671138585,included,1
+2021-05-22T08:11:50.804Z,8867,losialagisz@gmail.com,671138587,included,1
+2021-05-22T08:14:25.540Z,8867,losialagisz@gmail.com,671138586,included,1
+2021-05-22T08:17:40.181Z,8867,losialagisz@gmail.com,671138588,included,1
+2021-05-22T08:19:05.229Z,8867,losialagisz@gmail.com,671138589,included,1
+2021-05-22T08:19:07.479Z,8867,losialagisz@gmail.com,671138589,"""multitrait""",1
+2021-05-22T08:20:41.260Z,8867,losialagisz@gmail.com,671138590,included,1
+2021-05-22T08:24:37.246Z,8867,losialagisz@gmail.com,671138591,included,1
+2021-05-22T08:28:07.013Z,8867,losialagisz@gmail.com,671138592,included,-1
+2021-05-22T08:28:51.326Z,8867,losialagisz@gmail.com,671138592,"""__EXR__meta-analysis not main method""",1
+2021-05-22T08:28:51.373Z,8867,losialagisz@gmail.com,671138592,included,-1
+2021-05-22T08:29:19.310Z,8867,losialagisz@gmail.com,671138592,"""__EXR__insufficient details""",1
+2021-05-22T08:29:19.357Z,8867,losialagisz@gmail.com,671138592,included,-1
+2021-05-22T08:30:33.186Z,8867,losialagisz@gmail.com,671138593,"""__EXR__not literature based""",1
+2021-05-22T08:30:33.217Z,8867,losialagisz@gmail.com,671138593,included,-1
+2021-05-22T08:31:08.936Z,8867,losialagisz@gmail.com,671138594,"""__EXR__not literature based""",1
+2021-05-22T08:31:08.999Z,8867,losialagisz@gmail.com,671138594,included,-1
+2021-05-22T08:31:27.874Z,8867,losialagisz@gmail.com,671138594,"""majority not from literature""",1
+2021-05-22T08:33:57.109Z,8867,losialagisz@gmail.com,671138595,included,1
+2021-05-22T08:34:06.140Z,8867,losialagisz@gmail.com,671138595,"""no details of search""",1
+2021-05-22T08:35:33.438Z,8867,losialagisz@gmail.com,671138596,included,1
+2021-05-22T08:37:26.344Z,8867,losialagisz@gmail.com,671138597,included,0
+2021-05-22T08:37:33.001Z,8867,losialagisz@gmail.com,671138597,"""__EXR__not literature based""",1
+2021-05-22T08:37:33.126Z,8867,losialagisz@gmail.com,671138597,included,-1
+2021-05-22T08:37:52.329Z,8867,losialagisz@gmail.com,671138597,"""HormoneBase, but has references""",1
+2021-05-22T08:37:53.204Z,8867,losialagisz@gmail.com,671138597,included,0
+2021-05-22T08:38:46.438Z,8867,losialagisz@gmail.com,671138598,included,-1
+2021-05-22T08:38:48.438Z,8867,losialagisz@gmail.com,671138598,"""__EXR__not literature based""",1
+2021-05-22T08:38:48.470Z,8867,losialagisz@gmail.com,671138598,included,-1
+2021-05-22T08:39:46.517Z,8867,losialagisz@gmail.com,671138599,included,1
+2021-05-22T09:50:57.931Z,8867,losialagisz@gmail.com,671138600,included,1
+2021-05-22T09:51:02.869Z,8867,losialagisz@gmail.com,671138600,"""multitrait""",1
+2021-05-22T09:54:29.245Z,8867,losialagisz@gmail.com,671138601,included,1
+2021-05-22T09:57:17.840Z,8867,losialagisz@gmail.com,671138602,included,-1
+2021-05-22T09:57:20.090Z,8867,losialagisz@gmail.com,671138602,"""__EXR__not literature based""",1
+2021-05-22T09:57:20.106Z,8867,losialagisz@gmail.com,671138602,included,-1
+2021-05-22T09:59:27.122Z,8867,losialagisz@gmail.com,671138603,included,1
+2021-05-22T10:00:08.075Z,8867,losialagisz@gmail.com,671138603,"""other models""",1
+2021-05-22T10:01:50.326Z,8867,losialagisz@gmail.com,671138604,included,1
+2021-05-22T10:01:53.607Z,8867,losialagisz@gmail.com,671138604,"""other models""",1
+2021-05-22T10:03:29.342Z,8867,losialagisz@gmail.com,671138605,included,-1
+2021-05-22T10:03:31.936Z,8867,losialagisz@gmail.com,671138605,"""__EXR__not literature based""",1
+2021-05-22T10:03:31.967Z,8867,losialagisz@gmail.com,671138605,included,-1
+2021-05-22T10:04:45.405Z,8867,losialagisz@gmail.com,671138606,included,-1
+2021-05-22T10:04:50.202Z,8867,losialagisz@gmail.com,671138606,"""__EXR__no physiology""",1
+2021-05-22T10:04:50.249Z,8867,losialagisz@gmail.com,671138606,included,-1
+2021-05-22T10:04:57.312Z,8867,losialagisz@gmail.com,671138606,"""heart mass only""",1
+2021-05-22T10:05:42.765Z,8867,losialagisz@gmail.com,671138607,included,-1
+2021-05-22T10:05:44.781Z,8867,losialagisz@gmail.com,671138607,"""__EXR__not literature based""",1
+2021-05-22T10:05:44.796Z,8867,losialagisz@gmail.com,671138607,included,-1
+2021-05-22T10:52:42.766Z,8867,losialagisz@gmail.com,671138608,included,-1
+2021-05-22T10:52:45.641Z,8867,losialagisz@gmail.com,671138608,"""__EXR__not literature based""",1
+2021-05-22T10:52:45.687Z,8867,losialagisz@gmail.com,671138608,included,-1
+2021-05-22T10:55:11.985Z,8867,losialagisz@gmail.com,671138609,included,1
+2021-05-22T10:56:21.079Z,8867,losialagisz@gmail.com,671138611,included,0
+2021-05-22T10:57:21.126Z,8867,losialagisz@gmail.com,671138611,"""combined data from 2 earlier studies""",1
+2021-05-22T10:58:01.845Z,8867,losialagisz@gmail.com,671138610,included,0
+2021-05-22T10:58:09.548Z,8867,losialagisz@gmail.com,671138610,"""data from 1 earlier study""",1
+2021-05-22T10:59:55.065Z,8867,losialagisz@gmail.com,671138613,included,0
+2021-05-22T10:59:57.268Z,8867,losialagisz@gmail.com,671138613,"""__EXR__insufficient details""",1
+2021-05-22T10:59:57.315Z,8867,losialagisz@gmail.com,671138613,included,-1
+2021-05-22T11:01:30.143Z,8867,losialagisz@gmail.com,671138612,included,1
+2021-05-22T11:01:43.628Z,8867,losialagisz@gmail.com,671138612,"""other models""",1
+2021-05-22T11:01:50.253Z,8867,losialagisz@gmail.com,671138613,"""no details of search""",1
+2021-05-22T11:03:12.035Z,8867,losialagisz@gmail.com,671138614,included,1
+2021-05-22T11:04:34.441Z,8867,losialagisz@gmail.com,671138616,included,-1
+2021-05-22T11:04:37.238Z,8867,losialagisz@gmail.com,671138616,"""__EXR__not literature based""",1
+2021-05-22T11:04:37.269Z,8867,losialagisz@gmail.com,671138616,included,-1
+2021-05-22T11:05:37.848Z,8867,losialagisz@gmail.com,671138615,included,-1
+2021-05-22T11:05:40.332Z,8867,losialagisz@gmail.com,671138615,"""__EXR__not literature based""",1
+2021-05-22T11:05:40.348Z,8867,losialagisz@gmail.com,671138615,included,-1
+2021-05-22T11:07:56.614Z,8867,losialagisz@gmail.com,671138617,included,1
+2021-05-23T23:51:20.314Z,20074,daniel.wa.noble@gmail.com,671138539,included,-1
+2021-05-23T23:51:36.454Z,20074,daniel.wa.noble@gmail.com,671138539,"""__EXR__Tagging effects on growth. This is more ecology""",1
+2021-05-23T23:51:36.486Z,20074,daniel.wa.noble@gmail.com,671138539,included,-1
+2021-05-23T23:53:22.767Z,20074,daniel.wa.noble@gmail.com,671138540,included,1
+2021-05-23T23:53:25.658Z,20074,daniel.wa.noble@gmail.com,671138541,included,1
+2021-05-23T23:55:32.830Z,20074,daniel.wa.noble@gmail.com,671138542,included,1
+2021-05-24T00:04:24.740Z,20074,daniel.wa.noble@gmail.com,671138543,included,1
+2021-05-24T00:05:44.569Z,20074,daniel.wa.noble@gmail.com,671138544,included,1
+2021-05-24T00:07:44.616Z,20074,daniel.wa.noble@gmail.com,671138545,included,1
+2021-05-24T00:07:50.866Z,20074,daniel.wa.noble@gmail.com,671138546,included,1
+2021-05-24T00:09:22.429Z,20074,daniel.wa.noble@gmail.com,671138547,included,1
+2021-05-24T00:11:42.289Z,20074,daniel.wa.noble@gmail.com,671138548,included,1
+2021-05-24T00:13:18.055Z,20074,daniel.wa.noble@gmail.com,671138549,included,-1
+2021-05-24T00:13:29.665Z,20074,daniel.wa.noble@gmail.com,671138549,"""__EXR__Not physiological traits, genes to ecosystems""",1
+2021-05-24T00:13:29.712Z,20074,daniel.wa.noble@gmail.com,671138549,included,-1
+2021-05-24T00:14:47.259Z,20074,daniel.wa.noble@gmail.com,671138550,included,1
+2021-05-24T00:16:31.431Z,20074,daniel.wa.noble@gmail.com,671138551,included,1
+2021-05-24T00:18:03.729Z,20074,daniel.wa.noble@gmail.com,671138552,included,-1
+2021-05-24T00:18:11.729Z,20074,daniel.wa.noble@gmail.com,671138552,"""__EXR__Really only about coloration""",1
+2021-05-24T00:18:11.776Z,20074,daniel.wa.noble@gmail.com,671138552,included,-1
+2021-05-24T00:23:53.887Z,20074,daniel.wa.noble@gmail.com,671138553,included,0
+2021-05-24T00:27:33.529Z,20074,daniel.wa.noble@gmail.com,671138554,included,1
+2021-05-24T00:28:30.998Z,20074,daniel.wa.noble@gmail.com,671138555,included,1
+2021-05-24T00:30:43.030Z,20074,daniel.wa.noble@gmail.com,671138556,included,-1
+2021-05-24T00:31:14.030Z,20074,daniel.wa.noble@gmail.com,671138556,"""__EXR__Mainly just interested in mortality effects of environment. No real physiological trait interest""",1
+2021-05-24T00:31:14.061Z,20074,daniel.wa.noble@gmail.com,671138556,included,-1
+2021-05-24T00:32:26.828Z,20074,daniel.wa.noble@gmail.com,671138557,included,1
+2021-05-24T00:33:14.328Z,20074,daniel.wa.noble@gmail.com,671138558,included,1
+2021-05-24T00:36:08.516Z,20074,daniel.wa.noble@gmail.com,671138559,included,1
+2021-05-24T00:40:32.721Z,20074,daniel.wa.noble@gmail.com,671138560,included,0
+2021-05-24T00:51:33.835Z,20074,daniel.wa.noble@gmail.com,671138561,included,1
+2021-05-24T00:52:32.522Z,20074,daniel.wa.noble@gmail.com,671138562,included,-1
+2021-05-24T00:52:38.382Z,20074,daniel.wa.noble@gmail.com,671138562,"""__EXR__Empirical analysis""",1
+2021-05-24T00:52:38.413Z,20074,daniel.wa.noble@gmail.com,671138562,included,-1
+2021-05-24T00:53:17.226Z,20074,daniel.wa.noble@gmail.com,671138563,included,1
+2021-05-24T00:55:15.680Z,20074,daniel.wa.noble@gmail.com,671138564,included,1
+2021-05-24T00:55:31.945Z,20074,daniel.wa.noble@gmail.com,671138565,included,1
+2021-05-24T00:56:53.305Z,20074,daniel.wa.noble@gmail.com,671138566,included,1
+2021-05-24T00:57:00.337Z,20074,daniel.wa.noble@gmail.com,671138566,included,0
+2021-05-24T00:57:54.509Z,20074,daniel.wa.noble@gmail.com,671138567,included,1
+2021-05-24T00:58:49.072Z,20074,daniel.wa.noble@gmail.com,671138568,included,1
+2021-05-24T01:00:06.916Z,20074,daniel.wa.noble@gmail.com,671138569,included,1
+2021-05-24T01:00:18.103Z,20074,daniel.wa.noble@gmail.com,671138570,included,1
+2021-05-24T01:01:08.541Z,20074,daniel.wa.noble@gmail.com,671138571,included,-1
+2021-05-24T01:01:16.994Z,20074,daniel.wa.noble@gmail.com,671138571,"""__EXR__Dispersal study""",1
+2021-05-24T01:01:17.025Z,20074,daniel.wa.noble@gmail.com,671138571,included,-1
+2021-05-24T01:02:21.041Z,20074,daniel.wa.noble@gmail.com,671138572,included,1
+2021-05-24T01:09:07.231Z,20074,daniel.wa.noble@gmail.com,671138573,included,1
+2021-05-24T01:09:12.513Z,20074,daniel.wa.noble@gmail.com,671138574,included,1
+2021-05-24T01:10:02.341Z,20074,daniel.wa.noble@gmail.com,671138575,included,1
+2021-05-24T01:11:49.857Z,20074,daniel.wa.noble@gmail.com,671138576,included,1
+2021-05-24T01:12:35.717Z,20074,daniel.wa.noble@gmail.com,671138577,included,1
+2021-05-24T01:14:08.108Z,20074,daniel.wa.noble@gmail.com,671138578,included,1
+2021-05-24T01:14:58.405Z,20074,daniel.wa.noble@gmail.com,671138579,included,-1
+2021-05-24T01:15:10.562Z,20074,daniel.wa.noble@gmail.com,671138579,"""__EXR__Just measuring metamorphosis time""",1
+2021-05-24T01:15:10.609Z,20074,daniel.wa.noble@gmail.com,671138579,included,-1
+2021-05-24T01:16:10.906Z,20074,daniel.wa.noble@gmail.com,671138579,"""Similar to phenology, so, should exclude""",1
+2021-05-24T01:19:49.266Z,20074,daniel.wa.noble@gmail.com,671138580,included,1
+2021-05-24T01:20:36.985Z,20074,daniel.wa.noble@gmail.com,671138581,included,-1
+2021-05-24T01:20:43.220Z,20074,daniel.wa.noble@gmail.com,671138581,"""__EXR__Mostly just a systematic review""",1
+2021-05-24T01:20:43.313Z,20074,daniel.wa.noble@gmail.com,671138581,included,-1
+2021-05-24T01:21:13.939Z,20074,daniel.wa.noble@gmail.com,671138582,included,1
+2021-05-24T01:25:37.331Z,20074,daniel.wa.noble@gmail.com,671138583,included,1
+2021-05-24T01:26:15.112Z,20074,daniel.wa.noble@gmail.com,671138584,included,1
+2021-05-24T01:27:39.503Z,20074,daniel.wa.noble@gmail.com,671138585,included,1
+2021-05-24T01:29:27.207Z,20074,daniel.wa.noble@gmail.com,671138586,included,1
+2021-05-24T01:33:43.943Z,20074,daniel.wa.noble@gmail.com,671138587,included,0
+2021-05-24T01:34:11.490Z,20074,daniel.wa.noble@gmail.com,671138587,"""Just interested in trade-of in sperm attributes.""",1
+2021-05-24T01:34:42.928Z,20074,daniel.wa.noble@gmail.com,671138587,included,-1
+2021-05-24T01:35:44.428Z,20074,daniel.wa.noble@gmail.com,671138588,included,1
+2021-05-24T01:36:19.865Z,20074,daniel.wa.noble@gmail.com,671138588,"""Could be argued is methods though as goal is to use CORT HLR as biomarker. So, may want to exclude""",1
+2021-05-24T01:36:25.459Z,20074,daniel.wa.noble@gmail.com,671138588,included,0
+2021-05-24T01:42:22.821Z,20074,daniel.wa.noble@gmail.com,671138589,included,1
+2021-05-24T01:43:03.321Z,20074,daniel.wa.noble@gmail.com,671138590,included,-1
+2021-05-24T01:43:15.821Z,20074,daniel.wa.noble@gmail.com,671138590,"""__EXR__Only interested in carotenoid signalling""",1
+2021-05-24T01:43:15.852Z,20074,daniel.wa.noble@gmail.com,671138590,included,-1
+2021-05-24T01:44:17.165Z,20074,daniel.wa.noble@gmail.com,671138590,included,1
+2021-05-24T01:44:22.072Z,20074,daniel.wa.noble@gmail.com,671138590,"""__EXR__Only interested in carotenoid signalling""",deleted
+2021-05-24T01:45:50.056Z,20074,daniel.wa.noble@gmail.com,671138591,included,1
+2021-05-24T01:46:36.276Z,20074,daniel.wa.noble@gmail.com,671138592,included,1
+2021-05-24T01:47:31.682Z,20074,daniel.wa.noble@gmail.com,671138593,included,-1
+2021-05-24T01:47:38.135Z,20074,daniel.wa.noble@gmail.com,671138593,"""__EXR__Empirical study""",1
+2021-05-24T01:47:38.166Z,20074,daniel.wa.noble@gmail.com,671138593,included,-1
+2021-05-24T02:07:03.158Z,20074,daniel.wa.noble@gmail.com,671138594,included,-1
+2021-05-24T02:07:07.923Z,20074,daniel.wa.noble@gmail.com,671138594,"""__EXR__Empirical analysis""",1
+2021-05-24T02:07:07.939Z,20074,daniel.wa.noble@gmail.com,671138594,included,-1
+2021-05-24T02:09:10.502Z,20074,daniel.wa.noble@gmail.com,671138595,included,1
+2021-05-24T02:10:25.299Z,20074,daniel.wa.noble@gmail.com,671138596,included,1
+2021-05-24T02:11:42.550Z,20074,daniel.wa.noble@gmail.com,671138597,included,1
+2021-05-24T02:12:41.394Z,20074,daniel.wa.noble@gmail.com,671138598,included,0
+2021-05-24T02:14:09.988Z,20074,daniel.wa.noble@gmail.com,671138599,included,1
+2021-05-24T02:19:36.990Z,20074,daniel.wa.noble@gmail.com,671138600,included,1
+2021-05-24T02:21:56.132Z,20074,daniel.wa.noble@gmail.com,671138601,included,1
+2021-05-24T02:24:19.695Z,20074,daniel.wa.noble@gmail.com,671138602,included,-1
+2021-05-24T02:24:38.445Z,20074,daniel.wa.noble@gmail.com,671138602,"""__EXR__This is more a methods paper, and I think we should exclude""",1
+2021-05-24T02:24:38.476Z,20074,daniel.wa.noble@gmail.com,671138602,included,-1
+2021-05-24T02:28:14.618Z,20074,daniel.wa.noble@gmail.com,671138603,included,1
+2021-05-24T02:30:07.119Z,20074,daniel.wa.noble@gmail.com,671138604,included,1
+2021-05-24T02:30:45.728Z,20074,daniel.wa.noble@gmail.com,671138605,included,-1
+2021-05-24T02:30:52.322Z,20074,daniel.wa.noble@gmail.com,671138605,"""__EXR__Empirical paper across species""",1
+2021-05-24T02:30:52.353Z,20074,daniel.wa.noble@gmail.com,671138605,included,-1
+2021-05-24T02:32:44.026Z,20074,daniel.wa.noble@gmail.com,671138606,included,-1
+2021-05-24T02:32:59.573Z,20074,daniel.wa.noble@gmail.com,671138606,"""__EXR__Not physiology. Just categorical flight mode""",1
+2021-05-24T02:32:59.604Z,20074,daniel.wa.noble@gmail.com,671138606,included,-1
+2021-05-24T02:33:53.386Z,20074,daniel.wa.noble@gmail.com,671138607,included,-1
+2021-05-24T02:33:57.667Z,20074,daniel.wa.noble@gmail.com,671138607,"""__EXR__Empirical analysis""",1
+2021-05-24T02:33:57.698Z,20074,daniel.wa.noble@gmail.com,671138607,included,-1
+2021-05-24T02:36:14.918Z,20074,daniel.wa.noble@gmail.com,671138608,included,0
+2021-05-24T02:37:06.949Z,20074,daniel.wa.noble@gmail.com,671138609,included,1
+2021-05-24T02:38:24.731Z,20074,daniel.wa.noble@gmail.com,671138610,included,1
+2021-05-24T02:39:42.122Z,20074,daniel.wa.noble@gmail.com,671138611,included,1
+2021-05-24T02:41:26.076Z,20074,daniel.wa.noble@gmail.com,671138612,included,1
+2021-05-24T02:42:23.670Z,20074,daniel.wa.noble@gmail.com,671138613,included,1
+2021-05-24T02:43:51.764Z,20074,daniel.wa.noble@gmail.com,671138614,included,1
+2021-05-24T02:45:19.139Z,20074,daniel.wa.noble@gmail.com,671138615,included,-1
+2021-05-24T02:45:20.436Z,20074,daniel.wa.noble@gmail.com,671138615,"""__EXR__Empirical analysis""",1
+2021-05-24T02:45:20.467Z,20074,daniel.wa.noble@gmail.com,671138615,included,-1
+2021-05-24T02:46:09.655Z,20074,daniel.wa.noble@gmail.com,671138616,included,-1
+2021-05-24T02:46:13.421Z,20074,daniel.wa.noble@gmail.com,671138616,"""__EXR__Empirical analysis""",1
+2021-05-24T02:46:13.452Z,20074,daniel.wa.noble@gmail.com,671138616,included,-1
+2021-05-24T02:47:18.484Z,20074,daniel.wa.noble@gmail.com,671138617,included,1
+2021-05-24T02:56:38.534Z,20074,daniel.wa.noble@gmail.com,671138539,included,1
+2021-05-24T02:56:43.018Z,20074,daniel.wa.noble@gmail.com,671138539,"""__EXR__Tagging effects on growth. This is more ecology""",deleted
+2021-05-24T03:08:41.288Z,20074,daniel.wa.noble@gmail.com,671138556,included,1
+2021-05-24T03:08:47.710Z,20074,daniel.wa.noble@gmail.com,671138556,"""__EXR__Mainly just interested in mortality effects of environment. No real physiological trait interest""",deleted
+2021-05-24T03:10:25.992Z,20074,daniel.wa.noble@gmail.com,671138587,included,1
+2021-05-24T03:24:43.106Z,20074,daniel.wa.noble@gmail.com,671138548,"""Correct that this is not a meta-analytic model, but this is definitely a comparative physiology style approach. I think we should include. Its not a contrast based style effect, but it still quantitatively synthesises across species""",1
+2021-05-24T03:28:25.623Z,20074,daniel.wa.noble@gmail.com,671138549,included,1
+2021-05-24T03:28:32.967Z,20074,daniel.wa.noble@gmail.com,671138549,"""__EXR__Not physiological traits, genes to ecosystems""",deleted
+2021-05-24T03:28:45.607Z,20074,daniel.wa.noble@gmail.com,671138549,"""Needed to look at types of traits in supplement. Lots of physiology""",1
+2021-05-24T03:29:31.655Z,20074,daniel.wa.noble@gmail.com,671138560,included,-1
+2021-05-24T03:35:44.391Z,20074,daniel.wa.noble@gmail.com,671138592,included,-1
+2021-05-24T03:37:34.298Z,20074,daniel.wa.noble@gmail.com,671138598,included,-1
+2021-05-24T03:38:53.814Z,20074,daniel.wa.noble@gmail.com,671138608,included,-1
+2021-05-25T03:18:39.620Z,8867,losialagisz@gmail.com,671138548,included,1
+2021-05-25T03:21:36.575Z,20074,daniel.wa.noble@gmail.com,671138579,included,1
+2021-05-25T03:22:09.825Z,8867,losialagisz@gmail.com,671138613,included,1
+2021-05-25T03:25:03.513Z,8867,losialagisz@gmail.com,671138564,included,1
+2021-05-25T03:26:30.858Z,20074,daniel.wa.noble@gmail.com,671138588,included,1
+2021-05-25T03:28:32.030Z,8867,losialagisz@gmail.com,671138597,included,1
+2021-05-25T03:29:56.343Z,8867,losialagisz@gmail.com,671138610,included,1
+2021-05-25T03:30:09.437Z,8867,losialagisz@gmail.com,671138611,included,1
+2021-05-25T03:31:10.781Z,8867,losialagisz@gmail.com,671138566,included,-1
+2021-05-25T03:31:12.547Z,20074,daniel.wa.noble@gmail.com,671138566,included,-1
+2021-05-25T03:32:14.672Z,8867,losialagisz@gmail.com,671138553,included,1
+2021-05-25T03:32:25.110Z,20074,daniel.wa.noble@gmail.com,671138553,included,1
