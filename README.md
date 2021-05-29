@@ -1,6 +1,6 @@
 # Meta-analytic approaches and new effect sizes to account for treatment differences across studies in comparative physiology 
 
-Daniel W.A. Noble, Patrice Potter, Sammy Burke, Szymek Drobniak, Malgorzata Lagisz, Rose O’Dea, Shinichi Nakagawa
+Daniel W.A. Noble, Patrice Potter, Sammy Burke, Szymon M. Drobniak, Malgorzata Lagisz, Rose O’Dea, Shinichi Nakagawa
 
 # **Abstract**
 
