@@ -39,5 +39,5 @@ Proceedings of the Royal Society B
 Retrieved bibliometric records were screened by ML, DN with SN resolving conflicts.
 Full text screenig? - some papers may be removed at this stage as some abstracts are not very clear?
 
-
-**Important**: **PP made a mistake when extracting the data from Havird et al. 2020 (Functional Ecology). The data and code were hosted in FigShare,  not in Supplement** 
+## DATA EXTRACTION CORRECTIOMS
+ **PP made a mistake when extracting the data from Havird et al. 2020 (Functional Ecology). The data and code were hosted in FigShare,  not in Supplement**
