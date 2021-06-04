@@ -53,13 +53,47 @@ To understand meta-analytic practices in comparative physiology, we searched for
 
 We included quantitative syntheses, including meta-analyses (*sensu stricto*), that were focused on comparative physiologcial questions only. Narrative reviews and comments were not considered because they did not collate quantitative data from the literature. Studies needed to have collected physiological trait data from the literature including traits, such as hormones, thermal physiology (CTmax, CTmin, thermal preferences, thermal breadth, LT50, lethal thresholds), metabolic rates (routine, maximum, and minimum metabolic rate, aerobic scope), enzyme reaction rates and concentrations, oxidative stress and consequences (e.g., DNA damage, teleomere attrition), performance measurements (e.g., heart rates, sprint speed, swim speed, growth rates), body composition (e.g., fatty acid profiles) and immune traits (e.g., cell function, antibodies, ect.). Studies were also included if they measured the relationship between physiological traits and body size (e.g., metabolic scaling), reproductive allocation, or survival / mortality across taxa. Studies on behavior were only included if the synthesis was explicitly interested in the proximate physiological drivers of behavioral variation. We also included meta-analyses that quantifed plasticity in physiological traits across taxa for the purpose of understanding adaptive plasticity in response to environmental variation. While many studies in comparative physiology collect data as part of a comparative analysis, we focus here only on studies collating data from existing literature because this is the major data source for quantitative synthesis. Quantitative syntheses interested in phenology, biomechanics, sexual size dimorphism (i.e., SSD, except if the study was interested in sexual differences in physiological traits), those focused on validating physiological methodology, or characterising population genetic structure, gene transcription and quantitative genetics were excluded. There were also meta-analyses that focused on colour evolution and contrast which varied in their goals but were most often not focused on physiological questions. As such, these studies were also exclude.  We restricted our focus to animal studies because plant synthesis papers were often only focused on ecological (e.g., quantified changes in abundance and distribution of species) or agricultural questions (e.g., studies on soil microbial function, nitrogen and phosphorus capture, methane output and greenhouse gas emissions).
 
-All titles and abstracts and full text screening was done by two people (DWAN and ML). Any conflicts or disagreements were resolved by discussion and a concensus on a paper was reached. Out of the 417 papers, 79 full texts were screened and we included a total of 62 for final data extraction. For full details on the search strings used, dates searched, the number of papers found, and our PRISMA flowchart (along with reasons for exclusion at the full text stage) we refer readers to the *Supplementary Materials*. 
+All title, abstract and full text screening was done by two people (DWAN and ML). Any conflicts or disagreements were resolved by discussion and a concensus on a paper was reached. Out of the 417 papers, 79 full texts were screened and we included a total of 62 for final data extraction. For full details on the search strings used, dates searched, the number of papers found, and our PRISMA flowchart (along with reasons for exclusion at the full text stage) we refer readers to the *Supplementary Materials*. 
 
 #### *Current Meta-analytic Practices in Comparative Physiology*
 
 ## **Opening Up New Opportunities in Comparative Physiology: Expanding the Breadth of Effect Sizes to Deal with Treatment Differences Across Studies**
 #### *Brief Introduction to Common Effect Sizes and Sampling Errors that are Useful in Comparative Physiology*
 
+Meta-analysis requires comparative physiologists to make use of effect sizes that are suitable for answering their specific question. The key features of all effect sizes used in meta-analyses are that they are: 1) statistical parameters that have been placed on a common scale so that they can be compared across studies and 2) that they have some associated measure of precision (i.e., sampling variance)[@Koricheva2013; @Borenstein2009; @Schmid2021]. Effect sizes in comparative physiology are quite variable; they can be the mean difference between two groups (e.g., difference in mean between a control and treatment group - see @WuSeebacher2020), the slope of a regression (e.g., between body size and metabolic rate), a correlation between two variables, or even the raw mean (or variance) itself (e.g., comparing CTmax across species - see @Sunday2014).  In many cases, multiple types of effect sizes might be used depending on the question. For example, studies interested in the effect of temperature on some physiological trait that have measured the trait across studies experimentally manipulating temperature could analyse the mean 'effect' by creating contrast-based effect sizes or by analysing the mean in each temperature treatment. The choice as to which one to use will boil down to the types of data available from primary studies, the specific question of interest and whether studies are observational or experimental in nature. Considering our temperature example above, if we are interested in the magnitude of change between temperature treatments, we may want to use a contrast-based effect size, such as the log response ratio $ln_{RR}$. If we are instead interested in how the mean of some physiological trait changes with tempearture we may instead model the mean itself. In the latter scenerio, so long as all the means are measured in the same units (e.g., ; or can be converted to the same units) then the mean may provide the desired answer to a given question. We provide details on different effect measures and associated sample sizes in Table \@ref(tab:tablea). 
+
+
+```{r tablea, echo = FALSE, tab.cap = "Common effect sizes, associated sampling variances and notes on when they might be used. Note that for log odds ratio a continuity correction is applied (i.e., 0.5) to each proportion. In addition, a correction factor, J (1-3 / ..), is applied to the standardised to correct for small sample effects"}
+
+# I'm just listing a bunch here, but we should think about what we want to include. Here's an example of how we can make a table with all equations. Fun!
+names <- c("Mean",
+           "Variance",
+           "Log Response Ratio",
+           "Standardised Mean Difference",
+           "Zr (Correlation Coefficient)",
+           "Log Odds Ratio")
+eqns_yi <- c("X_{i}",
+             "\\sigma^2",
+             "log \\left( \\frac{X_{1}}{X_{2}} \\right)",
+             "\\frac{\\left( X_{1} - X_{2}  \\right)}{sd_{p}}J",
+             "\\frac{1}{2} log \\left( \\frac{1+r_{i}}{1-r_{i}} \\right)",
+             "log \\left( \\frac{y_{i2}+0.5}{n_{i2} - y_{i2}+0.5} \\right) - log \\left( \\frac{y_{i1}+0.5}{n_{i1} - y_{i1}+0.5} \\right)")
+#eqns_vi <- c()
+
+table_fin <- data.frame(names, eqns_yi)
+
+# Note: It is esssential that you be clear that the function 'compose' is exported from the flextable package. That's because purr also has the same function, so it gets messy.
+tablea <- flextable(table_fin) %>% 
+          flextable::compose(j = "names", part = "header", value = as_paragraph(as_b("Effect Measure"))) %>% 
+          flextable::compose(j = "eqns_yi", part = "header", value = as_paragraph(as_b("Definition"))) %>% 
+          flextable::compose(j = "eqns_yi", value = as_paragraph(as_equation(eqns_yi))) %>% 
+          flextable::width(j = 1, 3) %>% 
+          flextable::width(j = 2, 2)
+          
+
+tablea
+
+```
 
 
 #### *Expanding the Scope of Effect Size Metrics in Comparative Physiology*
