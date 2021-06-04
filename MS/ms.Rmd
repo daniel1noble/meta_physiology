@@ -11,7 +11,7 @@ output:
   bookdown::html_document2:
     code_folding: hide
     number_sections: no
-    toc: yes
+    toc: no
     toc_depth: 6
     toc_float: yes
     bibliography: refs.bib
@@ -24,6 +24,8 @@ editor_options:
   ## numbers >= 10^5 will be denoted in scientific notation,		  ## numbers >= 10^5 will be denoted in scientific notation,
     ## and rounded to 2 digits		  ## and rounded to 2 digits
     options(digits = 2)
+    
+  pacman::p_load(flextable, tidyverse, equatags)  
 ```
 
 Daniel W.A. Noble$^{1,*}$, Patrice Potter$^{2}$, Sammy Burke$^{2}$, Szymek Drobniak$^{2}$, Malgorzata Lagisz$^{2}$, Rose O’Dea$^{2}$, Shinichi Nakagawa$^{2}$
@@ -63,33 +65,46 @@ All title, abstract and full text screening was done by two people (DWAN and ML)
 Meta-analysis requires comparative physiologists to make use of effect sizes that are suitable for answering their specific question. The key features of all effect sizes used in meta-analyses are that they are: 1) statistical parameters that have been placed on a common scale so that they can be compared across studies and 2) that they have some associated measure of precision (i.e., sampling variance)[@Koricheva2013; @Borenstein2009; @Schmid2021]. Effect sizes in comparative physiology are quite variable; they can be the mean difference between two groups (e.g., difference in mean between a control and treatment group - see @WuSeebacher2020), the slope of a regression (e.g., between body size and metabolic rate), a correlation between two variables, or even the raw mean (or variance) itself (e.g., comparing CTmax across species - see @Sunday2014).  In many cases, multiple types of effect sizes might be used depending on the question. For example, studies interested in the effect of temperature on some physiological trait that have measured the trait across studies experimentally manipulating temperature could analyse the mean 'effect' by creating contrast-based effect sizes or by analysing the mean in each temperature treatment. The choice as to which one to use will boil down to the types of data available from primary studies, the specific question of interest and whether studies are observational or experimental in nature. Considering our temperature example above, if we are interested in the magnitude of change between temperature treatments, we may want to use a contrast-based effect size, such as the log response ratio $ln_{RR}$. If we are instead interested in how the mean of some physiological trait changes with tempearture we may instead model the mean itself. In the latter scenerio, so long as all the means are measured in the same units (e.g., ; or can be converted to the same units) then the mean may provide the desired answer to a given question. We provide details on different effect measures and associated sample sizes in Table \@ref(tab:tablea). 
 
 
-```{r tablea, echo = FALSE, tab.cap = "Common effect sizes, associated sampling variances and notes on when they might be used. Note that for log odds ratio a continuity correction is applied (i.e., 0.5) to each proportion. In addition, a correction factor, J (1-3 / ..), is applied to the standardised to correct for small sample effects"}
+```{r tablea, echo = FALSE, tab.cap = "Common effect sizes, associated sampling variances and notes on when they might be used. Note that for log odds ratio a continuity correction is applied (i.e., 0.5) to each proportion. In addition, a correction factor, J (1-3 ), is applied to the standardised to correct for small sample effects"}
 
-# I'm just listing a bunch here, but we should think about what we want to include. Here's an example of how we can make a table with all equations. Fun!
+# I'm just listing a bunch here, but we should think about what we want to include. Here's an example of how we can make a table with all equations. Fun! Really useful website here: https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference. Something wrong with character coding when rendering word document. Has to do with the log odds ratio equation. Renders fine in html, but just stops when word
 names <- c("Mean",
            "Variance",
            "Log Response Ratio",
            "Standardised Mean Difference",
-           "Zr (Correlation Coefficient)",
-           "Log Odds Ratio")
+           "Zr (Correlation Coefficient)")
+           #"Log Odds Ratio",
+           #"")
+           
 eqns_yi <- c("X_{i}",
              "\\sigma^2",
-             "log \\left( \\frac{X_{1}}{X_{2}} \\right)",
-             "\\frac{\\left( X_{1} - X_{2}  \\right)}{sd_{p}}J",
-             "\\frac{1}{2} log \\left( \\frac{1+r_{i}}{1-r_{i}} \\right)",
-             "log \\left( \\frac{y_{i2}+0.5}{n_{i2} - y_{i2}+0.5} \\right) - log \\left( \\frac{y_{i1}+0.5}{n_{i1} - y_{i1}+0.5} \\right)")
-#eqns_vi <- c()
+             "log \\left( \\frac{X_{1}}{X_{2}}\\right)",
+             "\\frac{\\left( X_{2} - X_{1}\\right)}{sd_{p}}J",
+             "\\frac{1}{2}log\\left(\\frac{1+r_{i}}{1-r_{i}}\\right)")
+             #"log\\left(\\frac{y_{i2}+0.5}{n_{i2}-y_{i2}+0.5}\\right) ",
+             #"- log\\left(\\frac{y_{i1}+0.5}{n_{i1}-y_{i1}+0.5}\\right)")
+             
+# Just placeholders for now
+eqns_vi <- c("\\frac{s_{i}^2}{n_{i}}",
+             "\\frac{s_{i}^2}{n_{i}}",
+             "\\frac{s_{i}^2}{n_{i}}",
+             "\\frac{s_{i}^2}{n_{i}}",
+             "\\frac{s_{i}^2}{n_{i}}")
+             #"\\frac{s_{i}^2}{n_{i}}",
+             #"")
+         
 
-table_fin <- data.frame(names, eqns_yi)
+table_fin <- data.frame(names, eqns_yi, eqns_vi)
 
 # Note: It is esssential that you be clear that the function 'compose' is exported from the flextable package. That's because purr also has the same function, so it gets messy.
-tablea <- flextable(table_fin) %>% 
-          flextable::compose(j = "names", part = "header", value = as_paragraph(as_b("Effect Measure"))) %>% 
-          flextable::compose(j = "eqns_yi", part = "header", value = as_paragraph(as_b("Definition"))) %>% 
-          flextable::compose(j = "eqns_yi", value = as_paragraph(as_equation(eqns_yi))) %>% 
-          flextable::width(j = 1, 3) %>% 
+tablea <- flextable(table_fin)                                                                                %>% 
+          flextable::compose(j = "names", part = "header", value = as_paragraph(as_b("Effect Measure")))      %>% 
+          flextable::compose(j = "eqns_yi", part = "header", value = as_paragraph(as_b("Definition")))        %>% 
+          flextable::compose(j = "eqns_vi", part = "header", value = as_paragraph(as_b("Sampling Variance"))) %>%
+          flextable::compose(j = "eqns_yi", value = as_paragraph(as_equation(eqns_yi)))                       %>%
+          flextable::compose(j = "eqns_vi", value = as_paragraph(as_equation(eqns_vi)))                       %>% 
+          flextable::width(j = 1, 3)                                                                          %>% 
           flextable::width(j = 2, 2)
-          
 
 tablea
 
@@ -194,7 +209,7 @@ $$ z_{i} = u + a_{k[i]} + sp_{k[i]} + s_{j[i]} + e_{i} + m_{i} $$
 where $z_{i}$ is the *i*th effect size (*i* = 1 ... $N_{ES}$, the number of effect sizes), *u* the overall meta-analytic mean, $a_{k[i]}$ is the phylogenetic effect for species *k* applied to effect size *i*. Phylogenetic effects are assumed to be normally distributed deviates sampled from a distribution with a mean of 0 and variance $\sigma^{2}_aA$ [hereafter denoted ~ *N*$(0, \sigma^{2}_aA)$], where A is a phylogenetic correlation matrix derived from a phylogenetic tree, $sp_{k[i]}$ is the species-specific effect for the *k*th species applied to effect size *i* [assumed to be ~ *N*$(0, \sigma^{2}_{sp}I)$], $s_{j[i]}$ is the study-specific effect for the *j*th study applied to effect size *i* [assumed to be ~ *N*$(0, \sigma^{2}_{s}I)$, where I is an identity matrix], $e_{i}$ is the effect size-specific effect (or within study effect, or residuals) for the *i*th effect size [assumed to be ~ *N*$(0, \sigma^{2}_eE)$], and $m_{i}$ is the sampling variance effect around the *i*th effect as a result of variation in precision among each effect size [assumed to be  ~ *N*$(0, M)$], where M is a variance-covariance matrix with the diagonal elements being the effect size sampling variance. This model is a 'weighted' multilevel meta-analysis model because we can estimate the overall sampling variance. This is very important because it provides a way for us to understand just how much variation in effects are simplly the result of sampling differences across studies versus other, potentially improtant sources of variation such as differences in the methods applied, species differences or even real biological effects that impact the effect size a study is likely to observe. This is formalised in what we call 'heterogenetiy analysis' which we describe below. Importantly, this model provides us with the answer to our overall question: Across all the species and studies manipulating corticosterone, how much of an overall effect does corticostrone have on XX relative to control conditions?
 
 #### *Heterogenity Analysis: How Much Effect Size Variation Actually Exists?*
-Quantifying effect size heterogenity (i.e., effect size variance) provides a pathway to explore hypotheses thought to explain why effect might vary across studies.
+Quantifying effect size heterogenity (i.e., effect size variance) provides a pathway to explore hypotheses thought to explain why effects might vary within and across studies. Effect size heterogeneity can be thought of as the percentage of variance between effect sizes that cannot be attributable to sampling error (often as called 'total' heterogenity) @Higgins2002. It provides a formal way to assess how much variation is the result of 'true' biological or methodological differences as opposed to simply chance (i.e., sampling variance). We can only conduct such analyses if we have an estimate of the sampling variance for a given effect measure becasue only then can we quantify how much variation is the result of sampling variability. @Senior2016 has shown that total heterogenity is often extremely high in ecological and evolutionary meta-analysis (~91%), suggesting that effect measures vary widely across within and studies. Some of the variation is clearly the result of working with different species or strains, different traits and different outcome measures, however, some of this variation also arises because of methodological differences across studies 
 
 #### *Multi-level Metaregression to Understand Variation and Improve Interpretation*
 
