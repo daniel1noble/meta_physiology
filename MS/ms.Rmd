@@ -213,15 +213,21 @@ One of the main goals of meta-analysis is to obtain an overall meta-analytic mea
 Assume that we are interested in understanding the overall effect of, say, stress (i.e., corticosterone - CORT) on reproduction [e.g., see @Podmola2018] we might extract data from studies manipulating corticosterone in bird eggs. Of course, these studies are diverse, apply different dosages of corticosterone and are working across many species. If the studies are experimental in nature, than a standardised effect size, such as $ln_{RR}$ or Hedges' *d* might be applicable. We then might fit an overall, multilevel meta-analytic model as follows:
 $$
 \begin{equation} 
-Y_{i} = \beta_{0} + a_{k[i]} + sp_{k[i]} + s_{j[i]} + e_{i} + m_{i}\\
-a_{k[i]}\sim N(0, \sigma^{2}_aA),\\
-sp_{k[i]}\sim N(0, \sigma^{2}_{sp}I),\\
-s_{j[i]}\sim N(0, \sigma^{2}_{sp}I),\\
-e_{i}\sim N(0, \sigma^{2}_eI),\\
-m_{i} \sim N(0, v_{i})\\
+Y_{i} = \beta_{0} + a_{k[i]} + sp_{k[i]} + s_{j[i]} + e_{i} + m_{i}\
 (\#eq:MLMM)
 \end{equation} 
 $$
+$$
+\begin{equation} 
+a_{k[i]}\sim N(0, \sigma^{2}_aA),\
+sp_{k[i]}\sim N(0, \sigma^{2}_{sp}I),\
+s_{j[i]}\sim N(0, \sigma^{2}_{sp}I),\
+e_{i}\sim N(0, \sigma^{2}_eI),\
+m_{i} \sim N(0, v_{i})\
+(\#eq:dist)
+\end{equation} 
+$$
+
 where $Y_{i}$ is the *i*th effect size (*i* = 1 ... $N_{ES}$, the number of effect sizes), $\beta_{0}$ is the overall meta-analytic mean, $a_{k[i]}$ is the phylogenetic effect for species *k* applied to effect size *i*. Phylogenetic effects are assumed to be normally distributed deviates sampled from a distribution with a mean of 0 and variance $\sigma^{2}_aA$ [i.e., *N*$(0, \sigma^{2}_aA)$], where A is a phylogenetic correlation matrix derived from a phylogenetic tree, $sp_{k[i]}$ is the species-specific effect for the *k*th species applied to effect size *i*, $s_{j[i]}$ is the study-specific effect for the *j*th study applied to effect size *i*, $e_{i}$ is the effect size-specific effect (or within study effect, or residuals) for the *i*th effect size, and $m_{i}$ is the sampling variance effect around the *i*th effect as a result of variation in precision among each effect sizes, $v_{i}$, which is known. This model is a 'weighted' multilevel meta-analysis model because the estimation of *u* is weighted by the inverse sampling variance of each effect size. The fact that we can obtain an overall estimate of sampling variance (i.e., $\sigma^2_{m}$) is very important because it provides a way for us to understand just how much variation in effects are the result of sampling differences across studies versus other, potentially improtant sources of variation such as differences in the methods applied, species differences or even real biological effects that impact the effect size a study is likely to observe [@Nakagawa2017; @NakagawaSantos2012]. This is formalised in what we call 'heterogenetiy analysis' which we describe below. Importantly, this model provides us with the answer to our overall question: Across all the species and studies manipulating egg corticosterone, how much of an overall effect does corticostrone have on reproduction relative to control conditions?
 
 Of course, the overall effect does not provide us a way to interpret its magnitude in the context of how much CORT has been applied in the treatment. The most we can say about it, is that the effect is small, moderator of large out of the sample of effect sizes extracted from this set of studies. In the next section, we show how to 'correct' the overall effect size so that its interpretation is more meaningful. 
