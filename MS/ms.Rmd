@@ -3,11 +3,6 @@ title: "Meta-analytic approaches and 'new' effect sizes to account for heterogen
 bibliography: ../bib/refs.bib
 csl: ../bib/the-journal-of-experimental-biology.csl
 output: 
-  bookdown::word_document2:
-    toc: no
-    toc_depth: 6
-    number_sections: false
-    reference_docx: template.docx
   bookdown::html_document2:
     code_folding: hide
     number_sections: no
@@ -15,6 +10,11 @@ output:
     toc_depth: 6
     toc_float: yes
     bibliography: refs.bib
+  bookdown::word_document2:
+    toc: no
+    toc_depth: 6
+    number_sections: false
+    reference_docx: template.docx
 editor_options: 
   chunk_output_type: console
 ---
@@ -221,12 +221,14 @@ It will not be possible to derive an effect size that completely controls for kn
 
 One of the main goals of meta-analysis is to obtain an overall meta-analytic mean effect size estimate and some form of uncertainty around that mean, like a 95% confidence interval (CI). Including a prediction interval (PI) can also be quite useful because, in the context of a meta-analysis, it provides the range of effect size values we might expect to observe if a new study were to be conducted [@Nakagawa2021c]. Estimating an overall mean along with 95% CI (or PI) is generally done with a simple random effects or multilevel meta-analytic model that accounts for effect size sampling error [@Nakagawa2017; @NakagawaSantos2012]. More often than not, meta-analyses in comparative physiology will have complex hierarchical structure. For example, multiple effect sizes may be taken from a single study on different traits measured on the same individuals, or come from many different species that share an evolutionary history [@Noble2017]. As such, it is far more likely that comparative physiologists will need to apply a multi-level meta-analytic model to control for the various sources of non-independence [@NakagawaSantos2012; @Song2021; @Nakagawa2021; @Noble2017]. Multilevel models are also extremely useful in describing the various sources contributing to effect size variance. For the purpose of our discussion, we will assume the meta-analyst plans to use more advanced multilevel models. Having said that, it maybe sufficient for many meta-analyses to make use of traditional random effects models. We refer readers to excellent reviews and books that overview the distinctions between common (fixed) effect, random effect and multilevel models and when one might want (or not want) to apply these models [@Nakagawa2017; @NakagawaSantos2012; @Koricheva2013; @Borenstein2009; @Schmid2021].
 
-Assume that we are interested in understanding the overall effect of, say, stress (i.e., corticosterone - CORT) on reproduction [e.g., see @Podmola2018] we might extract data from studies manipulating corticosterone in bird eggs. Of course, these studies are diverse, apply different dosages of corticosterone and are working across many species. If the studies are experimental in nature, than a standardised effect size, such as $ln_{RR}$ or Hedges' *d* might be applicable. We then might fit an overall, multilevel meta-analytic model as follows: $$
+Assume that we are interested in understanding the overall effect of, say, stress (i.e., corticosterone - CORT) on reproduction [e.g., see @Podmola2018] we might extract data from studies manipulating corticosterone in bird eggs. Of course, these studies are diverse, apply different dosages of corticosterone and are working across many species. If the studies are experimental in nature, than a standardised effect size, such as $ln_{RR}$ or Hedges' *d* might be applicable. We then might fit an overall, multilevel meta-analytic model as follows: 
+$$
 \begin{equation} 
 Y_{i} = \beta_{0} + a_{k[i]} + sp_{k[i]} + s_{j[i]} + e_{i} + m_{i}\
 (\#eq:MLMM)
 \end{equation} 
-$$ $$
+$$ 
+$$
 \begin{equation} 
 a_{k[i]}\sim N(0, \sigma^{2}_aA),\
 sp_{k[i]}\sim N(0, \sigma^{2}_{sp}I),\
@@ -241,7 +243,7 @@ $$
 
 where $Y_{i}$ is the *i*th effect size (*i* = 1 ... $N_{ES}$, the number of effect sizes), $\beta_{0}$ is the overall meta-analytic mean, $a_{k[i]}$ is the phylogenetic effect (a random effect) for species *k* applied to effect size *i*. Phylogenetic effects are assumed to be normally distributed deviates sampled from a distribution with a mean of 0 and variance $\sigma^{2}_aA$ [i.e., *N*$(0, \sigma^{2}_aA)$], where A is a phylogenetic correlation matrix derived from a phylogenetic tree, $sp_{k[i]}$ is the species-specific effect for the *k*th species applied to effect size *i*, $s_{j[i]}$ is the study-specific effect for the *j*th study applied to effect size *i*, $e_{i}$ is the effect size-specific effect (or within study effect, or residuals) for the *i*th effect size, and $m_{i}$ is the sampling variance effect around the *i*th effect as a result of variation in precision among each effect sizes, $v_{i}$, which is known. This model is a 'weighted' multilevel meta-analysis model because the estimation of *u* is weighted by the inverse sampling variance of each effect size. The fact that we can obtain an overall estimate of sampling variance (i.e., $\sigma^2_{m}$) is very important because it provides a way for us to understand just how much variation in effects are the result of sampling differences across studies versus other, potentially important sources of variation such as differences in the methods applied, species differences or even real biological effects that impact the effect size a study is likely to observe [@Nakagawa2017; @NakagawaSantos2012]. This is formalised in what we call 'heterogeneity analysis' which we describe below. Importantly, this model provides us with the answer to our overall question: Across all the species and studies manipulating egg corticosterone, how much of an overall effect does corticosterone have on reproduction relative to control conditions? <!--- don't we need to mention in the case of VCV for mi--->
 
-Of course, the overall effect does not provide us a way to interpret its magnitude in the context of how much CORT has been applied in the treatment. The most we can say about it, is that the effect is small, moderator of large out of the sample of effect sizes extracted from this set of studies. In the next section, we show how to 'correct' the overall effect size so that its interpretation is more meaningful.
+Of course, the overall effect does not provide us a way to interpret its magnitude in the context of how much CORT has been applied in the treatment. The most we can say about it, is that the effect is small, moderate or large out of the sample of effect sizes extracted from this set of studies. In the next section, we show how to 'correct' the overall effect size so that its interpretation is more meaningful.
 
 #### *Multilevel Meta-regression to Understand Variation and Improve Interpretation*
 
@@ -265,8 +267,9 @@ where $\sigma^2_{total} = \sigma^2_{study} + \sigma^2_{phylogeny} + \sigma^2_{sp
 
 $$ R^2_{marginal} = \frac{\sigma^2_{fixed}}{\sigma^2_{fixed} + \sigma^2_{study} + \sigma^2_{phylogeny} + \sigma^2_{species} + \sigma^2_{residual}}$$
 
-Note that this formula does not include $\sigma^2_{m}$ as sampling error variance is assumed to be known in meta-analysis as explained above <!--- if you have not done so, please do --->. The $R^2_{marginal}$ provides a formal means to assess just how much variation in effects is the result of known heterogeneity at the effect size level <!--- note what level's variation it accounts for depends on the type of a fixed effect or moderator --->, driven by continuous moderators such as dosage, temperature, salinity, and even pH. $I^2_{hetero}$ maybe a useful measure to provide to help readers understand just how much effect variation can result from the specific treatment application. <!--- you can also say metaAider and orcharRd packages have functions to cacualte this already via metafor - implemention is important --->
+Note that this formula does not include $\sigma^2_{m}$ as sampling error variance is assumed to be known in meta-analysis as explained above <!--- if you have not done so, please do --->. The $R^2_{marginal}$ provides a formal means to assess just how much variation in effects is the result of known heterogeneity at the effect size level <!--- note what level's variation it accounts for depends on the type of a fixed effect or moderator --->, driven by continuous moderators such as dosage, temperature, salinity, and even pH. $R^2_{marginal}$, or how we like to think of it, $R^2_{heterogenity}$, maybe a useful measure to provide to help readers understand just how much effect variation can result from the specific treatment application. If the heterogeneity is high as a result, say, dosages differences, then it is clear that the choice of dosage within and across studies will have a critical impact on the effect of interest. <!--- you can also say metaAider and orcharRd packages have functions to cacualte this already via metafor - implemention is important --->
 
 ## **Conclusions and Future Directions**
+Comparative physiologists are intersted in meta-analysing effects across a diversity of species, experimental approaches / designs and environments. While an overall meta-analytic mean may be of interest, more often than not, understanding the drivers of effect size heterogenity will be the primary interest. However, obvious drivers of effect size heterogenity, such as temperature and dosage differences across studies, may not really be of interest. Indeed, comparative physiolgists are likely to want an effect size or analytical approach that allows them to remove these 'nusances'. Here, we provide comparative physiologists with a set of tools to deal with 'nusance heterogenity' by creatively 'reinventing' standard effect sizes or using meta-regerssion models. Of course, nusance heterogenity might in of itself be the main interest, in which case standard meta-regression approaches will work sufficiently. However, in many cases, comparative physiolgists might simply want to focus on bigger, more interesting biological moderators of effect size direction and magnitude. However, estimating complex meta-regression models with a multitude of fixed effects might result in more challenging model interpretation. As such, a combined approach, where some of the known heterogenity is dealt with by deriving a variant effect size and associated sampling variance, and other biologically interesting moderators are fit in a meta-regerssin model, might be the desired. Indeed, this may even be a necessity to simplify the model. 
 
 ## **References**
