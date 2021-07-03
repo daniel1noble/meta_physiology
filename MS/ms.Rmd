@@ -80,7 +80,7 @@ Meta-analysis requires comparative physiologists to make use of effect sizes tha
 
 # I'm just listing a bunch here, but we should think about what we want to include. Here's an example of how we can make a table with all equations. Fun! Really useful website here: https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference. Something wrong with character coding when rendering word document. Has to do with the log odds ratio equation. Renders fine in html, but just stops when word
 names <- c("Mean",
-           "Log Standard deviation. lnSD",
+           "Log Standard deviation, lnSD",
            "Log Response Ratio, lnRR",
            # leave this for now??? - we introduce this later
            "Standardised Mean Difference, SMD",
@@ -91,26 +91,29 @@ names <- c("Mean",
 # the index i is not really applied consistently so I am adding it more (to do)
 # we shoudl discuss what kinds of notations we want to use consistely
            
-eqns_yi <- c("M_i",
-             "\\ln{SD_i} + \\frac{1}{2(N_i - 1)}",
+eqns_yi <- c("M",
+             "\\ln{SD} + \\frac{1}{2(N - 1)}",
              # Senior will have a better version but this is good for now
-             "\\ln \\left( \\frac{M_{i1}}{M_{i2}}\\right)",
-             "\\frac{\\left( X_{i2} - X_{i1}\\right)}{SD_{p}}J",
+             "\\ln \\left( \\frac{M_{1}}{M_{2}}\\right)",
+             "\\frac{\\left( X_{2} - X_{1}\\right)}{SD_{p}}J",
              # we need to spell out SD_p somewhere
-             "\\frac{1}{2}log\\left(\\frac{1+r_{i}}{1-r_{i}}\\right)")
+             "\\frac{1}{2}log\\left(\\frac{1+r}{1-r}\\right)")
              #"log\\left(\\frac{y_{i2}+0.5}{n_{i2}-y_{i2}+0.5}\\right) ",
              #"- log\\left(\\frac{y_{i1}+0.5}{n_{i1}-y_{i1}+0.5}\\right)")
              
 # Just placeholders for now
-eqns_vi <- c("\\frac{SD_{i}^2}{N_{i}}",
-             "\\frac{1}{2(N_i - 1)}",
-             "\\frac{N_{1i} + N_{2i}}{N_{1i}N_{2i}} + \\frac{SMD^2}{2(N_{1i} + N_{2i})}",
-             "\\frac{SD_{1i}} {M^2_{1i}N_{1i}} + \\frac{SD_{2i}} {M^2_{2i}N_{2i}}",
+eqns_vi <- c("\\frac{SD^2}{N}",
+             "\\frac{1}{2(N - 1)}",
+             "\\frac{N_{1} + N_{2}}{N_{1}N_{2}} + \\frac{SMD^2}{2(N_{1} + N_{2})}",
+             "\\frac{SD_{1}} {M^2_{1}N_{1}} + \\frac{SD_{2}} {M^2_{2}N_{2}}",
              # see my commenst
-             "\\frac{1}{N_i - 3}")
+             "\\frac{1}{N - 3}")
              #"\\frac{s_{i}^2}{n_{i}}",
              #"")
-         
+
+# Maybe add some examples for each effect size in a new column. SHould help
+eg <- c("CT_{min}, CT_{max}, MR",
+        "")
 
 table_fin <- data.frame(names, eqns_yi, eqns_vi)
 
@@ -128,7 +131,10 @@ tablea
 
 ```
 
+
 #### *Expanding the Scope of Effect Size Metrics in Comparative Physiology*
+
+As is clear from Table \@ref(tab:tablea) none of the effect measures control for 'nusance heterogenity'. For example, the magnitude of response between two treatment groups for lnRR or SMD might depend on just how different the tempeartures, dosages, pH or water potential applied in each treatment. Even modelling just the mean often needs to account for 'nusance heterogenity'. For example, standard metabolic rate (SMR) is tempearture dependent. As such, one needs to standardise the temperature measurement to compare across studies [@White2006; @Uyeda2017; if, of course, temperature is not of interest in of itself]. While we could of course model this explictly, this may not always be desireable. It can often be useful to standardise the effect to both ease its interpretation and simplify modelling. In Box 1 we provide readers with guidance on how comparative physiologists can apply corrections to the effect measure itself. We highlight two examples in the box focusing mainly on generality. Below, we show using a common well understood effect measure of interest to comparative physiologys, $Q_{10}$ how we can formalise a common effect size measure $lnRR$ to capture this 'nusance variation'. 
 
 A very common occurrence in comparative physiology is to manipulate the temperature organisms experience and measure some physiological rate (e.g., metabolic rate). Using normal effect size measures (see above) would result in the effect sizes varying in the types of temperatures applied within and across across studies contributing to 'comparability' issues. As such, it is often of interest to standardize effects by temperature. One common effect size measure already used in comparative physiology to compare physiological rates is $Q_{10}$ [e.g., @Rodgers2021; @Seebacher2015; @Havird2020], which describes the multiplicative change in physiological rates across a 10°C temperature change. Higher $Q_{10}$ values indicate larger changes in physiological rates. Currently, however, we do not have associated sampling variances derived for $Q_{10}$ making it challenging to make use of the full power of weighted meta-analytic models. Interestingly, $Q_{10}$ can be seen as a variant of *lnRR*, meaning that we can derive a $Q_{10}$ based effect size and sampling error using the well known mathematical properties of *lnRR*. This opens up the meta-analytic toolbox and improves upon our ability to account for well known sources of non-independence that are typical in meta-analysis [@Lajeunesse2011; @Noble2017].
 
