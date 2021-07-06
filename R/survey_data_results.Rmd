@@ -18,11 +18,11 @@ output:
 rm(list=ls())
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
-pacman::p_load(dplyr,ggplot2)
+pacman::p_load(dplyr,ggplot2,here)
 
 # loading data
-raw <- read.csv("./data/MA_CompPysio_Survey.csv")
-metadata <- read.csv("./data/MA_CompPysio_Survey_metadata.csv")
+raw <- read.csv(here("data","MA_CompPysio_Survey.csv"))
+metadata <- read.csv(here("data","MA_CompPysio_Survey_metadata.csv"))
 
 # tidying data
 dat <- raw
