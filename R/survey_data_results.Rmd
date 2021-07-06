@@ -1,0 +1,132 @@
+---
+title: "Survey Results from: Meta-analytic approaches and new effect sizes to account for heterogeneous effects in comparative physiology"
+author: Daniel W.A. Noble, Patrice Potter, Sammy Burke, Szymek Drobniak, Malgorzata Lagisz, Rose O’Dea, Shinichi Nakagawa
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: paper  
+    highlight: tango  
+    toc: true
+    toc_depth: 5
+    number_sections: false  
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+rm(list=ls())
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+pacman::p_load(dplyr,ggplot2)
+
+# loading data
+raw <- read.csv("./data/MA_CompPysio_Survey.csv")
+metadata <- read.csv("./data/MA_CompPysio_Survey_metadata.csv")
+
+# tidying data
+dat <- raw
+names(dat) <- metadata$Procesed.Column.Name[match(names(dat), metadata$Raw.Column.Name)]
+
+# tidying categorical options
+dat$meta_analysis_self_described <- factor(gsub(" \\(.*", "", dat$meta_analysis_self_described), levels = c("yes","no","unclear/other"))
+dat$comparative_physiology_main_focus <- factor(gsub(" \\(.*", "", dat$comparative_physiology_main_focus), levels = c("yes","no","unclear/other"))
+
+# fixing format of journals
+
+#dat$DOI[dat$journal=="2017"] # Typo
+dat$journal[dat$journal=="2017"] <- "Biology Letters"
+
+#dat$DOI[grep("Proceedings", dat$journal)] # all the same journal
+dat$journal[grep("Proceedings", dat$journal)] <- "Proceedings of the Royal Society B: Biological Sciences"
+
+# standardising DOI format
+dat$DOI <- gsub(".*org/", "", dat$DOI)
+dat$DOI <-gsub(".* ", "", dat$DOI)
+
+# ggplot2 theme for plots
+background.colour <- "white"
+text.colour <- "black"
+# Font Choice
+#loadfonts()
+text.font <- "Arial"
+
+tm <- theme(panel.background = element_rect(fill = background.colour),
+            plot.background = element_rect(fill = background.colour),
+            panel.grid = element_blank(),
+            text =  element_text(family = text.font, colour = text.colour),
+            axis.text = element_text(colour = text.colour),
+            axis.title.x = element_text(margin = margin(10,0,0,0)),
+            axis.title.y = element_text(margin = margin(0,10,0,0)),
+            axis.line = element_line(colour = text.colour, size = 0.5),
+            axis.ticks = element_line(colour = text.colour, size = 0.5),
+            plot.title = element_text(hjust = 0.5),
+            legend.background = element_rect(fill = background.colour),
+            legend.key = element_rect(fill = background.colour),
+            plot.margin = margin(6,6,6,6)) 
+```
+
+## Sample of `r nrow(dat)` papers {.tabset} 
+
+### Meta-analysis {.tabset .tabset-fade .tabset-pills}   
+
+Answer to the question "Is paper self-describing as containing a meta-analysis (or meta-regression) or actually using meta-analysis/regression approach?".
+
+```{r}
+dat %>% dplyr::group_by(meta_analysis_self_described) %>% dplyr::tally() %>% 
+  ggplot() + tm +
+  geom_col(aes(x = meta_analysis_self_described, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0)) +
+  labs(x = "meta-analysis or meta-regression",
+       y = "number of papers") 
+```
+
+
+### Comparative physiology {.tabset .tabset-fade .tabset-pills}   
+
+Answer to the question ""Is the study's main focus on comparative physiology?"
+
+- yes = focused only on physiological traits very clearly)  
+- no =  does have physiological traits, but is interested in broader questions involving many different traits   
+
+```{r}
+dat %>% dplyr::group_by(comparative_physiology_main_focus) %>% dplyr::tally() %>% 
+  ggplot() + tm +
+  geom_col(aes(x = comparative_physiology_main_focus, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0)) +
+  labs(x = "main focus on comparative physiology",
+       y = "number of papers") 
+```
+
+
+### Journals {.tabset .tabset-fade .tabset-pills}   
+
+```{r}
+dat %>% dplyr::group_by(journal) %>% dplyr::tally() %>% dplyr::arrange(n) %>% dplyr::mutate(journal = factor(journal, levels = unique(journal))) %>% 
+  ggplot() + tm + theme(axis.title.y = element_blank(),
+                        axis.text.y = element_text(size=8)) +
+  geom_col(aes(x = journal, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0),breaks=seq(1,13,2)) +
+  labs(x = "journal",
+       y = "number of papers") +
+  coord_flip()
+```
+
+### Publication years {.tabset .tabset-fade .tabset-pills}   
+
+```{r}
+dat %>% dplyr::group_by(pub_year) %>% dplyr::tally() %>% 
+  ggplot() + tm +
+  geom_col(aes(x = pub_year, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0),breaks=seq(1,13,2)) +
+  scale_x_continuous(breaks = min(dat$pub_year):max(dat$pub_year)) +
+  labs(x = "publication year",
+       y = "number of papers")
+```
+
+
+
+## R Session Information   
+```{r}
+print(sessionInfo(), locale = F)
+```
