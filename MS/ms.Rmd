@@ -108,33 +108,34 @@ eqns_yi <- c("M",
 # Just placeholders for now
 eqns_vi <- c("\\frac{SD^2}{N}",
              "\\frac{1}{2(N - 1)}",
+             "\\frac{SD_{1}^2} {M^2_{1}N_{1}} + \\frac{SD_{2}^2} {M^2_{2}N_{2}}",
              "\\frac{N_{1} + N_{2}}{N_{1}N_{2}} + \\frac{SMD^2}{2(N_{1} + N_{2})}",
-             "\\frac{SD_{1}} {M^2_{1}N_{1}} + \\frac{SD_{2}} {M^2_{2}N_{2}}",
              # see my commenst
              "\\frac{1}{N - 3}")
              #"\\frac{s_{i}^2}{n_{i}}",
              #"")
 
 # Maybe add some examples for each effect size in a new column. SHould help
-eg <- c("CT_{min}, CT_{max}, MR",
-        "")
+eg <- c("CTmin, CTmax, Metabolic Rate (MR)",
+        "Variability in CTmin, CTmax, MR",
+        "Ratio between BPA treatment (BPA-exposed group) and control (no BPA)",
+        "Difference in immune response between males and females or performance difference in the presence of stressor compared to absence of stressor",
+        "Relationship between sex hormones and immune responses or metabolic rate and behaviour")
 
-table_fin <- data.frame(names, eqns_yi, eqns_vi)
+table_fin <- data.frame(names, eqns_yi, eqns_vi, eg)
 
 # Note: It is esssential that you be clear that the function 'compose' is exported from the flextable package. That's because purr also has the same function, so it gets messy.
 tablea <- flextable(table_fin)                                                                                %>% 
-          flextable::compose(j = "names", part = "header", value = as_paragraph(as_b("Effect Measure")))      %>% 
-          flextable::compose(j = "eqns_yi", part = "header", value = as_paragraph(as_b("Definition")))        %>% 
-          flextable::compose(j = "eqns_vi", part = "header", value = as_paragraph(as_b("Sampling Variance"))) %>%
-          flextable::compose(j = "eqns_yi", value = as_paragraph(as_equation(eqns_yi)))                       %>%
-          flextable::compose(j = "eqns_vi", value = as_paragraph(as_equation(eqns_vi)))                       %>% 
+          flextable::compose(j = 1:4, part = "header", value = as_paragraph(as_b(c("Effect Measure", "Definition", "Sampling Variance", "Examples")))) %>% 
+          flextable::compose(j = 2:3, value = as_paragraph(as_equation(c(eqns_yi, eqns_vi))))             %>%
+          flextable::compose(j = 4, value = as_paragraph(eg))             %>%
           flextable::width(j = 1, 3)                                                                          %>% 
-          flextable::width(j = 2, 2)
+          flextable::width(j = 2, 2) %>% 
+          flextable::width(j = 4, 5)
 
 tablea
 
 ```
-
 
 #### *Expanding the Scope of Effect Size Metrics in Comparative Physiology*
 
@@ -281,6 +282,6 @@ Note that this formula does not include $\sigma^2_{m}$ as sampling error varianc
 While heterogenity estimates using $I^2$ measures can be useful for understanding the relative contributions of different factors to effect size variation, prediction intervals might be more appropriate in many cases [@Nakagawa2021c; @Borenstein2019]. Unlike $I^2$, prediction intervals are more holistic and probably more meaningful in the context of meta-analysis. Prediction intervals make use of the standard deviation of the mean instead of the standard error (which is used to calculate confidence intervals) [@Borenstein2019]. 
 
 ## **Conclusions and Future Directions**
-Comparative physiologists are interested in meta-analysing effects across a diversity of species, experimental approaches / designs and environments. While an overall meta-analytic mean may be of interest, more often than not, understanding the drivers of effect size heterogeneity will be the primary interest. However, obvious drivers of effect size heterogeneity, such as temperature and dosage differences across studies, may not really be of interest. Indeed, comparative physiologists are likely to want an effect size or analytical approach that allows them to remove these 'nuisances'. Here, we provide comparative physiologists with a set of tools to deal with 'nuisance heterogeneity' by creatively 'reinventing' standard effect sizes or using meta-regression models. Of course, nuisance heterogeneity might in of itself be the main interest, in which case standard meta-regression approaches will work sufficiently. However, in many cases, comparative physiologists might simply want to focus on bigger, more interesting biological drivers of effect size direction and magnitude. However, estimating complex meta-regression models with a multitude of fixed effects might result in more challenging model interpretation. As such, a combined approach, where some of the known heterogeneity is dealt with by deriving a variant effect size and associated sampling variance, and other biologically interesting moderators are fit in a meta-regression model, might be the desired. Indeed, this may even be a necessity to simplify the model. 
+Comparative physiologists are interested in meta-analysing effects across a diversity of species, experimental approaches / designs and environments. While an overall meta-analytic mean may be of interest, more often than not, understanding the drivers of effect size heterogeneity will be the primary interest. However, obvious drivers of effect size heterogeneity, such as temperature and dosage differences across studies, may not really be of interest. Indeed, comparative physiologists are likely to want an effect size or analytical approach that allows them to remove these 'nuisances'. Here, we provide comparative physiologists with a set of tools to deal with 'nuisance heterogeneity' by creatively 'reinventing' standard effect sizes or using meta-regression models. Of course, nuisance heterogeneity might in of itself be the main interest, in which case standard meta-regression approaches will work sufficiently. However, in many cases, comparative physiologists might simply want to focus on bigger, more interesting biological drivers of effect size direction and magnitude. However, estimating complex meta-regression models with a multitude of fixed effects might result in more challenging model interpretation. As such, a combined approach, where some of the known heterogeneity is dealt with by deriving a variant effect size and associated sampling variance, and other biologically interesting moderators are fit in a meta-regression model, might be the desired. Indeed, this may even be a necessity to simplify the model. We hope the set of tools we describe here provide clarification around sourfes of heterogenity and provides ways to help comparative physiologists to communicate effect measures more richly to help guide our understanding and decisions around pressing global challenges.
 
 ## **References**
