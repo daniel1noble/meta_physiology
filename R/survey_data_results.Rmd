@@ -18,7 +18,7 @@ output:
 rm(list=ls())
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
-pacman::p_load(dplyr,ggplot2,here)
+pacman::p_load(dplyr,ggplot2,here, pander, janitor)
 
 # loading data
 raw <- read.csv(here("data","MA_CompPysio_Survey.csv"))
@@ -99,16 +99,24 @@ dat %>% dplyr::group_by(comparative_physiology_main_focus) %>% dplyr::tally() %>
 ```
 
 
-### Journals {.tabset .tabset-fade .tabset-pills}   
+### Effect Sizes Used {.tabset .tabset-fade .tabset-pills}   
 
 ```{r}
-dat %>% dplyr::group_by(journal) %>% dplyr::tally() %>% dplyr::arrange(n) %>% dplyr::mutate(journal = factor(journal, levels = unique(journal))) %>% 
+dat %>% dplyr::group_by(effect_size_type) %>% janitor::tabyl(effect_size_type) %>%
+  dplyr::summarise(SMD = dplyr::if_else(grepl("SMD", effect_size_type), n, 0),
+                  lnRR = dplyr::if_else(grepl("Response Ratio", effect_size_type), n, 0),
+                    Zr = dplyr::if_else(grepl("correlation", effect_size_type), n, 0),
+                 Other = dplyr::if_else(grepl("other|Q10", effect_size_type), n, 0),
+                 Means = dplyr::if_else(grepl("mean/proportion/raw", effect_size_type), n, 0),
+                 lnCVR = dplyr::if_else(grepl("lnCVR", effect_size_type), n, 0),
+                 Slope = dplyr::if_else(grepl("slope", effect_size_type), n, 0)) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = n / sum(n)) %>% arrange(effect) %>% 
   ggplot() + tm + theme(axis.title.y = element_blank(),
                         axis.text.y = element_text(size=8)) +
-  geom_col(aes(x = journal, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
-  scale_y_continuous(expand=c(0,0),breaks=seq(1,13,2)) +
-  labs(x = "journal",
-       y = "number of papers") +
+  geom_col(aes(x = effect, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0),breaks=seq(1,20,2)) +
+  labs(x = "Effect Size",
+       y = "Number of Papers") +
   coord_flip()
 ```
 
@@ -125,8 +133,7 @@ dat %>% dplyr::group_by(pub_year) %>% dplyr::tally() %>%
 ```
 
 
-
 ## R Session Information   
 ```{r}
-print(sessionInfo(), locale = F)
+pander(sessionInfo(), locale = FALSE)
 ```
