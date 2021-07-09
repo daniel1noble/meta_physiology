@@ -1,0 +1,103 @@
+---
+title: "Box"
+author: "Shinichi Nakagawa"
+date: "09/07/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## *BOX: An example of how to obtain sampling variance for effect sizes - let's create one yourself*
+
+
+
+$$
+\text{ARR} = \frac{ \text{CT}_{\text{max}[T_2]} - \text{CT}_{\text{max}[T_1]}}{T_2 - T_1},
+$$
+where *T* stands for temperature in Celsius and $T_2 > T_1$.  
+
+Let female ARR and male ARR, $\text{ARR}_{\text{f}}$ and $\text{ARR}_{\text{m}}$, respectively and then; 
+
+$$
+\text{ARRD} = \text{ARR}_{\text{f}} - \text{ARR}_{\text{m}}.
+$$
+Importantly, ARRD behaves like traditional effect sizes such as standardized mean difference (aka, Cohen's $d$ or Hedges' $g$) and lnRR (log response ratio).
+
+### Sampling variance for ARRD
+
+#### Independent case
+
+We assume all animals measured at at *T~1~* and *T~2~* are different (independent)
+
+$$
+s^2(\text{ARRD}) = \left( \frac{1} {T_2 - T_1} \right)^2 
+\left( \frac{sd^2_{f[T_1]}} {n_{f[T_1]}} + \frac{sd^2_{f[T_2]}} {n_{f[T_2]}} +
+\frac{sd^2_{m[T_1]}} {n_{m[T_1]}} + \frac{s^2_{m[T_2]}} {n_{m[T_2]}}\right),
+$$
+where $s^2$ is the sampling variance, $sd$ is the sample standard deviation, $n$ is the sample size. 
+
+#### Dependent case
+
+We may have cases where the same animals are measured  both at *T~1~* and *T~2~*. So we have $n_f$ and $n_m$, which need to be the same at both temperatures. Then, we need to have an estimate of correlation between measurements of the same individuals ($r_{f[T_1T_2]}$ for females and $r_{m[T_1T_2]}$ for males).
+
+$$
+s^2(\text{ARRD}) = \left( \frac{1} {T_2 - T_1} \right)^2 
+\left( \frac{sd^2_{f[T_1]} + sd^2_{f[T_2]} - r_{f[T_1T_2]}sd_{f[T_1]}sd_{f[T_2]}} {n_{f}}   +
+\frac{sd^2_{m[T_1]} + sd^2_{m[T_2]} - r_{m[T_1T_2]}sd_{m[T_1]}sd_{m[T_2]}} {n_{m}}
+\right).
+$$
+
+In reality, we often do not know the correlation $r_{[T_1T_2]}$ so we will probably use 0.5.
+
+## AARR (ARR -1) 
+
+### Point estimate
+
+$ARRD = 1$ represents perfect acclimation. We want to make 0 this value by substracting 1 and call this AARR (adjusted acclimation response ratio)
+
+$$
+\text{AARR} = \text{ARR} -1.
+$$
+
+Note AARD like ARRD behaves like tranditional effect statistics. 
+
+### Sampling variance for AARR
+
+#### Independent case
+
+$$
+s^2(\text{AARR}) = \left( \frac{1} {T_2 - T_1} \right)^2 
+\left( \frac{sd^2_{[T_1]}} {n_{[T_1]}} + \frac{sd^2_{[T_2]}} {n_{[T_2]}} \right).
+$$
+
+#### Dependent case
+
+$$
+s^2(\text{AARR}) = \left( \frac{1} {T_2 - T_1} \right)^2 
+\left( \frac{sd^2_{[T_1]} + sd^2_{[T_2]} - r_{[T_1T_2]}sd_{[T_1]}sd_{[T_2]}} {n} 
+\right).
+$$
+
+##### Basics about variance
+
+See https://en.wikipedia.org/wiki/Variance
+
+Adding a constant ($a$) does not change the variance of a random varaible $X$.
+$$
+\operatorname{Var}(X+a)=\operatorname{Var}(X)
+$$
+
+Multipling a constant ($a$) does increase the variance of $X$ by $a^2$.
+
+$$
+\operatorname{Var}(aX)=a^2\operatorname{Var}(X)
+$$
+
+When we consider two random variables $X$ and $Y$, we need to know their covariance. 
+
+$$
+\operatorname{Var}(aX\pm bY)=a^2\operatorname{Var}(X)+b^2\operatorname{Var}(Y) \pm 2ab\operatorname{Cov}(X,Y)
+$$
+
