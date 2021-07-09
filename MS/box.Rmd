@@ -1,6 +1,5 @@
 ---
 title: "Box"
-author: "Shinichi Nakagawa"
 date: "09/07/2021"
 output: html_document
 ---
@@ -9,7 +8,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## *BOX: An example of how to obtain sampling variance for effect sizes - let's create one yourself*
+## *BOX: An example of how to obtain sampling variance for an effect size - let's create one yourself*
 
 
 
@@ -100,4 +99,14 @@ When we consider two random variables $X$ and $Y$, we need to know their covaria
 $$
 \operatorname{Var}(aX\pm bY)=a^2\operatorname{Var}(X)+b^2\operatorname{Var}(Y) \pm 2ab\operatorname{Cov}(X,Y)
 $$
+## Note
+
+1. General Slope - some basics
+2. ARR
+3. Differences between slopes
+4. ARRD
+5. Delta method
+
+
+
 
