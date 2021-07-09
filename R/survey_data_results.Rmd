@@ -120,6 +120,74 @@ dat %>% dplyr::group_by(effect_size_type) %>% janitor::tabyl(effect_size_type) %
   coord_flip()
 ```
 
+### Types of models used {.tabset .tabset-fade .tabset-pills}
+
+What models are used. Note that you need to take this approach because some papers use many different models.
+
+```{r}
+dat %>% dplyr::group_by(stat_model_type) %>% janitor::tabyl(stat_model_type) %>%
+  dplyr::summarise(MLMA = dplyr::if_else(grepl("multilevel meta-analysis", stat_model_type), n, 0),
+                  MLMR = dplyr::if_else(grepl("meta-regression models", stat_model_type), n, 0),
+                    LinearRegrs = dplyr::if_else(grepl("linear regression", stat_model_type), n, 0),
+                 Other = dplyr::if_else(grepl("unclear/other", stat_model_type), n, 0),
+                 Vote = dplyr::if_else(grepl("vote counting", stat_model_type), n, 0),
+                 WeightedReg = dplyr::if_else(grepl("weighted regression including mixed effects models", stat_model_type), n, 0),
+                 RE = dplyr::if_else(grepl("random-effects meta-analysis", stat_model_type), n, 0)) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = (n / sum(n)*100)) %>% arrange(effect) %>% 
+  ggplot() + tm + theme(axis.title.y = element_blank(),
+                        axis.text.y = element_text(size=8)) +
+  geom_col(aes(x = effect, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0),breaks=seq(1,20,2)) +
+  labs(x = "Effect Size",
+       y = "Number of Papers") +
+  coord_flip()
+```
+
+### Weighted models? {.tabset .tabset-fade .tabset-pills}
+
+```{r}
+dat %>%  janitor::tabyl(meta_analysis_weighted) %>% 
+  ggplot() + tm +
+  geom_col(aes(x = meta_analysis_weighted, y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  labs(x = "Weighted Model?",
+       y = "Frequency") 
+```
+
+### Effect size impacted by 'nuisance heterogeneity'? {.tabset .tabset-fade .tabset-pills}
+
+```{r}
+dat %>%  janitor::tabyl(cont_moderator_variable) %>% 
+  ggplot() + tm +
+  geom_col(aes(x = cont_moderator_variable, y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  labs(x = "Nuisance Heterogenity?",
+       y = "Frequency") 
+```
+
+### Dealt with nuisance in model? {.tabset .tabset-fade .tabset-pills}
+
+Of the studis that said 'yes' how many actually modelled it or accounted for it?
+```{r}
+dat %>%  filter(!cont_moderator_variable_modelled=="") %>% janitor::tabyl(cont_moderator_variable_modelled) %>% 
+  ggplot() + tm +
+  geom_col(aes(x = cont_moderator_variable_modelled, y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  labs(x = "Nuisance Heterogenity Modelled?",
+       y = "Frequency") 
+```
+
+### Reported Heterogeneity? {.tabset .tabset-fade .tabset-pills}
+Of the studis that are weighted how many actually resported measures of heterogenity?
+```{r}
+dat %>%  filter(!heterogeneity_reported=="N/A (e.g. they conducted unweighted meta-analysis)") %>% mutate(heterogeneity_reported = if_else(heterogeneity_reported == "unclear/other (add comment)", "other", heterogeneity_reported)) %>% janitor::tabyl(heterogeneity_reported) %>% 
+  ggplot() + tm +
+  geom_col(aes(x = heterogeneity_reported, y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  labs(x = "Heterogeneity reported?",
+       y = "Frequency") 
+```
+
 ### Publication years {.tabset .tabset-fade .tabset-pills}   
 
 ```{r}
