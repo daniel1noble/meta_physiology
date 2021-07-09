@@ -39,24 +39,32 @@ In this supplement we will demonstrate some of the principles we describe in our
 
 We will overview two different case studies. The first case study will show readers how to account for known drivers of effect heterogeneity in the effect size, followed by how we can fit a MLMA (intercept only) model to estimate an overall meta-analytic mean. We then show readers how to interpret this mean and associated heterogeneity. In the second case study, we use a common effect size metric and instead model the 'nuisance' heterogeneity using a multi-level meta-regression approach. We also focus on showing readers how to interpret effects from this model along with heterogeneity. 
 
-Throughout the supplement R code is contained within code blocks. We provide example data associated with this tutorial which readers can find on the [Open Science Framework](https://osf.io/wscz5/). Importantly, all relevant code chunks have a 'copy and paste' button in the top right corner so that the code can be easily transferred to your own R console. 
+Throughout the supplement R code is contained within code blocks. We provide example data associated with this tutorial which readers can find on the [Open Science Framework](https://osf.io/wscz5/), but the code chunks should automatically download and load these for you. Importantly, all relevant code chunks have a 'copy and paste' button in the top right corner so that the code can be easily transferred to your own R console. 
 
 # Loading Data and R Packages
 
-Before embarking on the case studies readers will need to load the data along with the necessary R packages. Be sure to set your working directory to the folder or locations where you have put the data.
+Before embarking on the case studies readers will need to load the necessary R packages. 
 
 ```{r loadpackages, echo = TRUE, class.source='klippy'}
-pacman::p_load(png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd)
+pacman::p_load(png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here)
 
 ```
 
 # Case Study 1: 
 ```{r class.source='klippy'}
 
+# Example on how to download and load for reader. Should work anyway. Needs some testing
+download.file(url="https://ndownloader.figshare.com/files/7714777", destfile = "CaseStudy1.csv")
+
+data_CS1 <- read.csv(here("CaseStudy1.csv"))
+
 ```
 
 # Case Study 2:
 ```{r class.source='klippy'}
+download.file(url="REPLACE URL FROM OSF HERE", destfile = "CaseStudy2.csv")
+
+data_CS1 <- read.csv(here("CaseStudy2.csv"))
 
 ```
 
