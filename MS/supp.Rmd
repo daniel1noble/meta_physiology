@@ -19,9 +19,45 @@ output:
 editor_options: 
   chunk_output_type: console
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, tidy = TRUE)
+```
+```{r klippy, echo=FALSE, include=TRUE, message=FALSE, warning=FALSE}
+#install.packages("devtools")
+remotes::install_github("rlesur/klippy")
+klippy::klippy(tooltip_message = 'Click to Copy Code', tooltip_success = 'Done', position = 'right', color = "red")
+```
 
-```{r loadpackages, echo = FALSE, results = 'hide'}
-pacman::p_load(png, jpeg, cowplot, flextable, tidyverse)
+# Citation
+This supplement is asscoaited with a special issue review paper and can be cited as follows:
+
+Daniel W.A. Noble, Patrice Potter, Sammy Burke, Szymek Drobniak, Malgorzata Lagisz, Rose O’Dea, Shinichi Nakagawa (2022) *Meta-analytic approaches and "new" effect sizes to account for heterogeneous effects in comparative physiology*. **Journal of Experimental Biology**
+
+# Introduction
+
+In this supplement we will demonstrate some of the principles we describe in our review paper. We'll show readers ways they can apply some of the 'new' effect sizes we describe to account for 'nuisance heterogeneity' in combination with multilevel meta-analytic models (MLMA) and/or multilevel meta-regression models. We realise that 'nuisance heterogeneity' may be a misnomer in some senses because such forms of heterogeneity may actually be the main interest of a given meta-analysis; in which case, multilevel meta-regressions are the way to go! 
+
+We will overview two different case studies. The first case study will show readers how to account for known drivers of effect heterogeneity in the effect size, followed by how we can fit a MLMA (intercept only) model to estimate an overall meta-analytic mean. We then show readers how to interpret this mean and associated heterogeneity. In the second case study, we use a common effect size metric and instead model the 'nuisance' heterogeneity using a multi-level meta-regression approach. We also focus on showing readers how to interpret effects from this model along with heterogeneity. 
+
+Throughout the supplement R code is contained within code blocks. We provide example data associated with this tutorial which readers can find on the [Open Science Framework](https://osf.io/wscz5/). Importantly, all relevant code chunks have a 'copy and paste' button in the top right corner so that the code can be easily transferred to your own R console. 
+
+# Loading Data and R Packages
+
+Before embarking on the case studies readers will need to load the data along with the necessary R packages. Be sure to set your working directory to the folder or locations where you have put the data.
+
+```{r loadpackages, echo = TRUE, class.source='klippy'}
+pacman::p_load(png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd)
+
+```
+
+# Case Study 1: 
+```{r class.source='klippy'}
+
+```
+
+# Case Study 2:
+```{r class.source='klippy'}
+
 ```
 
 # Supplementary Materials for Survey Study Selection
@@ -63,4 +99,10 @@ table_s2 <- flextable(table)                                                    
             flextable::compose(j = 2, part = "header", value = as_paragraph(as_b("ISSN Number")))       %>% 
             flextable::width(j = 1, 5)
 table_s2
+```
+
+# Session Information
+
+```{r}
+pander(sessionInfo(), locale = FALSE)
 ```
