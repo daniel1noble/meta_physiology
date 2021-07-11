@@ -17,14 +17,12 @@ Here we show how to obtain sampling variance for a slope (or a 'rate of change')
 It may be the best to start with a real example which comparative physiologists can easily associate, namely the (temperature) acclimation response ratio (ARR). ARR can be defined as a slope for physiological responses at two different temperature points, which is:
 
 $$
-\text{ARR} = \frac{\overline{X}_{1} - \overline{X}_{2}}{T_2 - T_1},
+\text{ARR} = \frac{X_{1} - X_{2}}{T_2 - T_1},
 $$
 
-where *T* stands for temperature in Celsius and $T_2 > T_1$, and $\overline{X}_1$ and $\overline{X}_2$ are the average physiological responses at two temperature points $T_1$ and $T_2$.
+where *T* stands for temperature in Celsius and $T_2 > T_1$, and $X_1$ and $X_2$ are the average physiological responses (estimated means) at two temperature points $T_1$ and $T_2$.
 
-<!--- Dan we may need to use bar_X rather than just X or M for consistence in the main text --->
-
-To obtain the sampling variance for this equation (slope), we will need to know several basic properties of variance. Let's assume $X_1$ is a random variable which means that this variable has a mean and standard deviation (variance). Multiplying a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $X$. This can be summarized as:
+To obtain the sampling variance for this equation (slope), we will need to know several basic properties of variance. Let's assume $X_1$ is a random variable, which means that this variable has a mean and standard deviation (variance). Multiplying a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $X$. This can be summarized as:
 
 $$
 \text{Var}(aX_1 \pm b)=a^2\text{Var}(X_1)
@@ -39,7 +37,7 @@ $$ where the co-variance $\text{Cov}(X_1,X_2)$ equals to the correlation multipl
 
 Importantly, when $X_1$ and $X_2$ are independent of each other, the covariance is 0. More concretely, if measurements are done on two different groups of animals at two different temperature points ($T_1$ and $T_2$), then the co-variances between these two sets of measurements are 0.
 
-Therefore, when $X_1$ and $X_2$ are indepedent, we can obtain the sampling variance for ARR as:
+Therefore, when $X_1$ and $X_2$ are independent, we can obtain the sampling variance for ARR as:
 
 $$
 \text{Var}(\text{AAR}) = \left( \frac{1} {T_2 - T_1} \right)^2 
@@ -133,4 +131,4 @@ $$
 
 where $r$ is 0 when two sets of measurements are independent (therefore, the term including $r$ disappears), while $r$ is the correlation between $\ln{X_1}$ and $\ln{X_2}$. As discussed, we usually do not have an estimate for this correlation coefficient.
 
-Finally, we note that by using the basic properties of variance and the delta method, one can derive sampling variance for most of cases. Indeed, these were enough for us to derive samping variance for 'new' effect sizes (e.g. $lnQ_{10}$; see the main text) and as in Nakagawa et al. (2015, MEE) and Senior et al. (2020, RSM).
+Finally, we note that by using the basic properties of variance and the delta method, one can derive sampling variance for most of cases. Indeed, these were enough for us to derive sampling variance for 'new' effect sizes (e.g. $lnQ_{10}$; see the main text) and as in Nakagawa et al. (2015, MEE) and Senior et al. (2020, RSM).
