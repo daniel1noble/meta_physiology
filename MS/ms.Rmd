@@ -155,7 +155,7 @@ Prior to showing how the relevant $Q_{10}$ effect size can be calculated it can 
 $$
 \begin{equation} 
   \begin{aligned}
-  lnRR = ln\left ( \frac{X_{1}}{X_{2}}\right )
+  \ln{RR} = \ln\left ( \frac{X_{1}}{X_{2}}\right )
   \end{aligned}
   (\#eq:lnRR)
 \end{equation} 
@@ -163,7 +163,7 @@ $$
 
 $$
 \begin{equation} 
-  s_{lnRR} = \left ( \frac{SD_{1}^2}{N_{1}X_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}X_{2}^2}\right )
+  s^2_{lnRR} = \left ( \frac{SD_{1}^2}{N_{1}X_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}X_{2}^2}\right )
   (\#eq:slnRR)
 \end{equation} 
 $$ In equation \@ref(eq:lnRR), $X_{1}$ is the mean of group 1, often a control group, where as $X_{2}$ is the mean of group 2 (e.g., a treatment group). The mean of $X_{i}$ for group *i* can be any measurement type (e.g. a physiological rate, mass etc) so long as the measurement variable is ratio scale. Log transformation of this ratio makes the effect size normally distributed (most commonly assumed by meta-analytic models). Equation \@ref(eq:slnRR) is the analytical solution for *lnRR*'s sampling variance where, $SD_{1}^2$ and $SD_{2}^2$ is the sample variance in group 1 and 2, respectively and $N_{1}$ and $N_{2}$ is the sample size in group 1 and 2.
@@ -186,7 +186,7 @@ $$ Equation \@ref(eq:lnq10) is essentially a temperature corrected equivalent of
 
 $$
 \begin{equation} 
-  s_{lnRR_{Q_{10}}} = \left( \frac{SD_{2}^2}{R^2_{2}N_{2}} + \frac{SD_{1}^2}{R^2_{1}N_{1}} \right){ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }^2
+  s^2_{lnRR_{Q_{10}}} = \left( \frac{SD_{2}^2}{R^2_{2}N_{2}} + \frac{SD_{1}^2}{R^2_{1}N_{1}} \right){ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }^2
   (\#eq:Vlnq10)
 \end{equation} 
 $$
@@ -202,7 +202,7 @@ lnVR_{Q_{10}} = ln\left( \frac{SD_{2}}{SD_{1}} \right){ \left(\ \frac{10^{\circ}
 \end{equation} 
 $$ $$
 \begin{equation} 
-s_{lnVR_{Q_{10}}} = \left( \frac{1}{2\left( N_{2}-1 \right)} + \frac{1}{2\left(N_{1} - 1\right)} \right){ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }^2
+s^2_{lnVR_{Q_{10}}} = \left( \frac{1}{2\left( N_{2}-1 \right)} + \frac{1}{2\left(N_{1} - 1\right)} \right){ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }^2
 (\#eq:slnq10VR)
 \end{equation} 
 $$
@@ -216,7 +216,7 @@ lnCVR_{Q_{10}} = ln\left( \frac{\text{CV}_{2}}{\text{CV}_{1}} \right){ \left(\ \
 \end{equation} 
 $$ $$
 \begin{equation} 
-s_{lnCVR_{Q_{10}}} = \left[ \frac{(\text{SD}_{1})^2}{N_{1}({R}_{1})^2} + \frac{(\text{SD}_{2})^2}{N_{2} ({R}_{2})^2} + \frac{1}{2\left( N_{1}-1 \right)} + \frac{1}{2\left(N_{2} - 1\right)} \right]{ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }^2
+s^2_{lnCVR_{Q_{10}}} = \left[ \frac{(\text{SD}_{1})^2}{N_{1}({R}_{1})^2} + \frac{(\text{SD}_{2})^2}{N_{2} ({R}_{2})^2} + \frac{1}{2\left( N_{1}-1 \right)} + \frac{1}{2\left(N_{2} - 1\right)} \right]{ \left(\ \frac{10^{\circ}C}{T_{2}-T_{1}} \right) }^2
 (\#eq:slnq10CVR)
 \end{equation} 
 $$
