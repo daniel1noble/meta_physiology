@@ -29,7 +29,7 @@ klippy::klippy(tooltip_message = 'Click to Copy Code', tooltip_success = 'Done',
 ```
 
 # Citation
-This supplement is asscoaited with a special issue review paper and can be cited as follows:
+This supplement is associated with a special issue review paper and can be cited as follows:
 
 Daniel W.A. Noble, Patrice Potter, Sammy Burke, Szymek Drobniak, Malgorzata Lagisz, Rose O’Dea, Shinichi Nakagawa (2022) *Meta-analytic approaches and "new" effect sizes to account for heterogeneous effects in comparative physiology*. **Journal of Experimental Biology**
 
@@ -46,7 +46,7 @@ Throughout the supplement R code is contained within code blocks. We provide exa
 Before embarking on the case studies readers will need to load the necessary R packages. 
 
 ```{r loadpackages, echo = TRUE, class.source='klippy'}
-pacman::p_load(png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here)
+pacman::p_load(png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here, osfr)
 
 ```
 
@@ -54,17 +54,22 @@ pacman::p_load(png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaR
 ```{r class.source='klippy'}
 
 # Example on how to download and load for reader. Should work anyway. Needs some testing
-download.file(url="https://ndownloader.figshare.com/files/7714777", destfile = "CaseStudy1.csv")
+osfr::osf_retrieve_file("https://osf.io/mnw5d/") %>% osfr::osf_download()
 
-data_CS1 <- read.csv(here("CaseStudy1.csv"))
+data_CS1 <- read.csv(here::here("CaseStudy1.csv"))
 
 ```
 
 # Case Study 2:
 ```{r class.source='klippy'}
-download.file(url="REPLACE URL FROM OSF HERE", destfile = "CaseStudy2.csv")
 
-data_CS1 <- read.csv(here("CaseStudy2.csv"))
+osfr::osf_retrieve_file("https://osf.io/mnw5d/") %>% osfr::osf_download()
+
+data_CS1 <- read.csv(here::here("BPA_example.csv"))
+
+```
+
+```{r}
 
 ```
 
