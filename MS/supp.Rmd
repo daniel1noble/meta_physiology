@@ -65,7 +65,7 @@ data_CS1 <- read.csv(here::here("CaseStudy1.csv"))
 
 osfr::osf_retrieve_file("https://osf.io/mnw5d/") %>% osfr::osf_download()
 
-data_CS1 <- read.csv(here::here("BPA_example.csv"))
+data_CS2 <- read.csv(here::here("BPA_example.csv"))
 
 ```
 
