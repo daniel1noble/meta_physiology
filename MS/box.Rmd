@@ -45,12 +45,12 @@ $$
 \left( \frac{SD^2_{1}} {N_{1}} + \frac{SD^2_{2}} {N_{2}} \right)
 $$
 
-where $SD_{1}$ and $SD_{2}$ and $N_{1}$ and $N_{2}$ are standard deviations and sampling sizes at temperature $T_{1}$ and $T_{2}$. Readers may still find it difficult to see how we got this equation. Let us explain further. The (sampling) standard error for $X_{1}$ is $SE_{1} = SD_{1} / \sqrt{N_{1}}$ -- many readers will probably know this as the formula for obtaining *SE* from *SD*. Given this, the sampling variance for $X_{1}$ is $SD^2_{1} / N_{1}$, which you see as an element of the sampling variance of ARR along with the sampling variance for $X_{2}$, which is $X_{1}$ is $SD^2_{1} / N_{1}$; the term $(1/(T_{2} - T_{1}))^2$ comes from recognizing $1/(T_{2} - T_{1})$ as a constant.
+where $SD_{1}$ and $SD_{2}$ and $N_{1}$ and $N_{2}$ are standard deviations and sampling sizes at temperature $T_{1}$ and $T_{2}$. Readers may still find it difficult to see how we got this equation. Let us explain further. The (sampling) standard error for $X_{1}$ is $SE_{1} = SD_{1} / \sqrt{N_{1}}$ -- many readers will probably know this as the formula for obtaining *SE* from *SD*. Given this, the sampling variance for $X_{1}$ is $SD^2_{1} / N_{1}$, which you see as an element of the sampling variance of ARR along with the sampling variance for $X_{2}$, which is $X_{2}$ is $SD^2_{2} / N_{2}$; the term $(1/(T_{2} - T_{1}))^2$ comes from recognizing $1/(T_{2} - T_{1})$ as a constant.
 
 Now, it is not uncommon that we use the same group of animals (or plants) at two temperature points. If we do, however, then we need to add the co-variance between $X_{1}$ and $X_{2}$ ($\text{Cov}(X_{1},X_{2})$); note that as above, the co-variance equals the corresponding correlation multiplied by the square-root of two (sampling) variances. Therefore, the sampling variance can be now written as:
 
 $$
-\text{Var}(\text{AAR}) = \left( \frac{1} {T_{2} - T_{1}} \right)^2 
+\sigma^2_{AAR} = \left( \frac{1} {T_{2} - T_{1}} \right)^2 
 \left( 
 \frac{SD^2_{1}} {N_1} + \frac{SD^2_{2}} {N_2} - 2r \sqrt{\frac{SD^2_{1}} {N_1}  \frac{SD^2_{2}} {N_2}} 
 \right)
