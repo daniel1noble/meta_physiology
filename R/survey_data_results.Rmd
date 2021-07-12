@@ -1,6 +1,6 @@
 ---
 title: "Survey Results from: Meta-analytic approaches and new effect sizes to account for heterogeneous effects in comparative physiology"
-author: Daniel W.A. Noble, Patrice Potter, Sammy Burke, Szymek Drobniak, Malgorzata Lagisz, Rose O’Dea, Shinichi Nakagawa
+author: Daniel W.A. Noble, Patrice Pottier, Sammy Burke, Szymek Drobniak, Malgorzata Lagisz, Rose O’Dea, Shinichi Nakagawa
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -75,7 +75,8 @@ Answer to the question "Is paper self-describing as containing a meta-analysis (
 ```{r}
 dat %>% dplyr::group_by(meta_analysis_self_described) %>% dplyr::tally() %>% 
   ggplot() + tm +
-  geom_col(aes(x = meta_analysis_self_described, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  geom_col(aes(x = meta_analysis_self_described, y = n),
+           width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
   scale_y_continuous(expand=c(0,0)) +
   labs(x = "meta-analysis or meta-regression",
        y = "number of papers") 
@@ -96,6 +97,22 @@ dat %>% dplyr::group_by(comparative_physiology_main_focus) %>% dplyr::tally() %>
   scale_y_continuous(expand=c(0,0)) +
   labs(x = "main focus on comparative physiology",
        y = "number of papers") 
+```
+
+How do the two categorisations (meta-analysis and comparative focus) combine?
+
+```{r}
+dat %>% 
+  ggplot() + tm +
+  geom_bar(aes(x = comparative_physiology_main_focus,
+               fill = meta_analysis_self_described,
+               y = ..count../sum(..count..)), width = 0.5,
+           colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0)) +
+  scale_fill_viridis_d() +
+  labs(x = "main focus on comparative physiology",
+       y = "number of papers",
+       fill = "meta-analysis") 
 ```
 
 
@@ -119,6 +136,7 @@ dat %>% dplyr::group_by(effect_size_type) %>% janitor::tabyl(effect_size_type) %
        y = "Number of Papers") +
   coord_flip()
 ```
+
 
 ### Types of models used {.tabset .tabset-fade .tabset-pills}
 
@@ -145,6 +163,8 @@ dat %>% dplyr::group_by(stat_model_type) %>% janitor::tabyl(stat_model_type) %>%
 
 ### Weighted models? {.tabset .tabset-fade .tabset-pills}
 
+Were effect sizes used in the analysis weighted by sampling variance?
+
 ```{r}
 dat %>%  janitor::tabyl(meta_analysis_weighted) %>% 
   ggplot() + tm +
@@ -155,6 +175,8 @@ dat %>%  janitor::tabyl(meta_analysis_weighted) %>%
 ```
 
 ### Effect size impacted by 'nuisance heterogeneity'? {.tabset .tabset-fade .tabset-pills}
+
+Could effect size be impacted by an additional continous predictor (e.g., temperature in thermal limit studies, dosage in hormone manipulation studies)?
 
 ```{r}
 dat %>%  janitor::tabyl(cont_moderator_variable) %>% 
@@ -167,7 +189,8 @@ dat %>%  janitor::tabyl(cont_moderator_variable) %>%
 
 ### Dealt with nuisance in model? {.tabset .tabset-fade .tabset-pills}
 
-Of the studis that said 'yes' how many actually modelled it or accounted for it?
+Of the studies that said 'yes' how many actually modelled it or accounted for it?
+
 ```{r}
 dat %>%  filter(!cont_moderator_variable_modelled=="") %>% janitor::tabyl(cont_moderator_variable_modelled) %>% 
   ggplot() + tm +
@@ -178,7 +201,9 @@ dat %>%  filter(!cont_moderator_variable_modelled=="") %>% janitor::tabyl(cont_m
 ```
 
 ### Reported Heterogeneity? {.tabset .tabset-fade .tabset-pills}
-Of the studis that are weighted how many actually resported measures of heterogenity?
+
+Of the studies that are weighted how many actually reported measures of heterogeinity?
+
 ```{r}
 dat %>%  filter(!heterogeneity_reported=="N/A (e.g. they conducted unweighted meta-analysis)") %>% mutate(heterogeneity_reported = if_else(heterogeneity_reported == "unclear/other (add comment)", "other", heterogeneity_reported)) %>% janitor::tabyl(heterogeneity_reported) %>% 
   ggplot() + tm +
@@ -198,6 +223,45 @@ dat %>% dplyr::group_by(pub_year) %>% dplyr::tally() %>%
   scale_x_continuous(breaks = min(dat$pub_year):max(dat$pub_year)) +
   labs(x = "publication year",
        y = "number of papers")
+```
+
+
+### Handling sources of non-independence {.tabset .tabset-fade .tabset-pills}
+
+Did the analysis account for - or mention - additional non-independence arising from, e.g., phylogenetic relatedness or shared control treatments? The actual way of dealing with non-independence (n-i) will vary from study to study.
+
+```{r}
+dat %>%  janitor::tabyl(nonindependence_mentioned) %>% 
+  ggplot() + tm +
+  geom_col(aes(x = nonindependence_mentioned, y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  scale_x_discrete(labels = c('n-i dealt with w/o modelling', 'n-i modelled', 'unclear/other/not mentioned')) +
+  labs(x = "Non-independence handling",
+       y = "Frequency") 
+```
+
+### Publication bias {.tabset .tabset-fade .tabset-pills}
+
+What type of publication bias analysis was used in the analysis? Multiple metrics can be used per paper, hence frequencies won't sum to 100%.
+
+```{r}
+dat %>% dplyr::group_by(pub_bias_type) %>% janitor::tabyl(pub_bias_type) %>%
+  dplyr::summarise(GraphicalTest = dplyr::if_else(grepl("graphical tests", pub_bias_type), n, 0),
+                  RegressionTest = dplyr::if_else(grepl("regression test", pub_bias_type), n, 0),
+                    TrimAndFill = dplyr::if_else(grepl("trim-and-fill", pub_bias_type), n, 0),
+                 TimeLag = dplyr::if_else(grepl("time-lag", pub_bias_type), n, 0),
+                 OtherUnclear = dplyr::if_else(grepl("unclear", pub_bias_type), n, 0),
+                 None = dplyr::if_else(grepl("no", pub_bias_type), n, 0)) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = (n / sum(n)*100)) %>% arrange(effect) %>% 
+  ggplot() + tm + theme(axis.title.y = element_blank(),
+                        axis.text.y = element_text(size=8)) +
+  geom_col(aes(x = effect, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0),breaks=seq(1,30,2)) +
+  scale_x_discrete(limits = c("None", "GraphicalTest", "RegressionTest", "TrimAndFill",
+                              "TimeLag", "OtherUnclear")) +
+  labs(x = "Effect Size",
+       y = "Number of Papers") +
+  coord_flip()
 ```
 
 
