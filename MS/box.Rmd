@@ -1,6 +1,6 @@
 ---
-title: "Box"
-date: "09/07/2021"
+bibliography: ../bib/refs.bib
+csl: ../bib/the-journal-of-experimental-biology.csl
 output: html_document
 ---
 
@@ -8,63 +8,65 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## *BOX: Example of how to derive sampling variance*
+## *BOX 1: Example of how to derive sampling variance*
 
-Here we show how to obtain sampling variance for a slope (or a 'rate of change') when you are given measurements of a physiological trait at two points in an environmental gradient (e.g. temperature, salinity, acidity). Then, we also go on to derive sampling variance for the difference between two slopes.
+Here we show how to obtain sampling variance for a slope (or a 'rate of change') when you are given measurements of a physiological trait at two points in an environmental gradient (e.g. temperature, salinity, acidity). We also go on to derive sampling variance for the difference between two slopes so that we can use powerful meta-analytic models using this effect size.
 
 ### Sampling variance for a slope between two points
 
-It may be the best to start with a real example which comparative physiologists can easily associate, namely the (temperature) acclimation response ratio (ARR). ARR can be defined as a slope for physiological responses at two different temperature points, which is:
+It may be the best to start with a real example that comparative physiologists can easily associate, namely the temperature acclimation slope or as we call it the (temperature) acclimation response ratio (ARR). ARR can be defined as a slope for acclimated physiological responses at two different temperature points, defined as:
 
 $$
 \text{ARR} = \frac{X_{1} - X_{2}}{T_2 - T_1},
 $$
 
-where *T* stands for temperature in Celsius and $T_2 > T_1$, and $X_1$ and $X_2$ are the average physiological responses (estimated means) at two temperature points $T_1$ and $T_2$.
+where *T* stands for temperature in degrees Celsius and $T_{2} > T_{1}$, and $X_{1}$ and $X_{2}$ are the average physiological responses (estimated means) at two temperature points $T_{1}$ and $T_{2}$.
 
-To obtain the sampling variance for this equation (slope), we will need to know several basic properties of variance. Let's assume $X_1$ is a random variable, which means that this variable has a mean and standard deviation (variance). Multiplying a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $X$. This can be summarized as:
-
-$$
-\text{Var}(aX_1 \pm b)=a^2\text{Var}(X_1)
-$$
-
-Also, when adding two random variables ($X_1$ and $X_2$), the combined variance is the sum of the variance of$X1$ and and variance of $X2$ and 2 times the covariance between $X_1$ and $X_2$. This relationship can be written as:
+To obtain the sampling variance for this equation (slope), we need to know several basic properties of variance. Let's assume $X_{1}$ is a random variable, which means that this variable has a mean and standard deviation (variance). Multiplying a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $X_{1}$. This can be summarized as:
 
 $$
-\text{Var}(X_1 \pm X_2)= \text{Var}(X_1)+ \text{Var}(X_2) \pm 2\text{Cov}(X_1,X_2) \\
-= \text{Var}(X_1)+ \text{Var}(X_2) \pm 2\text{Cor}(X_1,X_2)\sqrt{ \text{Var}(X_1))\text{Var}(X_2) },
-$$ where the co-variance $\text{Cov}(X_1,X_2)$ equals to the correlation multiplied by the square-root of the two variances $2\text{Cor}(X_1,X_2)\sqrt{ \text{Var}(X_1))\text{Var}(X_2) }$.
-
-Importantly, when $X_1$ and $X_2$ are independent of each other, the covariance is 0. More concretely, if measurements are done on two different groups of animals at two different temperature points ($T_1$ and $T_2$), then the co-variances between these two sets of measurements are 0.
-
-Therefore, when $X_1$ and $X_2$ are independent, we can obtain the sampling variance for ARR as:
-
-$$
-\text{Var}(\text{AAR}) = \left( \frac{1} {T_2 - T_1} \right)^2 
-\left( \frac{SD^2_{1}} {N_{1}} + \frac{SD^2_{2}} {N_{2}} \right),
+\sigma^2(aX_1 \pm b)=a^2 * \sigma^2_{X_{1}}
 $$
 
-where $SD_{1}$ and $SD_{2}$ and $N_1$ and $N_2$ are standard deviations and sampling sizes at temperature $T_1$ and $T_2$. Some may still find it difficult to see how we got this equation. Let us explain further. The (sampling) standard error for $X_1$ is $SE_1 = SD_{1} / \sqrt{N_{1}}$ -- we think many of you know this as the formula to obtain *SE* from *SD*. Given this, the sampling variance for $X_1$ is $SD^2_{1} / N_{1}$, which you see as an element of the sampling variance of ARR along with the sampling variance for $X_2$, which is $X_1$ is $SD^2_{1} / N_{1}$. the term $(1/(T_2 - T_1))^2$ comes from recognizing $1/(T_2 - T_1)$ as a constant.
-
-Now, it is not uncommon that we use the same group of animals (or plants) at two temperature points. Then, we need to add the co-variance between $X_1$ and $X_2$ ($\text{Cov}(X_1,X_2)$); note that as above, the covariance equals the corresponding correlation multiplied by square-root of two (sampling) variances. Therefore, the sampling variance can be now written as:
+Also, when adding two random variables ($X_{1}$ and $X_{2}$), the combined variance is the sum of the variance of $X_{1}$  and the variance of $X_{2}$ plus 2 times the covariance between $X_{1}$ and $X_{2}$. This relationship can be written as:
 
 $$
-\text{Var}(\text{AAR}) = \left( \frac{1} {T_2 - T_1} \right)^2 
+\sigma^2_{X_1 \pm X_2} = \sigma^2_{X_1} + \sigma^2_{X_2} \pm 2\text{Cov}(X_1,X_2) \\
+= \sigma^2_{X_1} + \sigma^2_{X_2} \pm 2\text{Cor}(X_1,X_2)\sqrt{ \sigma^2_{X_1} \sigma^2_{X_2} }
+$$ 
+where the co-variance $\text{Cov}(X_1,X_2)$ equals to the correlation multiplied by the square-root of the two variances $2\text{Cor}(X_1,X_2)\sqrt{ \sigma^2_{X_1} \sigma^2_{X_2} }$.
+
+Importantly, when $X_{1}$ and $X_{2}$ are independent of each other the covariance is 0. More concretely, if measurements are done on two different groups of animals at two different temperature points ($T_1$ and $T_2$), then the co-variances between these two sets of measurements are 0.
+
+Therefore, when $X_{1}$ and $X_{2}$ are independent, we can obtain the sampling variance for ARR as:
+
+$$
+\sigma^2_{AAR} = \left( \frac{1} {T_2 - T_1} \right)^2 
+\left( \frac{SD^2_{1}} {N_{1}} + \frac{SD^2_{2}} {N_{2}} \right)
+$$
+
+where $SD_{1}$ and $SD_{2}$ and $N_{1}$ and $N_{2}$ are standard deviations and sampling sizes at temperature $T_{1}$ and $T_{2}$. Readers may still find it difficult to see how we got this equation. Let us explain further. The (sampling) standard error for $X_{1}$ is $SE_{1} = SD_{1} / \sqrt{N_{1}}$ -- many readers will probably know this as the formula for obtaining *SE* from *SD*. Given this, the sampling variance for $X_{1}$ is $SD^2_{1} / N_{1}$, which you see as an element of the sampling variance of ARR along with the sampling variance for $X_{2}$, which is $X_{1}$ is $SD^2_{1} / N_{1}$; the term $(1/(T_{2} - T_{1}))^2$ comes from recognizing $1/(T_{2} - T_{1})$ as a constant.
+
+Now, it is not uncommon that we use the same group of animals (or plants) at two temperature points. If we do, however, then we need to add the co-variance between $X_{1}$ and $X_{2}$ ($\text{Cov}(X_{1},X_{2})$); note that as above, the co-variance equals the corresponding correlation multiplied by the square-root of two (sampling) variances. Therefore, the sampling variance can be now written as:
+
+$$
+\text{Var}(\text{AAR}) = \left( \frac{1} {T_{2} - T_{1}} \right)^2 
 \left( 
 \frac{SD^2_{1}} {N_1} + \frac{SD^2_{2}} {N_2} - 2r \sqrt{\frac{SD^2_{1}} {N_1}  \frac{SD^2_{2}} {N_2}} 
-\right).
-$$ By assuming the number of animals (*N*) were the same at the two temperature points, we can slightly simplify this formula:
+\right)
+$$ 
+By assuming the number of animals (*N*) are the same at the two temperature points, we can slightly simplify this formula:
 
 $$ 
-\text{Var}(\text{AAR}) = \left( 
+\sigma^2_{AAR} = \left( 
 \frac{1} {T_2 - T_1} 
-\right)
+\right)^2
 \left( 
 \frac{SD^2_{1} + SD^2_{2}  - 2rSD_{1}SD_{2}} {N} 
-\right).
+\right)
 $$
 
-where *r* is the correlation between a set of measurement $X_1$ and $X_2$ form the same individuals at two point $T_1$ and $T_2$. As you may notice, we need raw data to calculate *r*. So in reality, we often needs to assume a certain value of *r*. Noble et al (Mol Eco; REF) discuss why we can assume $r = 0.5$ and this may be the most reasonable thing to do when we do not have any estimate of *r*.
+where *r* is the correlation between a set of measurement $X_1$ and $X_2$ form the same individuals at two point $T_1$ and $T_2$. As you may notice, we need raw data to calculate *r*. So, in reality, we often need to assume a certain value of *r*. @Noble2017 discuss why we can assume $r = 0.5$ and this may be the most reasonable thing to do when we do not have any estimate of *r*.
 
 ### Sampling variance for the difference between two slopes
 
@@ -108,7 +110,7 @@ $$
 
 Also, note that the difference between slopes does not need to be that of males and females. It can be between experimental and control groups or comparing any two groups or situations.
 
-### The delta method
+### The Delta Method
 
 It is often limited when we can use the basic properties of variance to derive sampling variance. Therefore, we introduce a practical and widely applicable method to obtain approximate variance when the basic properties of variance cannot be applied. The method is widely known as the delta method, which can be written as:
 
@@ -128,10 +130,14 @@ $$
 Here, $f(X_1) = \ln{X_1}$. By applying $f'(X_1) = 1/{X_1}$ (i.e. the first derivative of $lnX1$ is $1/{X_1}$) to the delta method and using the variance's basic properties, we have:
 
 $$
-\text{Var}(\ln{RR}) \approx  \left ( \frac{SD_{1}^2}{N_{1}X_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}X_{2}^2}\right ) 
+\sigma^2_{ln{RR}} \approx  \left ( \frac{SD_{1}^2}{N_{1}}\right ) * \left(\frac{1}{X_{1}} \right)^2 + \left ( \frac{SD_{2}^2}{N_{2}}\right ) * \left(\frac{1}{X_{2}} \right)^2 =   \left ( \frac{SD_{1}^2}{N_{1}X_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}X_{2}^2}\right )
+$$
+Note here again that the first term, $\frac{SD_{1}^2}{N_{1}}$ is the sampling variance for group 1, and we simply multiply this term by the square of the first derivative of $X_{1}$ as the Delta method tells us. Of course, readers will see that this is equivalent to the sampling variance for $ln_{RR}$ (Table 1). We can extend this sampling variance to include dependency between the groups as: 
+
+$$
+\sigma^2_{ln{RR}} \approx  \left ( \frac{SD_{1}^2}{N_{1}X_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}X_{2}^2}\right ) 
 - 2r\sqrt{\frac{SD_{1}^2}{N_{1}X_{1}^2}}\sqrt{\frac{SD_{2}^2}{N_{2}X_{2}^2}},
 $$
-
 where $r$ is 0 when two sets of measurements are independent (therefore, the term including $r$ disappears), while $r$ is the correlation between $\ln{X_1}$ and $\ln{X_2}$. As discussed, we usually do not have an estimate for this correlation coefficient.
 
-Finally, we note that by using the basic properties of variance and the delta method, one can derive sampling variance for most of cases. Indeed, these were enough for us to derive sampling variance for 'new' effect sizes (e.g. $lnQ_{10}$; see the main text) and as in Nakagawa et al. (2015, MEE) and Senior et al. (2020, RSM).
+Finally, we note that by using the basic properties of variance and the delta method, one can derive sampling variance for most of cases. Indeed, these were enough for us to derive sampling variance for 'new' effect sizes (e.g. $lnQ_{10}$; see the main text) and as in @Nakagawa2015 and @Senior2020.
