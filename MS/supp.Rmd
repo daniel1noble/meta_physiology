@@ -49,7 +49,7 @@ Before embarking on the case studies readers will need to load the necessary R p
 ```{r loadpackages, echo = TRUE, results = "hide", messages = FALSE, class.source='klippy'}
 #install.packages("pacman")
 pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here, osfr, magrittr)
-devtools::install_github("itchyshin/orchard_plot", subdir = "orchaRd", force = TRUE, build_vignettes = TRUE)
+devtools::install_github("itchyshin/orchard_plot", subdir = "orchaRd", force = TRUE)
 ```
 
 # Case Study 1: 
