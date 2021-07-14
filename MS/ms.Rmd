@@ -74,6 +74,93 @@ All title, abstract and full text screening was done by two people (DWAN and ML)
 
 #### *Current Meta-analytic Practices in Comparative Physiology*
 
+
+```{r setup2, include=FALSE}
+rm(list=ls())
+
+pacman::p_load(dplyr,ggplot2,here, pander, janitor)
+
+# loading data
+raw <- read.csv(here("data","MA_CompPysio_Survey.csv"))
+metadata <- read.csv(here("data","MA_CompPysio_Survey_metadata.csv"))
+
+# tidying data
+dat <- raw
+names(dat) <- metadata$Procesed.Column.Name[match(names(dat), metadata$Raw.Column.Name)]
+
+# tidying categorical options
+dat$meta_analysis_self_described <- factor(gsub(" \\(.*", "", dat$meta_analysis_self_described), levels = c("yes","no","unclear/other"))
+dat$comparative_physiology_main_focus <- factor(gsub(" \\(.*", "", dat$comparative_physiology_main_focus), levels = c("yes","no","unclear/other"))
+
+# fixing format of journals
+
+#dat$DOI[dat$journal=="2017"] # Typo
+dat$journal[dat$journal=="2017"] <- "Biology Letters"
+
+#dat$DOI[grep("Proceedings", dat$journal)] # all the same journal
+dat$journal[grep("Proceedings", dat$journal)] <- "Proceedings of the Royal Society B: Biological Sciences"
+
+# standardising DOI format
+dat$DOI <- gsub(".*org/", "", dat$DOI)
+dat$DOI <-gsub(".* ", "", dat$DOI)
+
+# ggplot2 theme for plots
+background.colour <- "white"
+text.colour <- "black"
+# Font Choice
+#loadfonts()
+text.font <- "Arial"
+
+tm <- theme(panel.background = element_rect(fill = background.colour),
+            plot.background = element_rect(fill = background.colour),
+            panel.grid = element_blank(),
+            text =  element_text(family = text.font, colour = text.colour),
+            axis.text = element_text(colour = text.colour),
+            axis.title.x = element_text(margin = margin(10,0,0,0)),
+            axis.title.y = element_text(margin = margin(0,10,0,0)),
+            axis.line = element_line(colour = text.colour, size = 0.5),
+            axis.ticks = element_line(colour = text.colour, size = 0.5),
+            plot.title = element_text(hjust = 0.5),
+            legend.background = element_rect(fill = background.colour),
+            legend.key = element_rect(fill = background.colour),
+            plot.margin = margin(6,6,6,6)) 
+
+effects <- dat %>% dplyr::group_by(effect_size_type) %>% janitor::tabyl(effect_size_type) %>%
+  dplyr::summarise(SMD = dplyr::if_else(grepl("SMD", effect_size_type), n, 0),
+                  lnRR = dplyr::if_else(grepl("Response Ratio", effect_size_type), n, 0),
+                    Zr = dplyr::if_else(grepl("correlation", effect_size_type), n, 0),
+                 Other = dplyr::if_else(grepl("other|Q10", effect_size_type), n, 0),
+                 Means = dplyr::if_else(grepl("mean/proportion/raw", effect_size_type), n, 0),
+                 lnCVR = dplyr::if_else(grepl("lnCVR", effect_size_type), n, 0),
+                 Slope = dplyr::if_else(grepl("slope", effect_size_type), n, 0)) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = n / sum(n)) %>% arrange(prop)
+
+hetero <- dat %>%  janitor::tabyl(cont_moderator_variable)
+hetero_dealt <- dat %>%  filter(!cont_moderator_variable_modelled=="") %>% janitor::tabyl(cont_moderator_variable_modelled)
+weighted <- dat %>% janitor::tabyl(meta_analysis_weighted) 
+weighted_meta <- dat %>% filter(meta_analysis_self_described == "yes") %>% janitor::tabyl(meta_analysis_weighted) 
+```
+
+Quantitative syntheses in comparative physiology commonly analyse raw summary statistics (`r with(effects, effects[effect == "Means","prop"])*100`\% of studies), followed closely by Fishers transformed correlation coefficients (Zr) (`r with(effects, effects[effect == "Zr","prop"])*100`\% of studies), standardised mean differences (SMD) and log response ratios (lnRR) (`r with(effects, effects[effect == "SMD","prop"])*100`\% and `r with(effects, effects[effect == "lnRR","prop"])*100`\%, respectively - See *Supplementary Materials* for a full breakdown). In many cases, studies make use of multiple effect size measures. Approximately `r with(hetero, hetero[cont_moderator_variable == "yes","percent"])*100`\% of effect sizes used within the study were deemed to be impacted by 'nuisance hetreogenity' in some form or another, and of the studies where this was the case, only `r with(hetero_dealt, hetero_dealt[cont_moderator_variable_modelled == "yes","percent"])*100`\% of the studies clearly dealt with it; usually through meta-regression modelling. Overall, `r with(weighted, weighted[meta_analysis_weighted == "weighted model","percent"])*100`\% of studies used a weighted meta-analytic model, however, of the studies self described as 'meta-analyses', `r with(weighted_meta, weighted_meta[meta_analysis_weighted == "unweighted model","percent"])*100`\% (N = `r with(weighted_meta, weighted_meta[meta_analysis_weighted == "unweighted model","n"])` of `r with(weighted_meta, sum(weighted_meta[,"n"]))`) did not actually weight their meta-analytic mean. 
+
+```{r, fig1, fig.cap="test"}
+p1 = 
+p2 = dat %>% mutate(cont_moderator_variable_modelled = if_else(cont_moderator_variable_modelled == "", "N/A", cont_moderator_variable_modelled)) %>% 
+  ggplot() + tm +
+  geom_bar(aes(x = cont_moderator_variable,
+               fill = cont_moderator_variable_modelled,
+               y = ..count../sum(..count..)), width = 0.5,
+           colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  scale_fill_viridis_d() +
+  labs(x = "Nuisance Heterogenity?",
+       y = "Proportion",
+       fill = "Modelled Nuisance\n Heterogenity?") 
+
+
+
+```
+
 ## **Opening Up New Opportunities in Comparative Physiology: Expanding the Breadth of Effect Sizes to Deal with "Nuisance Heterogeneity"**
 
 #### *Common Effect Sizes and Sampling Errors that are Useful in Comparative Physiology*
