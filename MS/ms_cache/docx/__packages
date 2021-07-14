@@ -10,3 +10,7 @@ dplyr
 stringr
 forcats
 equatags
+here
+pander
+janitor
+patchwork
