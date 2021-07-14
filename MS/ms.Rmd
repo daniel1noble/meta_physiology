@@ -3,6 +3,11 @@ title: "Meta-analytic approaches and 'new' effect sizes to account for heterogen
 bibliography: ../bib/refs.bib
 csl: ../bib/the-journal-of-experimental-biology.csl
 output: 
+  bookdown::word_document2:
+    toc: no
+    toc_depth: 6
+    number_sections: false
+    reference_docx: template.docx
   bookdown::html_document2:
     code_folding: hide
     number_sections: no
@@ -10,11 +15,6 @@ output:
     toc_depth: 6
     toc_float: yes
     bibliography: refs.bib
-  bookdown::word_document2:
-    toc: no
-    toc_depth: 6
-    number_sections: false
-    reference_docx: template.docx
 editor_options: 
   chunk_output_type: console
 ---
@@ -78,7 +78,7 @@ All title, abstract and full text screening was done by two people (DWAN and ML)
 ```{r setup2, include=FALSE}
 rm(list=ls())
 
-pacman::p_load(dplyr,ggplot2,here, pander, janitor)
+pacman::p_load(dplyr,ggplot2,here, pander, janitor, patchwork)
 
 # loading data
 raw <- read.csv(here("data","MA_CompPysio_Survey.csv"))
@@ -139,12 +139,40 @@ hetero <- dat %>%  janitor::tabyl(cont_moderator_variable)
 hetero_dealt <- dat %>%  filter(!cont_moderator_variable_modelled=="") %>% janitor::tabyl(cont_moderator_variable_modelled)
 weighted <- dat %>% janitor::tabyl(meta_analysis_weighted) 
 weighted_meta <- dat %>% filter(meta_analysis_self_described == "yes") %>% janitor::tabyl(meta_analysis_weighted) 
+
+summary <-  dat %>% dplyr::group_by(stat_model_type) %>% janitor::tabyl(stat_model_type) %>%
+  dplyr::summarise(`Multilevel Meta-analysis Model` = dplyr::if_else(grepl("multilevel meta-analysis", stat_model_type), n, 0),
+                  `Multilevel Metaregression Model` = dplyr::if_else(grepl("meta-regression models", stat_model_type), n, 0),
+                    `Linear Regression` = dplyr::if_else(grepl("linear regression", stat_model_type), n, 0),
+                 Other = dplyr::if_else(grepl("unclear/other", stat_model_type), n, 0),
+                 `Vote Counting` = dplyr::if_else(grepl("vote counting", stat_model_type), n, 0),
+                 `Weighted Regression` = dplyr::if_else(grepl("weighted regression including mixed effects models", stat_model_type), n, 0),
+                 `Random Effects Model` = dplyr::if_else(grepl("random-effects meta-analysis", stat_model_type), n, 0)) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = (n / sum(n))) %>% arrange(effect)
+rownames(summary) <- NULL
+
+het_reported <- dat %>%  filter(!heterogeneity_reported=="N/A (e.g. they conducted unweighted meta-analysis)") %>% mutate(heterogeneity_reported = if_else(heterogeneity_reported == "unclear/other (add comment)", "other", heterogeneity_reported)) %>% janitor::tabyl(heterogeneity_reported)
 ```
 
-Quantitative syntheses in comparative physiology commonly analyse raw summary statistics (`r with(effects, effects[effect == "Means","prop"])*100`\% of studies), followed closely by Fishers transformed correlation coefficients (Zr) (`r with(effects, effects[effect == "Zr","prop"])*100`\% of studies), standardised mean differences (SMD) and log response ratios (lnRR) (`r with(effects, effects[effect == "SMD","prop"])*100`\% and `r with(effects, effects[effect == "lnRR","prop"])*100`\%, respectively - See *Supplementary Materials* for a full breakdown). In many cases, studies make use of multiple effect size measures. Approximately `r with(hetero, hetero[cont_moderator_variable == "yes","percent"])*100`\% of effect sizes used within the study were deemed to be impacted by 'nuisance hetreogenity' in some form or another, and of the studies where this was the case, only `r with(hetero_dealt, hetero_dealt[cont_moderator_variable_modelled == "yes","percent"])*100`\% of the studies clearly dealt with it; usually through meta-regression modelling. Overall, `r with(weighted, weighted[meta_analysis_weighted == "weighted model","percent"])*100`\% of studies used a weighted meta-analytic model, however, of the studies self described as 'meta-analyses', `r with(weighted_meta, weighted_meta[meta_analysis_weighted == "unweighted model","percent"])*100`\% (N = `r with(weighted_meta, weighted_meta[meta_analysis_weighted == "unweighted model","n"])` of `r with(weighted_meta, sum(weighted_meta[,"n"]))`) did not actually weight their meta-analytic mean. 
+Quantitative syntheses in comparative physiology commonly analyse raw summary statistics (`r with(effects, effects[effect == "Means","prop"])*100`\% of studies), followed closely by Fishers transformed correlation coefficients (Zr) (`r with(effects, effects[effect == "Zr","prop"])*100`\% of studies), standardised mean differences (SMD) and log response ratios (lnRR) (`r with(effects, effects[effect == "SMD","prop"])*100`\% and `r with(effects, effects[effect == "lnRR","prop"])*100`\%, respectively; Figure \@ref(fig:fig1)A). In many cases, studies make use of multiple effect size measures. Approximately `r with(hetero, hetero[cont_moderator_variable == "yes","percent"])*100`\% of effect sizes used within the study were deemed to be impacted by 'nuisance heterogeneity' in some form or another (Figure \@ref(fig:fig1)B), and of the studies where this was the case, only `r with(hetero_dealt, hetero_dealt[cont_moderator_variable_modelled == "yes","percent"])*100`\% of the studies clearly dealt with it (Figure \@ref(fig:fig1)B); usually through meta-regression modelling. Overall, `r with(weighted, weighted[meta_analysis_weighted == "weighted model","percent"])*100`\% of studies used a weighted meta-analytic model, however, of the studies self described as 'meta-analyses', `r with(weighted_meta, weighted_meta[meta_analysis_weighted == "unweighted model","percent"])*100`\% (N = `r with(weighted_meta, weighted_meta[meta_analysis_weighted == "unweighted model","n"])` of `r with(weighted_meta, sum(weighted_meta[,"n"]))`) did not actually weight their meta-analytic mean. Many studies used 'Linear Regression' (including linear and generalised linear mixed effects models) as the main type of model fit to the data (Figure \@ref(fig:fig1)C). Of the studies using weighted meta-analytic models `r with(het_reported, sum(het_reported[1:2,"percent"])*100)`\% (N = `r with(het_reported, sum(het_reported[1:2,"n"]))` meta-analyses) did not report any measure of heterogeneity. 
 
-```{r, fig1, fig.cap="test"}
-p1 = 
+```{r, fig1, fig.cap="**Summary of meta-analytic practices in comparative physiology.** (A) Different types of effect measures commonly used in meta-analyses and their releative frequency of use. (B) how many meta-analyses where 'nuisance heterogenity' have the potential to impact effect sizes, and the proportion of studies explicitly dealing with nuisance heterogenity. (C) Frequency of analytical approaches used to analyse effect measures. Note that only 'Weighted Regression', 'Random Effects Models', 'Multilevel Metaregression Models' and 'Multilevel Meta-analysis Models' are weighted models."}
+p1 = dat %>% dplyr::group_by(effect_size_type) %>% janitor::tabyl(effect_size_type) %>%
+  dplyr::summarise(SMD = dplyr::if_else(grepl("SMD", effect_size_type), n, 0),
+                  lnRR = dplyr::if_else(grepl("Response Ratio", effect_size_type), n, 0),
+                    Zr = dplyr::if_else(grepl("correlation", effect_size_type), n, 0),
+                 Other = dplyr::if_else(grepl("other|Q10", effect_size_type), n, 0),
+                 Means = dplyr::if_else(grepl("mean/proportion/raw", effect_size_type), n, 0),
+                 lnCVR = dplyr::if_else(grepl("lnCVR", effect_size_type), n, 0),
+                 Slope = dplyr::if_else(grepl("slope", effect_size_type), n, 0)) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = n / sum(n)) %>% arrange(effect) %>% 
+  ggplot() + tm + 
+  geom_col(aes(x = effect, y = prop), width = 0.5, fill = "black", colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,0.35)) +
+  labs(x = "Effect Size",
+       y = "Frequency") +
+  coord_flip()
+
 p2 = dat %>% mutate(cont_moderator_variable_modelled = if_else(cont_moderator_variable_modelled == "", "N/A", cont_moderator_variable_modelled)) %>% 
   ggplot() + tm +
   geom_bar(aes(x = cont_moderator_variable,
@@ -153,9 +181,19 @@ p2 = dat %>% mutate(cont_moderator_variable_modelled = if_else(cont_moderator_va
            colour = text.colour, size = 0.5) +
   scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
   scale_fill_viridis_d() +
-  labs(x = "Nuisance Heterogenity?",
-       y = "Proportion",
-       fill = "Modelled Nuisance\n Heterogenity?") 
+  theme(legend.position = c(0.50, 0.8)) + 
+  labs(x = "Nuisance Heterogeneity?",
+       y = "Frequency",
+       fill = "Modeled Nuisance\nHeterogeneity?") 
+p3 <- summary %>% 
+  ggplot() + tm +
+  geom_col(aes(x = effect, y = prop), width = 0.5, fill = "black", colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0),limits = c(0,0.4)) +
+  labs(x = "Analytical Approach",
+       y = "Frequency") +
+  coord_flip()
+
+p1 + p2 + p3 + plot_annotation(tag_levels = c("A"), tag_prefix = "(", tag_suffix = ")")
 
 
 
@@ -168,6 +206,14 @@ p2 = dat %>% mutate(cont_moderator_variable_modelled = if_else(cont_moderator_va
 Meta-analysis requires comparative physiologists to make use of effect sizes that are suitable for answering their specific question. The key features of all effect sizes used in meta-analyses are that they are: 1) statistical parameters that have been placed on a common scale so that they can be compared across studies and 2) that they have some associated measure of precision (i.e., sampling variance)[@Koricheva2013; @Borenstein2009; @Schmid2021]. Effect sizes in comparative physiology are quite variable; they can be the mean difference between two groups (e.g., difference in mean between a control and treatment group - see @WuSeebacher2020), the slope of a regression (e.g., between body size and metabolic rate), a correlation between two variables, or even the raw mean (or variance) itself (e.g., comparing CTmax or CTmin across species - see @Sunday2014). In many cases, multiple types of effect sizes might be used depending on the question. For example, studies interested in the effect of temperature on some physiological trait that have measured the trait across studies experimentally manipulating temperature could analyse the mean 'effect' by creating contrast-based effect sizes or by analysing the mean in each temperature treatment. The choice as to which one to use will boil down to the types of data available from primary studies, the specific question of interest and whether studies are observational or experimental in nature. Considering our temperature example above, if we are interested in the magnitude of change between temperature treatments, we may want to use a contrast-based effect size, such as the log response ratio $\ln{RR}$. If we are instead interested in how the mean of some physiological trait changes with temperature we may instead model the mean itself. In the latter scenario, so long as all the means are measured in the same units (e.g., ; or can be converted to the same units) then the mean may provide the desired answer to a given question. We provide details on different effect measures and associated sample sizes in Table \@ref(tab:tablea).
 
 ```{r tablea, echo = FALSE, tab.cap = "Common effect sizes used throughout meta-analyses in comparative physiology, their associated sampling variances and examples on when they might be used."}
+
+FitFlextableToPage <- function(ft, pgwidth = 6){
+
+  ft_out <- ft %>% autofit()
+
+  ft_out <- width(ft_out, width = dim(ft_out)$widths*pgwidth /(flextable_dim(ft_out)$widths))
+  return(ft_out)
+} 
 
 # I'm just listing a bunch here, but we should think about what we want to include. Here's an example of how we can make a table with all equations. Fun! Really useful website here: https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference. Something wrong with character coding when rendering word document. Has to do with the log odds ratio equation. Renders fine in html, but just stops when word
 names <- c("Mean",
@@ -225,8 +271,9 @@ tablea <- flextable(table_fin)                                                  
           flextable::footnote(i = 4, j = 1, value = as_paragraph(as_equation(footnotes)),
                ref_symbols = c("a"),
                part = "body", inline = TRUE)
+          
 
-tablea
+FitFlextableToPage(tablea, pgwidth = 8)
 
 ```
 
