@@ -139,7 +139,7 @@ $$
 Here, we can see that the difference between $M_1$ and $M_2$ is standardised by the pooled SD, essentially correcting for unitary differences. Dividing SMD by the temperature difference on top of that results in correcting the effect size further by temperature. To derive the sampling variance for $SMD_T$ we can apply the same principles as we did above to derive an approximate sampling variance as:
 
 $$
-s_{SMD_{T}}^2 = \frac{N_{1} + N_{2}}{N_{1}N_{2}}  + \left (\frac{SMD_{T}^2}{2\left( N_{1} + N_{2}\right)} \right) \left(\frac{1}{{T_{2} - T_{1}}}\right)^2
+s_{SMD_{T}}^2 = \left (\frac{N_{1} + N_{2}}{N_{1}N_{2}}  + \frac{SMD_{T}^2}{2\left( N_{1} + N_{2}\right)} \right) \left(\frac{1}{{T_{2} - T_{1}}}\right)^2
 $$
 
 
