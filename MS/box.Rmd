@@ -1,7 +1,21 @@
 ---
 bibliography: ../bib/refs.bib
 csl: ../bib/the-journal-of-experimental-biology.csl
-output: html_document
+output: 
+  bookdown::html_document2:
+    code_folding: hide
+    number_sections: no
+    toc: no
+    toc_depth: 6
+    toc_float: yes
+    bibliography: refs.bib
+  bookdown::word_document2:
+    toc: no
+    toc_depth: 6
+    number_sections: false
+    reference_docx: template.docx
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -17,28 +31,28 @@ Here we show how to obtain sampling variance for a slope (or a 'rate of change')
 It may be the best to start with a real example that comparative physiologists can easily associate, namely the temperature acclimation slope or as we call it the (temperature) acclimation response ratio (ARR). ARR can be defined as a slope for acclimated physiological responses at two different temperature points, defined as:
 
 $$
-\text{ARR} = \frac{X_{1} - X_{2}}{T_2 - T_1},
+\text{ARR} = \frac{M_{1} - M_{2}}{T_2 - T_1},
 $$
 
-where *T* stands for temperature in degrees Celsius and $T_{2} > T_{1}$, and $X_{1}$ and $X_{2}$ are the average physiological responses (estimated means) at two temperature points $T_{1}$ and $T_{2}$.
+where *T* stands for temperature in degrees Celsius and $T_{2} > T_{1}$, and $M_{1}$ and $M_{2}$ are the average physiological responses (estimated means) at two temperature points $T_{1}$ and $T_{2}$.
 
-To obtain the sampling variance for this equation (slope), we need to know several basic properties of variance. Let's assume $X_{1}$ is a random variable, which means that this variable has a mean and standard deviation (variance). Multiplying a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $X_{1}$. This can be summarized as:
+To obtain the sampling variance for this equation (slope), we need to know several basic properties of variance. Let's assume $M_{1}$ is a random variable, which means that this variable has a mean and standard deviation (variance). Multiplying a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $M_{1}$. This can be summarized as:
 
 $$
 \sigma^2(aX_1 \pm b)=a^2 * \sigma^2_{X_{1}}
 $$
 
-Also, when adding two random variables ($X_{1}$ and $X_{2}$), the combined variance is the sum of the variance of $X_{1}$  and the variance of $X_{2}$ plus 2 times the covariance between $X_{1}$ and $X_{2}$. This relationship can be written as:
+Also, when adding two random variables ($M_{1}$ and $M_{2}$), the combined variance is the sum of the variance of $X_{1}$  and the variance of $X_{2}$ plus 2 times the covariance between $M_{1}$ and $M_{2}$. This relationship can be written as:
 
 $$
-\sigma^2_{X_1 \pm X_2} = \sigma^2_{X_1} + \sigma^2_{X_2} \pm 2\text{Cov}(X_1,X_2) \\
-= \sigma^2_{X_1} + \sigma^2_{X_2} \pm 2\text{Cor}(X_1,X_2)\sqrt{ \sigma^2_{X_1} \sigma^2_{X_2} }
+\sigma^2_{M_1 \pm M_2} = \sigma^2_{M_1} + \sigma^2_{M_2} \pm 2\text{Cov}(M_1,M_2) 
+= \sigma^2_{M_1} + \sigma^2_{M_2} \pm 2\text{Cor}(M_1,M_2)\sqrt{ \sigma^2_{M_1} \sigma^2_{M_2} }
 $$ 
-where the co-variance $\text{Cov}(X_1,X_2)$ equals to the correlation multiplied by the square-root of the two variances $2\text{Cor}(X_1,X_2)\sqrt{ \sigma^2_{X_1} \sigma^2_{X_2} }$.
+where the co-variance $\text{Cov}(M_1,M_2)$ equals to the correlation multiplied by the square-root of the two variances $2\text{Cor}(M_1,M_2)\sqrt{ \sigma^2_{M_1} \sigma^2_{M_2} }$.
 
-Importantly, when $X_{1}$ and $X_{2}$ are independent of each other the covariance is 0. More concretely, if measurements are done on two different groups of animals at two different temperature points ($T_1$ and $T_2$), then the co-variances between these two sets of measurements are 0.
+Importantly, when $M_{1}$ and $M_{2}$ are independent of each other the covariance is 0. More concretely, if measurements are done on two different groups of animals at two different temperature points ($T_1$ and $T_2$), then the co-variances between these two sets of measurements are 0.
 
-Therefore, when $X_{1}$ and $X_{2}$ are independent, we can obtain the sampling variance for ARR as:
+Therefore, when $M_{1}$ and $M_{2}$ are independent, we can obtain the sampling variance for ARR as:
 
 $$
 \sigma^2_{AAR} = \left( \frac{1} {T_2 - T_1} \right)^2 
@@ -47,7 +61,7 @@ $$
 
 where $SD_{1}$ and $SD_{2}$ and $N_{1}$ and $N_{2}$ are standard deviations and sampling sizes at temperature $T_{1}$ and $T_{2}$. Readers may still find it difficult to see how we got this equation. Let us explain further. The (sampling) standard error for $X_{1}$ is $SE_{1} = SD_{1} / \sqrt{N_{1}}$ -- many readers will probably know this as the formula for obtaining *SE* from *SD*. Given this, the sampling variance for $X_{1}$ is $SD^2_{1} / N_{1}$, which you see as an element of the sampling variance of ARR along with the sampling variance for $X_{2}$, which is $X_{2}$ is $SD^2_{2} / N_{2}$; the term $(1/(T_{2} - T_{1}))^2$ comes from recognizing $1/(T_{2} - T_{1})$ as a constant.
 
-Now, it is not uncommon that we use the same group of animals (or plants) at two temperature points. If we do, however, then we need to add the co-variance between $X_{1}$ and $X_{2}$ ($\text{Cov}(X_{1},X_{2})$); note that as above, the co-variance equals the corresponding correlation multiplied by the square-root of two (sampling) variances. Therefore, the sampling variance can be now written as:
+Now, it is not uncommon that we use the same group of animals (or plants) at two temperature points. If we do, however, then we need to add the co-variance between $M_{1}$ and $M_{2}$ ($\text{Cov}(M_{1},M_{2})$); note that as above, the co-variance equals the corresponding correlation multiplied by the square-root of two (sampling) variances. Therefore, the sampling variance can be now written as:
 
 $$
 \sigma^2_{AAR} = \left( \frac{1} {T_{2} - T_{1}} \right)^2 
@@ -55,6 +69,7 @@ $$
 \frac{SD^2_{1}} {N_1} + \frac{SD^2_{2}} {N_2} - 2r \sqrt{\frac{SD^2_{1}} {N_1}  \frac{SD^2_{2}} {N_2}} 
 \right)
 $$ 
+
 By assuming the number of animals (*N*) are the same at the two temperature points, we can slightly simplify this formula:
 
 $$ 
@@ -66,7 +81,7 @@ $$
 \right)
 $$
 
-where *r* is the correlation between a set of measurement $X_1$ and $X_2$ form the same individuals at two point $T_1$ and $T_2$. As you may notice, we need raw data to calculate *r*. So, in reality, we often need to assume a certain value of *r*. @Noble2017 discuss why we can assume $r = 0.5$ and this may be the most reasonable thing to do when we do not have any estimate of *r*.
+where *r* is the correlation between a set of measurement $M_1$ and $M_2$ form the same individuals at two point $T_1$ and $T_2$. As you may notice, we need raw data to calculate *r*. So, in reality, we often need to assume a certain value of *r*. @Noble2017 discuss why we can assume $r = 0.5$ and this may be the most reasonable thing to do when we do not have any estimate of *r*.
 
 
 ### Sampling variance for the difference between two slopes
@@ -80,16 +95,18 @@ $$
 Using the basic properties of variance and the results from the above, the sample variance for ARRD can be derived, when measurements at two temperature points are independent, as:
 
 $$
-\text{Var}(\text{ARRD}) = \left( \frac{1} {T_2 - T_1} \right)^2 
+\sigma^2_{ARRD} = \left( \frac{1} {T_2 - T_1} \right)^2 
 \left( \frac{SD^2_{f1}} {N_{f1}} + \frac{SD^2_{f2}} {N_{f2}} +
  \frac{SD^2_{m1}} {N_{m1}} + \frac{SD^2_{m2}} {N_{m2}}
 \right),
-$$ where subscripts *f* and *m* stands for 'females' and 'males'.
+$$ 
+
+where subscripts *f* and *m* stands for 'females' and 'males'.
 
 Similarly, the dependent version of the sampling variance can be written as:
 
 $$
-\text{Var}(\text{ARRD}) = \left( \frac{1} {T_2 - T_1} \right)^2 
+\sigma^2_{ARRD} = \left( \frac{1} {T_2 - T_1} \right)^2 
 \left( 
 \frac{SD^2_{f1} + SD^2_{f2}  - 2rSD_{f1}SD_{f2}} {N_f}   +
 \frac{SD^2_{m1} + SD^2_{m2}  - 2rSD_{m1}SD_{m2}} {N_m}
@@ -99,7 +116,7 @@ $$
 Now we have derive sampling variances for 'temperature' ARR and ARRD for both independent and dependent cases. But these formulas can be applied to changes in salinity, PH, oxygen and other abotic factors. Also, the constant components of these formulas can be flexibly adjusted. For example, it may be possible that males and females were measured in slightly different temperatures; say females at $T_3$ and $T_4$ ($T_4 > T_3$) and male at $T_5$ and $T_6$ ($T_6 > T_5$) like below:
 
 $$
-\text{Var}(\text{ARRD}) = \left( \frac{1} {T_4 - T_3} \right)^2 
+\sigma^2_{ARRD} = \left( \frac{1} {T_4 - T_3} \right)^2 
 \left( 
 \frac{SD^2_{f3} + SD^2_{f4}  - 2rSD_{f3}SD_{f4}} {N_f}   +
 \right) +
@@ -111,16 +128,15 @@ $$
 
 Also, note that the difference between slopes does not need to be that of males and females. It can be between experimental and control groups or comparing any two groups or situations.
 
-
 ### Controlling for unitary differences and temperature across studies
 
 ARR assumes that the units for the mean difference across studies is consistent. This will often not be the case for many meta-analyses that hope to synthesise a wide diversity of trait types that vary in their units (e.g., ul/g, grams, seconds, minutes). Fortunately, $lnRR$ and SMD (Table 1) already control for unitary differences. As such, we can apply some of the same logic we discuss above to SMD to correct for both temperature and unitary differences. Table 1 provides the formula for SMD, it's pooled standard deviation, and sampling variance. We won't re-iterate these formulas again. Just like with ARR we can apply our temperature correction to the SMD formula as follows:
 
 $$
-SMD_{T} = \frac{\left(\bar{X}_{1} - \bar{X}_{2}\right)}{SD_{p}\left( T_{2} - T_{1}\right)}J
+SMD_{T} = \frac{\left(M_{1} - M_{2}\right)}{SD_{p}\left( T_{2} - T_{1}\right)}J
 $$
 
-Here, we can see that the difference between $X_1$ and $X_2$ is standardised by the pooled SD, essentially correcting for unitary differences. Dividing SMD by the temperature difference on top of that results in correcting the effect size further by temperature. To derive the sampling variance for $SMD_T$ we can apply the same principles as we did above to derive an approximate sampling variance as:
+Here, we can see that the difference between $M_1$ and $M_2$ is standardised by the pooled SD, essentially correcting for unitary differences. Dividing SMD by the temperature difference on top of that results in correcting the effect size further by temperature. To derive the sampling variance for $SMD_T$ we can apply the same principles as we did above to derive an approximate sampling variance as:
 
 $$
 s_{SMD_{T}}^2 = \left(\frac{1}{{T_{2} - T_{1}}}\right)^2 +  \frac{N_{1} + N_{2}}{N_{1}N_{2}}  + \frac{SMD_{T}^2}{2\left( N_{1} + N_{2}\right)}
@@ -134,27 +150,29 @@ It is often limited when we can use the basic properties of variance to derive s
 Here, we use the delta method to derive the sampling variance for the log repose ratio, which is:
 
 $$
-\text{Var}(f(X_1)) \approx \text{Var}(X_1)* \left( 
-f'(X_1)
+\text{Var}(f(M_1)) \approx \text{Var}(M_1)* \left( 
+f'(M_1)
 \right)^2,
-$$ where $f(X_1)$ represents the function of the random variable $X_1$, and importantly, $f'(X_1)$ is the first derivative of $f(X_1)$. Probably it is hard to understand what does this really means without a concrete example. So let's derive the sampling variance for $\ln{RR}$, which is:
+$$ 
+
+where $f(M_1)$ represents the function of the random variable $X_1$, and importantly, $f'(M_1)$ is the first derivative of $f(M_1)$. Probably it is hard to understand what does this really means without a concrete example. So let's derive the sampling variance for $\ln{RR}$, which is:
 
 $$
-\ln{RR} = \ln \left ( \frac{X_{1}}{X_{2}}\right ) = \ln{X_1} -\ln{X_2}.
+\ln{RR} = \ln \left ( \frac{M_{1}}{M_{2}}\right ) = \ln{M_1} -\ln{M_2}.
 $$ 
 
 
-Here, $f(X_1) = \ln{X_1}$. By applying $f'(X_1) = 1/{X_1}$ (i.e. the first derivative of $lnX1$ is $1/{X_1}$) to the delta method and using the variance's basic properties, we have:
+Here, $f(M_1) = \ln{M_1}$. By applying $f'(M_1) = 1/{M_1}$ (i.e. the first derivative of $lnM_1$ is $1/{M_1}$) to the delta method and using the variance's basic properties, we have:
 
 $$
-\sigma^2_{ln{RR}} \approx  \left ( \frac{SD_{1}^2}{N_{1}}\right ) * \left(\frac{1}{X_{1}} \right)^2 + \left ( \frac{SD_{2}^2}{N_{2}}\right ) * \left(\frac{1}{X_{2}} \right)^2 =   \left ( \frac{SD_{1}^2}{N_{1}X_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}X_{2}^2}\right )
+\sigma^2_{ln{RR}} \approx  \left ( \frac{SD_{1}^2}{N_{1}}\right ) * \left(\frac{1}{M_{1}} \right)^2 + \left ( \frac{SD_{2}^2}{N_{2}}\right ) * \left(\frac{1}{M_{2}} \right)^2 =   \left ( \frac{SD_{1}^2}{N_{1}M_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}M_{2}^2}\right )
 $$
 Note here again that the first term, $\frac{SD_{1}^2}{N_{1}}$ is the sampling variance for group 1, and we simply multiply this term by the square of the first derivative of $X_{1}$ as the Delta method tells us. Of course, readers will see that this is equivalent to the sampling variance for $ln_{RR}$ (Table 1). We can extend this sampling variance to include dependency between the groups as: 
 
 $$
-\sigma^2_{ln{RR}} \approx  \left ( \frac{SD_{1}^2}{N_{1}X_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}X_{2}^2}\right ) 
-- 2r\sqrt{\frac{SD_{1}^2}{N_{1}X_{1}^2}}\sqrt{\frac{SD_{2}^2}{N_{2}X_{2}^2}},
+\sigma^2_{ln{RR}} \approx  \left ( \frac{SD_{1}^2}{N_{1}M_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}M_{2}^2}\right ) 
+- 2r\sqrt{\frac{SD_{1}^2}{N_{1}M_{1}^2}}\sqrt{\frac{SD_{2}^2}{N_{2}M_{2}^2}},
 $$
-where $r$ is 0 when two sets of measurements are independent (therefore, the term including $r$ disappears), while $r$ is the correlation between $\ln{X_1}$ and $\ln{X_2}$. As discussed, we usually do not have an estimate for this correlation coefficient.
+where $r$ is 0 when two sets of measurements are independent (therefore, the term including $r$ disappears), while $r$ is the correlation between $\ln{M_1}$ and $\ln{M_2}$. As discussed, we usually do not have an estimate for this correlation coefficient.
 
 Finally, we note that by using the basic properties of variance and the delta method, one can derive sampling variance for most of cases. Indeed, these were enough for us to derive sampling variance for 'new' effect sizes (e.g. $lnQ_{10}$; see the main text) and as in @Nakagawa2015 and @Senior2020.
