@@ -232,7 +232,7 @@ eqns_yi <- c("M",
              "\\ln{SD} + \\frac{1}{2(N - 1)}",
              # Senior will have a better version but this is good for now
              "\\ln \\left( \\frac{M_{1}}{M_{2}}\\right)",
-             "\\frac{\\left( X_{2} - X_{1}\\right)}{SD_{p}}J",
+             "\\frac{\\left( M_{2} - M_{1}\\right)}{SD_{p}}J",
              # we need to spell out SD_p somewhere
              "\\frac{1}{2}log\\left(\\frac{1+r}{1-r}\\right)")
              #"log\\left(\\frac{y_{i2}+0.5}{n_{i2}-y_{i2}+0.5}\\right) ",
@@ -289,7 +289,7 @@ Prior to showing how the relevant $Q_{10}$ effect size can be calculated it can 
 $$
 \begin{equation} 
   \begin{aligned}
-  \ln{RR} = \ln\left ( \frac{X_{1}}{X_{2}}\right )
+  \ln{RR} = \ln\left ( \frac{M_{1}}{M_{2}}\right )
   \end{aligned}
   (\#eq:lnRR)
 \end{equation} 
@@ -297,10 +297,12 @@ $$
 
 $$
 \begin{equation} 
-  s^2_{lnRR} = \left ( \frac{SD_{1}^2}{N_{1}X_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}X_{2}^2}\right )
+  s^2_{lnRR} = \left ( \frac{SD_{1}^2}{N_{1}M_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}M_{2}^2}\right )
   (\#eq:slnRR)
 \end{equation} 
-$$ In equation \@ref(eq:lnRR), $X_{1}$ is the mean of group 1, often a control group, where as $X_{2}$ is the mean of group 2 (e.g., a treatment group). The mean of $X_{i}$ for group *i* can be any measurement type (e.g. a physiological rate, mass etc) so long as the measurement variable is ratio scale. Log transformation of this ratio makes the effect size normally distributed (most commonly assumed by meta-analytic models). Equation \@ref(eq:slnRR) is the analytical solution for *lnRR*'s sampling variance where, $SD_{1}^2$ and $SD_{2}^2$ is the sample variance in group 1 and 2, respectively and $N_{1}$ and $N_{2}$ is the sample size in group 1 and 2.
+$$ 
+
+In equation \@ref(eq:lnRR), $X_{1}$ is the mean of group 1, often a control group, where as $X_{2}$ is the mean of group 2 (e.g., a treatment group). The mean of $X_{i}$ for group *i* can be any measurement type (e.g. a physiological rate, mass etc) so long as the measurement variable is ratio scale. Log transformation of this ratio makes the effect size normally distributed (most commonly assumed by meta-analytic models). Equation \@ref(eq:slnRR) is the analytical solution for *lnRR*'s sampling variance where, $SD_{1}^2$ and $SD_{2}^2$ is the sample variance in group 1 and 2, respectively and $N_{1}$ and $N_{2}$ is the sample size in group 1 and 2.
 
 The equations for *lnRR* and its sampling variance allow us to easily extend this to $Q_{10}$ based effect sizes. Recall that $Q_{10}$ is described as follows:
 
