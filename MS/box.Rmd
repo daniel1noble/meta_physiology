@@ -39,7 +39,7 @@ where *T* stands for temperature in degrees Celsius and $T_{2} > T_{1}$, and $M_
 To obtain the sampling variance for this equation (slope), we need to know several basic properties of variance. Let's assume $M_{1}$ is a random variable, which means that this variable has a mean and standard deviation (variance). Multiplying a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $M_{1}$. This can be summarized as:
 
 $$
-\sigma^2(aX_1 \pm b)=a^2 * \sigma^2_{X_{1}}
+\sigma^2(aM_1 \pm b)=a^2 * \sigma^2_{M_{1}}
 $$
 
 Also, when adding two random variables ($M_{1}$ and $M_{2}$), the combined variance is the sum of the variance of $X_{1}$  and the variance of $X_{2}$ plus 2 times the covariance between $M_{1}$ and $M_{2}$. This relationship can be written as:
@@ -139,7 +139,7 @@ $$
 Here, we can see that the difference between $M_1$ and $M_2$ is standardised by the pooled SD, essentially correcting for unitary differences. Dividing SMD by the temperature difference on top of that results in correcting the effect size further by temperature. To derive the sampling variance for $SMD_T$ we can apply the same principles as we did above to derive an approximate sampling variance as:
 
 $$
-s_{SMD_{T}}^2 = \left(\frac{1}{{T_{2} - T_{1}}}\right)^2 +  \frac{N_{1} + N_{2}}{N_{1}N_{2}}  + \frac{SMD_{T}^2}{2\left( N_{1} + N_{2}\right)}
+s_{SMD_{T}}^2 = \frac{N_{1} + N_{2}}{N_{1}N_{2}}  + \left (\frac{SMD_{T}^2}{2\left( N_{1} + N_{2}\right)} \right) \left(\frac{1}{{T_{2} - T_{1}}}\right)^2
 $$
 
 
