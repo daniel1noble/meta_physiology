@@ -167,7 +167,7 @@ Here, $f(M_1) = \ln{M_1}$. By applying $f'(M_1) = 1/{M_1}$ (i.e. the first deriv
 $$
 \sigma^2_{ln{RR}} \approx  \left ( \frac{SD_{1}^2}{N_{1}}\right ) * \left(\frac{1}{M_{1}} \right)^2 + \left ( \frac{SD_{2}^2}{N_{2}}\right ) * \left(\frac{1}{M_{2}} \right)^2 =   \left ( \frac{SD_{1}^2}{N_{1}M_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}M_{2}^2}\right )
 $$
-Note here again that the first term, $\frac{SD_{1}^2}{N_{1}}$ is the sampling variance for group 1, and we simply multiply this term by the square of the first derivative of $X_{1}$ as the Delta method tells us. Of course, readers will see that this is equivalent to the sampling variance for $ln_{RR}$ (Table 1). We can extend this sampling variance to include dependency between the groups as: 
+Note here again that the first term, $\frac{SD_{1}^2}{N_{1}}$ is the sampling variance for group 1, and we simply multiply this term by the square of the first derivative of $M_{1}$ as the Delta method tells us. Of course, readers will see that this is equivalent to the sampling variance for $ln_{RR}$ (Table 1). We can extend this sampling variance to include dependency between the groups as: 
 
 $$
 \sigma^2_{ln{RR}} \approx  \left ( \frac{SD_{1}^2}{N_{1}M_{1}^2}\right ) + \left ( \frac{SD_{2}^2}{N_{2}M_{2}^2}\right ) 
