@@ -45,12 +45,12 @@ Throughout the supplement R code is contained within code blocks. We provide exa
 
 # Loading Data and R Packages
 
-Before embarking on the case studies readers will need to load the necessary R packages. 
+Before embarking on the case studies readers will need to load the necessary R packages. Note that the first two lines are commented out. If you don't have these packages, just install these by removing the `#`. 
 
 ```{r loadpackages, echo = TRUE, results = "hide", messages = FALSE, class.source='klippy'}
 #install.packages("pacman")
-pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here, osfr, magrittr, Rcpp)
-devtools::install_github("itchyshin/orchard_plot", subdir = "orchaRd", force = TRUE)
+#devtools::install_github("itchyshin/orchard_plot", subdir = "orchaRd", force = TRUE)
+pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here, osfr, magrittr)
 ```
 
 # Case Study 1: Multilevel meta-analysis approaches to control for differences in treatment magnitude
@@ -70,14 +70,13 @@ osfr::osf_retrieve_file("https://osf.io/qn2af/") %>% osfr::osf_download(conflict
 data_CS1a <- read.csv(here::here("ms", "CTmax_ARR.csv"))
 ```
 
-### Calculate effect size
+### Calculate Effect Size
 
 In this section, we demonstrate how to calculate slope effect sizes and their associated sampling variance. Note that calculating slopes require the response variable to be measured with the same unit and does not apply to all meta-analyses. While this example focuses on thermal tolerance, the meta-analysis of slope may also be applicable to investigate changes in thermal preference, or metabolic scaling for example. 
 
 In this example, we use a simplified data set from Pottier et al. *in review* and we demonstrate how to investigate the mean effect of acclimation temperature on heat tolerance. Because heat tolerance was consistently measured in degrees Celsius (`CTmax`) in the studies compiled, we can calculate the slope between acclimation temperature and heat tolerance, which is termed as the acclimation response ratio (`ARR`) in the literature. 
 This effect size is calculated as the difference between the heat tolerance at the higher (`mean_high`) and the lower (`mean_low`) acclimation temperatures, divided by the difference between acclimation temperatures (`acc_temp_high` - `acc_temp_low`). 
 The sampling variance of the slope (`Var_ARR`) can then be defined using properties of variance as per 'formula XXX` 
-
 
 In this example, the slopes were calculated with stepwise comparisons between acclimation treatments. This method created a source of non-independence, with some treatments being involved in multiple comparisons (`shared_trt_ID`).
 To account for this, we divided by half the sample size of the observations in these non-independent comparisons (`n_low_adj` and `n_high_adj`) to divide by half the weight of these estimates. 
@@ -88,7 +87,7 @@ data_CS1a<-data_CS1a %>%
                      Var_ARR=((1/(acc_temp_high-acc_temp_low))^2*(sd_low^2/n_low_adj+sd_high^2/n_high_adj))) # Need to double check this formula, Shinichi pointed out that there might be a mistake.
 ```
 
-In some cases, CTmax was measured twice on the same cohort of animals (e.g. using a different endpoint), which generates a source of non-independence between effect sizes. We can account for this source of non-independence by correlating errors between dependent effect sizes. The `make_VCV_matrix` from `metaAidR` is a handy function to perform this correction, and assume a correlation of r = 0.5 by default. We termed the created variance-covariance matrix as `VCV_ARR`. 
+In some cases, CTmax was measured twice on the same cohort of animals (e.g. using a different endpoint), which generates a source of non-independence between effect sizes. We can account for this source of non-independence by correlating errors between dependent effect sizes. The `make_VCV_matrix` from [`metaAidR`](https://github.com/daniel1noble/metaAidR) is a handy function to perform this correction, and assume a correlation of r = 0.5 by default. We termed the created variance-covariance matrix `VCV_ARR`. 
 
 ```{r, class.source='klippy', results = 'hide'}
 # Variance covariance matrix to account for non-independence of measurements performed on the same cohorts of animals
@@ -130,7 +129,7 @@ We use the same data set as before, but formatted in a slightly different way (i
 
 ```{r class.source='klippy'}
 # Download the data file from OSF
-osfr::osf_retrieve_file("https://osf.io/mnw5d/") %>% osfr::osf_download(conflicts = "overwrite") 
+osfr::osf_retrieve_file("https://osf.io/zubky/") %>% osfr::osf_download(conflicts = "overwrite") 
 
 # Load the data file
 data_CS1b <- read.csv(here::here("ms", "CTmax_ARR_sex.csv"))
