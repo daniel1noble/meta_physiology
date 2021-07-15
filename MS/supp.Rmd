@@ -50,7 +50,8 @@ Before embarking on the case studies readers will need to load the necessary R p
 ```{r loadpackages, echo = TRUE, results = "hide", messages = FALSE, class.source='klippy'}
 #install.packages("pacman")
 #devtools::install_github("itchyshin/orchard_plot", subdir = "orchaRd", force = TRUE)
-pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here, osfr, magrittr)
+#devtools::install_github("daniel1noble/metaAidR")
+pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here, osfr, magrittr, metaAidR)
 ```
 
 # Case Study 1: Multilevel meta-analysis approaches to control for differences in treatment magnitude
@@ -61,13 +62,13 @@ Here, we will demonstrate how to use analyse variation in slopes and differences
 
 We first download the data from OSF, and load this into R. You can do this by copying and pasting the code below.
 
-```{r class.source='klippy'}
+```{r class.source='klippy', results = 'hide'}
 
 # Download the data file from OSF
 osfr::osf_retrieve_file("https://osf.io/qn2af/") %>% osfr::osf_download(conflicts = "overwrite") 
 
 # Load the data file
-data_CS1a <- read.csv(here::here("ms", "CTmax_ARR.csv"))
+data_CS1a <- read.csv(here::here("CTmax_ARR.csv"))
 ```
 
 ### Calculate Effect Size
@@ -89,9 +90,12 @@ data_CS1a<-data_CS1a %>%
 
 In some cases, CTmax was measured twice on the same cohort of animals (e.g. using a different endpoint), which generates a source of non-independence between effect sizes. We can account for this source of non-independence by correlating errors between dependent effect sizes. The `make_VCV_matrix` from [`metaAidR`](https://github.com/daniel1noble/metaAidR) is a handy function to perform this correction, and assume a correlation of r = 0.5 by default. We termed the created variance-covariance matrix `VCV_ARR`. 
 
-```{r, class.source='klippy', results = 'hide'}
+```{r, class.source='klippy', results = 'hide', message=FALSE}
 # Variance covariance matrix to account for non-independence of measurements performed on the same cohorts of animals
 VCV_ARR<- metaAidR::make_VCV_matrix(data_CS1a, V = "Var_ARR", cluster = "shared_measurement_ID", obs = "es_ID")
+
+# This method should be similar from clubSandwich
+VCV_ARR2 <- clubSandwich::impute_covariance_matrix(data_CS1a$Var_ARR, cluster = "shared_measurement_ID", r =0.5)
 ```
 
 ### Meta-analysis
@@ -100,9 +104,9 @@ Then, we can run the multi-level meta-analytic model using the `rma.mv` function
 In this model, we used two random effects: `species_ID` and `es_ID` to account for between species variation and the variation associated with the residuals. Note that it is possible to assess the variation due to phylogenetic relatedness but we will keep it simple for demonstration purposes. We also did not assessed variation due to between-study differences because the levels of this variable was almost entirely overlapping with `species_ID` (i.e. `species_ID` and `study_ID` were indistinguishable). 
 While we only present  an intercept-only model, this structure can be used to fit meta-regressions by fitting moderator variables. 
 
-```{r, class.source='klippy', results = 'hide'}
+```{r, class.source='klippy'}
 # Multi-level meta-analytic model
-Model_CS1a_MLMA<-metafor::rma.mv(yi=ARR~-1, V=VCV_ARR, 
+Model_CS1a_MLMA <- metafor::rma.mv(ARR ~ 1, V = VCV_ARR2, 
                    method="REML",
                    random=list(~1|species_ID,
                                ~1|es_ID), 
@@ -112,7 +116,7 @@ Model_CS1a_MLMA<-metafor::rma.mv(yi=ARR~-1, V=VCV_ARR,
 summary(Model_CS1a_MLMA)
 
 # Calculate Prediction Intervals
-PIs_CS1a_MLMA <- predict(model_CS1a_MLMA)
+PIs_CS1a_MLMA <- predict(Model_CS1a_MLMA)
 print(PIs_CS1a_MLMA)
 
 # Calculate I2
@@ -121,21 +125,21 @@ print(I2_CS1a)
 ```
 
 
-## Multi-level Meta-analysis of slope differences between two groups 
+## Multi-level Meta-analysis of Slope Differences between Two Groups 
 
 We can imagine cases where one might be interested in comparing the slopes of two groups or treatments. 
 In this example, we demonstrate how to derive and analyse effect sizes when investigating differences in slopes. As per the previous example, such analysis require responses variables to be measured with the same unit. 
 We use the same data set as before, but formatted in a slightly different way (i.e. columns were re-organised in a "wide" format to calculate differences between sexes). In this example, rather than investigating overall variation in `ARR`, we will investigate the difference in `ARR` between males and females. 
 
-```{r class.source='klippy'}
+```{r class.source='klippy', results = 'hide'}
 # Download the data file from OSF
 osfr::osf_retrieve_file("https://osf.io/zubky/") %>% osfr::osf_download(conflicts = "overwrite") 
 
 # Load the data file
-data_CS1b <- read.csv(here::here("ms", "CTmax_ARR_sex.csv"))
+data_CS1b <- read.csv(here::here("CTmax_ARR_sex.csv"))
 ```
 
-### Calculate effect size 
+### Calculate Effect Size 
 
 First, we need to calculate the `ARR` of females (`ARR_f`) and males (`ARR_m`) with the formula we presented earlier. 
 We can then use the mean difference between `ARR_f` and `ARR_m` as an effect size, which we term here as `ARRD`. 
@@ -153,15 +157,19 @@ data_CS1b<-data_CS1b %>% # calculate effect sizes
 ### Meta-analysis
 
 Again, we first started by accounting for the non-independence of CTmax estimates measured on the same cohorts using a variance-covariance matrix termed as `VCV_ARRD`. 
+
+```{r, class.source='klippy',  results = 'hide', message=FALSE}
+# Variance covariance matrix to account for non-independence of measurements performed on the same cohorts of animals
+#VCV_ARRD<- metaAidR::make_VCV_matrix(data_CS1b, V = "Var_ARR", cluster = "shared_measurement_ID", obs = "es_ID")
+VCV_ARRD <- clubSandwich::impute_covariance_matrix(data_CS1b$Var_ARRD, cluster = "shared_measurement_ID", r =0.5)
+```
+
 We then fit a multi-level meta-analytic model using a similar structure as demonstrated before. 
 Note that this model can be extended to meta-regressions by fitting moderator variables. 
-```{r, class.source='klippy', results = 'hide'}
 
-# Variance covariance matrix to account for non-independence of measurements performed on the same cohorts of animals
-VCV_ARRD<- metaAidR::make_VCV_matrix(data_CS1b, V = "Var_ARR", cluster = "shared_measurement_ID", obs = "es_ID")
-
+```{r, class.source='klippy'}
 # Multi-level meta-analytic model
-model_CS1b_MLMA<-metafor::rma.mv(yi=ARRD~-1, V=VCV_ARRD, 
+model_CS1b_MLMA<-metafor::rma.mv(yi= ARRD~ 1, V = VCV_ARRD, 
                    method="REML",
                    random=list(~1|species_ID,
                                ~1|es_ID), 
@@ -290,7 +298,7 @@ table_s2
 
 # Session Information
 
-```{r}
+```{r, echo = FALSE}
 pander(sessionInfo(), locale = FALSE)
 ```
 
