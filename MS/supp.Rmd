@@ -23,6 +23,7 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE, tidy = TRUE)
 options(digits=2)
 ```
+
 ```{r klippy, echo=FALSE, include=TRUE, message=FALSE, warning=FALSE}
 #install.packages("devtools")
 remotes::install_github("rlesur/klippy")
@@ -48,19 +49,137 @@ Before embarking on the case studies readers will need to load the necessary R p
 
 ```{r loadpackages, echo = TRUE, results = "hide", messages = FALSE, class.source='klippy'}
 #install.packages("pacman")
-pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here, osfr, magrittr)
+pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here, osfr, magrittr, Rcpp)
 devtools::install_github("itchyshin/orchard_plot", subdir = "orchaRd", force = TRUE)
 ```
 
-# Case Study 1: 
+# Case Study 1: Multilevel meta-analysis approaches to control for differences in treatment magnitude
+
+Here, we will demonstrate how to use analyse variation in slopes and differences in slopes between two groups. In this example, we will account for effects of known drivers of 'nuisance heterogeneity' at the level of the effect size. We use a case study by Pottier et al. *in review* which investigated the association between acclimation temperature, thermal tolerance and sex. We first demonstrate how to use meta-analytic approaches to investigate the variation in the relationship between acclimation temperature and thermal tolerance (i.e. variation in slope), and then demonstrate how to meta-analyse differences in slopes between two groups (i.e. sexes). 
+
+## Multilvel meta-analysis of slopes
+
+We first download the data from OSF, and load this into R. You can do this by copying and pasting the code below.
+
 ```{r class.source='klippy'}
 
-# Example on how to download and load for reader. Should work anyway. Needs some testing
-#osfr::osf_retrieve_file("https://osf.io/mnw5d/") %>% osfr::osf_download()
+# Download the data file from OSF
+osfr::osf_retrieve_file("https://osf.io/qn2af/") %>% osfr::osf_download(conflicts = "overwrite") 
 
-#data_CS1 <- read.csv(here::here("CaseStudy1.csv"))
-
+# Load the data file
+data_CS1a <- read.csv(here::here("ms", "CTmax_ARR.csv"))
 ```
+
+### Calculate effect size
+
+In this section, we demonstrate how to calculate slope effect sizes and their associated sampling variance. Note that calculating slopes require the response variable to be measured with the same unit and does not apply to all meta-analyses. While this example focuses on thermal tolerance, the meta-analysis of slope may also be applicable to investigate changes in thermal preference, or metabolic scaling for example. 
+
+In this example, we use a simplified data set from Pottier et al. *in review* and we demonstrate how to investigate the mean effect of acclimation temperature on heat tolerance. Because heat tolerance was consistently measured in degrees Celsius (`CTmax`) in the studies compiled, we can calculate the slope between acclimation temperature and heat tolerance, which is termed as the acclimation response ratio (`ARR`) in the literature. 
+This effect size is calculated as the difference between the heat tolerance at the higher (`mean_high`) and the lower (`mean_low`) acclimation temperatures, divided by the difference between acclimation temperatures (`acc_temp_high` - `acc_temp_low`). 
+The sampling variance of the slope (`Var_ARR`) can then be defined using properties of variance as per 'formula XXX` 
+
+
+In this example, the slopes were calculated with stepwise comparisons between acclimation treatments. This method created a source of non-independence, with some treatments being involved in multiple comparisons (`shared_trt_ID`).
+To account for this, we divided by half the sample size of the observations in these non-independent comparisons (`n_low_adj` and `n_high_adj`) to divide by half the weight of these estimates. 
+
+```{r, class.source='klippy', results = 'hide'}
+data_CS1a<-data_CS1a %>% 
+              mutate(ARR=(mean_high-mean_low)/(acc_temp_high - acc_temp_low),
+                     Var_ARR=((1/(acc_temp_high-acc_temp_low))^2*(sd_low^2/n_low_adj+sd_high^2/n_high_adj))) # Need to double check this formula, Shinichi pointed out that there might be a mistake.
+```
+
+In some cases, CTmax was measured twice on the same cohort of animals (e.g. using a different endpoint), which generates a source of non-independence between effect sizes. We can account for this source of non-independence by correlating errors between dependent effect sizes. The `make_VCV_matrix` from `metaAidR` is a handy function to perform this correction, and assume a correlation of r = 0.5 by default. We termed the created variance-covariance matrix as `VCV_ARR`. 
+
+```{r, class.source='klippy', results = 'hide'}
+# Variance covariance matrix to account for non-independence of measurements performed on the same cohorts of animals
+VCV_ARR<- metaAidR::make_VCV_matrix(data_CS1a, V = "Var_ARR", cluster = "shared_measurement_ID", obs = "es_ID")
+```
+
+### Meta-analysis
+
+Then, we can run the multi-level meta-analytic model using the `rma.mv` function in the `metafor` package. 
+In this model, we used two random effects: `species_ID` and `es_ID` to account for between species variation and the variation associated with the residuals. Note that it is possible to assess the variation due to phylogenetic relatedness but we will keep it simple for demonstration purposes. We also did not assessed variation due to between-study differences because the levels of this variable was almost entirely overlapping with `species_ID` (i.e. `species_ID` and `study_ID` were indistinguishable). 
+While we only present  an intercept-only model, this structure can be used to fit meta-regressions by fitting moderator variables. 
+
+```{r, class.source='klippy', results = 'hide'}
+# Multi-level meta-analytic model
+Model_CS1a_MLMA<-metafor::rma.mv(yi=ARR~-1, V=VCV_ARR, 
+                   method="REML",
+                   random=list(~1|species_ID,
+                               ~1|es_ID), 
+                   test="t",
+                   dfs = "contain",
+                   data=data_CS1a)
+summary(Model_CS1a_MLMA)
+
+# Calculate Prediction Intervals
+PIs_CS1a_MLMA <- predict(model_CS1a_MLMA)
+print(PIs_CS1a_MLMA)
+
+# Calculate I2
+I2_CS1a <- orchaRd::i2_ml(Model_CS1a_MLMA)
+print(I2_CS1a)
+```
+
+
+## Multi-level Meta-analysis of slope differences between two groups 
+
+We can imagine cases where one might be interested in comparing the slopes of two groups or treatments. 
+In this example, we demonstrate how to derive and analyse effect sizes when investigating differences in slopes. As per the previous example, such analysis require responses variables to be measured with the same unit. 
+We use the same data set as before, but formatted in a slightly different way (i.e. columns were re-organised in a "wide" format to calculate differences between sexes). In this example, rather than investigating overall variation in `ARR`, we will investigate the difference in `ARR` between males and females. 
+
+```{r class.source='klippy'}
+# Download the data file from OSF
+osfr::osf_retrieve_file("https://osf.io/mnw5d/") %>% osfr::osf_download(conflicts = "overwrite") 
+
+# Load the data file
+data_CS1b <- read.csv(here::here("ms", "CTmax_ARR_sex.csv"))
+```
+
+### Calculate effect size 
+
+First, we need to calculate the `ARR` of females (`ARR_f`) and males (`ARR_m`) with the formula we presented earlier. 
+We can then use the mean difference between `ARR_f` and `ARR_m` as an effect size, which we term here as `ARRD`. 
+The sampling variance was then calculated as per `formula XXX`
+
+```{r, class.source='klippy', results = 'hide'}
+data_CS1b<-data_CS1b %>% # calculate effect sizes
+
+  mutate(ARR_f=((mean_high_f-mean_low_f)/(acc_temp_high-acc_temp_low))) %>% 
+  mutate(ARR_m=((mean_high_m-mean_low_m)/(acc_temp_high-acc_temp_low))) %>% 
+  mutate(ARRD=ARR_f - ARR_m) %>% 
+  mutate(Var_ARRD=((1/(acc_temp_high-acc_temp_low))^2*(sd_low_f^2/n_low_f_adj+sd_high_f^2/n_high_f_adj+sd_low_m^2/n_low_m_adj+sd_high_m^2/n_high_m_adj)))  
+```
+
+### Meta-analysis
+
+Again, we first started by accounting for the non-independence of CTmax estimates measured on the same cohorts using a variance-covariance matrix termed as `VCV_ARRD`. 
+We then fit a multi-level meta-analytic model using a similar structure as demonstrated before. 
+Note that this model can be extended to meta-regressions by fitting moderator variables. 
+```{r, class.source='klippy', results = 'hide'}
+
+# Variance covariance matrix to account for non-independence of measurements performed on the same cohorts of animals
+VCV_ARRD<- metaAidR::make_VCV_matrix(data_CS1b, V = "Var_ARR", cluster = "shared_measurement_ID", obs = "es_ID")
+
+# Multi-level meta-analytic model
+model_CS1b_MLMA<-metafor::rma.mv(yi=ARRD~-1, V=VCV_ARRD, 
+                   method="REML",
+                   random=list(~1|species_ID,
+                               ~1|es_ID), 
+                   test="t",
+                   dfs = "contain",
+                   data=data_CS1b)
+print(model_CS1b_MLMA)
+
+# Calculate Prediction Intervals
+PIs_CS1b_MLMA <- predict(model_CS1b_MLMA)
+print(PIs_CS1b_MLMA)
+
+# Calculate I2
+I2_CS1b <- orchaRd::i2_ml(model_CS1b_MLMA)
+print(I2_CS1b)
+```
+
 
 # Case Study 2: Multilevel Meta-regression Approaches to Control for Dosages
 
@@ -83,7 +202,7 @@ data_CS2 <- read.csv(here::here("ms", "Dosage_EggHormones_CS2.csv"), sep = ";")
 ### Interpreting Meta-analytic Means Controlling for Dosages
 The data contains two columns of dosages....EXPLAIN all this.
 
-```{r}
+```{r, class.source='klippy', results = 'hide'}
 # Centre the dosage data on the mean. Note that, for comparability, we'll exclude 'NA' in dose so that models are fit with the exact same data.
           data_CS2 %<>% mutate(z_total_dose_T = scale(total_dose_T, center = TRUE, scale = FALSE)) %>% filter(!is.na(z_total_dose_T))
 
