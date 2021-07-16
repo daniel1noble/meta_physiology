@@ -1,6 +1,6 @@
 ---
 title: "Supplemental Materials for: Meta-analytic approaches and new effect sizes to account for heterogeneous effects in comparative physiology"
-author: Daniel W.A. Noble, Patrice Potter, Sammy Burke, Szymek Drobniak, Malgorzata Lagisz, Rose O’Dea, Shinichi Nakagawa
+author: Daniel W.A. Noble, Patrice Pottier, Samantha Burke, Szymon M. Drobniak, Malgorzata Lagisz, Rose E. O’Dea, Shinichi Nakagawa
 date: "`r Sys.Date()`"
 bibliography: ../bib/refs.bib
 csl: ../bib/the-journal-of-experimental-biology.csl
@@ -33,7 +33,7 @@ klippy::klippy(tooltip_message = 'Click to Copy Code', tooltip_success = 'Done',
 # Citation
 This supplement is associated with a special issue review paper and can be cited as follows:
 
-Daniel W.A. Noble, Patrice Potter, Sammy Burke, Szymek Drobniak, Malgorzata Lagisz, Rose O’Dea, Shinichi Nakagawa (2022) *Meta-analytic approaches and "new" effect sizes to account for heterogeneous effects in comparative physiology*. **Journal of Experimental Biology**
+Daniel W.A. Noble, Patrice Pottier, Sammantha Burke, Szymon M. Drobniak, Malgorzata Lagisz, Rose E. O’Dea, Shinichi Nakagawa (2022) *Meta-analytic approaches and "new" effect sizes to account for heterogeneous effects in comparative physiology*. **Journal of Experimental Biology**
 
 # Introduction
 
@@ -82,20 +82,25 @@ The sampling variance of the slope (`Var_ARR`) can then be defined using propert
 In this example, the slopes were calculated with stepwise comparisons between acclimation treatments. This method created a source of non-independence, with some treatments being involved in multiple comparisons (`shared_trt_ID`).
 To account for this, we divided by half the sample size of the observations in these non-independent comparisons (`n_low_adj` and `n_high_adj`) to divide by half the weight of these estimates. 
 
+In this example, we will only use data measured on independent groups of animals, thus excluding data measured twice on the same cohort of animals (i.e. animals sharing the same `shared_measurement_ID` in the data). Note that it is possible to model this dependency and examples are provided in Noble et al. (2017) and Pottier et al. *in review* 
+
 ```{r, class.source='klippy', results = 'hide'}
+
+# Calculate the effect sizes
 data_CS1a<-data_CS1a %>% 
               mutate(ARR=(mean_high-mean_low)/(acc_temp_high - acc_temp_low),
-                     Var_ARR=((1/(acc_temp_high-acc_temp_low))^2*(sd_low^2/n_low_adj+sd_high^2/n_high_adj))) # Need to double check this formula, Shinichi pointed out that there might be a mistake.
-```
+                     Var_ARR=((1/(acc_temp_high-acc_temp_low))^2*(sd_low^2/n_low_adj+sd_high^2/n_high_adj))) 
 
-In some cases, CTmax was measured twice on the same cohort of animals (e.g. using a different endpoint), which generates a source of non-independence between effect sizes. We can account for this source of non-independence by correlating errors between dependent effect sizes. The `make_VCV_matrix` from [`metaAidR`](https://github.com/daniel1noble/metaAidR) is a handy function to perform this correction, and assume a correlation of r = 0.5 by default. We termed the created variance-covariance matrix `VCV_ARR`. 
-
-```{r, class.source='klippy', results = 'hide', message=FALSE}
-# Variance covariance matrix to account for non-independence of measurements performed on the same cohorts of animals
-VCV_ARR<- metaAidR::make_VCV_matrix(data_CS1a, V = "Var_ARR", cluster = "shared_measurement_ID", obs = "es_ID")
-
-# This method should be similar from clubSandwich
-VCV_ARR2 <- clubSandwich::impute_covariance_matrix(data_CS1a$Var_ARR, cluster = "shared_measurement_ID", r =0.5)
+# Remove dependent effect sizes
+data_CS1a<-filter(data_CS1a,
+                    es_ID!="es85"&
+                    es_ID!="es86"&
+                    es_ID!="es87"&
+                    es_ID!="es98"&
+                    es_ID!="es282"&
+                    es_ID!="es283"&
+                    es_ID!="es284"&
+                    es_ID!="es286") 
 ```
 
 ### Meta-analysis
@@ -105,24 +110,31 @@ In this model, we used two random effects: `species_ID` and `es_ID` to account f
 While we only present  an intercept-only model, this structure can be used to fit meta-regressions by fitting moderator variables. 
 
 ```{r, class.source='klippy'}
+
 # Multi-level meta-analytic model
-Model_CS1a_MLMA <- metafor::rma.mv(ARR ~ 1, V = VCV_ARR2, 
+model_CS1a_MLMA <- metafor::rma.mv(ARR ~ 1, V = Var_ARR, 
                    method="REML",
                    random=list(~1|species_ID,
                                ~1|es_ID), 
                    test="t",
-                   dfs = "contain",
                    data=data_CS1a)
-summary(Model_CS1a_MLMA)
+print(model_CS1a_MLMA)
 
 # Calculate Prediction Intervals
-PIs_CS1a_MLMA <- predict(Model_CS1a_MLMA)
-print(PIs_CS1a_MLMA)
+PI_CS1a_MLMA <- predict(model_CS1a_MLMA)
+print(PI_CS1a_MLMA)
 
 # Calculate I2
-I2_CS1a <- orchaRd::i2_ml(Model_CS1a_MLMA)
+I2_CS1a <- orchaRd::i2_ml(model_CS1a_MLMA)
 print(I2_CS1a)
+
+# Plot the results
+orchard_plot(model_CS1a_MLMA, mod="Int", xlab="ARR")
 ```
+
+We can see from above that the model estimates an overall meta-analytic mean as `r coef(model_CS1a_MLMA)` with a 95\% CI from `r model_CS1a_MLMA$ci.lb` to `r model_CS1a_MLMA$ci.ub`. In other words, for each degree variation in acclimation temperature, the heat tolerance of the animals included in this data set vary by `r coef(model_CS1a_MLMA)` degrees on average. 95\% of the time we expect the mean in repeated samples to fall between `r PI_CS1a_MLMA$cr.lb` to `r PI_CS1a_MLMA$cr.ub`.
+Our prediction intervals suggest that heterogeneity is high, reflected also in our $I_{total}^2$ estimate of `r I2_CS1a[1]*100`\%.  Approximately, `r I2_CS1a[2]*100`\% of the total heterogeneity is the result of differences between species and `r I2_CS1a[3]*100`\% of the total heterogeneity is associated with the residuals. 
+With this effect size (slope), the 'nuisance heterogeneity' is accounted for, to some extent, at the level of the effect size.
 
 
 ## Multi-level Meta-analysis of Slope Differences between Two Groups 
@@ -145,6 +157,8 @@ First, we need to calculate the `ARR` of females (`ARR_f`) and males (`ARR_m`) w
 We can then use the mean difference between `ARR_f` and `ARR_m` as an effect size, which we term here as `ARRD`. 
 The sampling variance was then calculated as per `formula XXX`
 
+As before, we will only use data measured on independent groups of animals, thus excluding data measured twice on the same cohort of animals (i.e. animals sharing the same `shared_measurement_ID` in the data).
+
 ```{r, class.source='klippy', results = 'hide'}
 data_CS1b<-data_CS1b %>% # calculate effect sizes
 
@@ -152,40 +166,45 @@ data_CS1b<-data_CS1b %>% # calculate effect sizes
   mutate(ARR_m=((mean_high_m-mean_low_m)/(acc_temp_high-acc_temp_low))) %>% 
   mutate(ARRD=ARR_f - ARR_m) %>% 
   mutate(Var_ARRD=((1/(acc_temp_high-acc_temp_low))^2*(sd_low_f^2/n_low_f_adj+sd_high_f^2/n_high_f_adj+sd_low_m^2/n_low_m_adj+sd_high_m^2/n_high_m_adj)))  
+
+# Remove dependent effect sizes
+data_CS1b<-filter(data_CS1b,
+                    es_ID!="es85"&
+                    es_ID!="es86"&
+                    es_ID!="es87"&
+                    es_ID!="es98")
 ```
 
 ### Meta-analysis
-
-Again, we first started by accounting for the non-independence of CTmax estimates measured on the same cohorts using a variance-covariance matrix termed as `VCV_ARRD`. 
-
-```{r, class.source='klippy',  results = 'hide', message=FALSE}
-# Variance covariance matrix to account for non-independence of measurements performed on the same cohorts of animals
-#VCV_ARRD<- metaAidR::make_VCV_matrix(data_CS1b, V = "Var_ARR", cluster = "shared_measurement_ID", obs = "es_ID")
-VCV_ARRD <- clubSandwich::impute_covariance_matrix(data_CS1b$Var_ARRD, cluster = "shared_measurement_ID", r =0.5)
-```
 
 We then fit a multi-level meta-analytic model using a similar structure as demonstrated before. 
 Note that this model can be extended to meta-regressions by fitting moderator variables. 
 
 ```{r, class.source='klippy'}
+
 # Multi-level meta-analytic model
-model_CS1b_MLMA<-metafor::rma.mv(yi= ARRD~ 1, V = VCV_ARRD, 
+model_CS1b_MLMA<-metafor::rma.mv(yi= ARRD~ 1, V = Var_ARRD, 
                    method="REML",
                    random=list(~1|species_ID,
                                ~1|es_ID), 
                    test="t",
-                   dfs = "contain",
                    data=data_CS1b)
 print(model_CS1b_MLMA)
 
 # Calculate Prediction Intervals
-PIs_CS1b_MLMA <- predict(model_CS1b_MLMA)
-print(PIs_CS1b_MLMA)
+PI_CS1b_MLMA <- predict(model_CS1b_MLMA)
+print(PI_CS1b_MLMA)
 
 # Calculate I2
 I2_CS1b <- orchaRd::i2_ml(model_CS1b_MLMA)
 print(I2_CS1b)
+
+# Plot the results
+orchard_plot(model_CS1b_MLMA, mod="Int", xlab="ARR")
 ```
+
+We can see from above that the model estimates an overall meta-analytic mean as 0.002 with a 95\% CI from `r model_CS1b_MLMA$ci.lb` to `r model_CS1b_MLMA$ci.ub`. In other words, for each degree variation in acclimation temperature, the heat tolerance of females vary by an average of 0.002 degrees more than males. Note that the confidence intervals overlap with zero, which indicates that the difference between females and males is small, and not statistically significant. 95\% of the time we expect the mean in repeated samples to fall between `r PI_CS1b_MLMA$cr.lb` to `r PI_CS1b_MLMA$cr.ub`.
+Our prediction intervals suggest that heterogeneity is small to moderate, reflected also in our $I_{total}^2$ estimate of `r I2_CS1b[1]*100`\%. Approximately, `r I2_CS1b[2]*100`\% of the total heterogeneity is the result of differences between species and `r I2_CS1b[3]*100`\% of the total heterogeneity is associated with the residuals. 
 
 
 # Case Study 2: Multilevel Meta-regression Approaches to Control for Dosages
