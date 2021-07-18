@@ -36,7 +36,7 @@ $$
 
 where *T* stands for temperature in degrees Celsius and $T_{2} > T_{1}$, and $M_{1}$ and $M_{2}$ are the average physiological responses (estimated means) at temperature points $T_{1}$ and $T_{2}$.
 
-To obtain the sampling variance for this equation (slope), we need to know several basic properties of variance. Let's assume $M_{1}$ is a random variable, which means that this variable has a mean and standard deviation (variance; this standard decision is not 'sample' but 'sampling' standard deviation, which is often referred to as standard error). Multiplying a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $M_{1}$. This can be summarized as:
+To obtain the sampling variance for this equation (slope), we need to know several basic properties of variance. Let's assume $M_{1}$ is a random variable, which means that this variable has a mean and standard deviation (variance; this standard deviation is not the 'sample' but the 'sampling' standard deviation, which is often referred to as standard error). Multiplying a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $M_{1}$. This can be summarized as:
 
 $$
 \sigma^2(aM_1 \pm b)=a^2 * \sigma^2_{M_{1}}
@@ -136,7 +136,7 @@ $$
 SMD_{T} = \frac{\left(M_{1} - M_{2}\right)}{SD_{p}\left( T_{2} - T_{1}\right)}J
 $$
 
-Here, we can see that the difference between $M_1$ and $M_2$ is standardised by the pooled SD, essentially correcting for unitary differences. Additionally, dividing SMD by the temperature difference results in further correcting the effect size by temperature. To derive the sampling variance for $SMD_T$ we can apply the same principle as we did above to derive an sampling variance as:
+Here, we can see that the difference between $M_1$ and $M_2$ is standardised by the pooled SD, essentially correcting for unitary differences. Additionally, dividing SMD by the temperature difference results in further correcting the effect size by temperature. To derive the sampling variance for $SMD_T$ we can apply the same principle as we did above to derive a sampling variance as:
 
 $$
 s_{SMD_{T}}^2 = \left (\frac{N_{1} + N_{2}}{N_{1}N_{2}}  + \frac{SMD_{T}^2}{2\left( N_{1} + N_{2}\right)} \right) \left(\frac{1}{{T_{2} - T_{1}}}\right)^2
@@ -169,6 +169,6 @@ $$
 - 2r\sqrt{\frac{SD_{1}^2}{N_{1}M_{1}^2}}\sqrt{\frac{SD_{2}^2}{N_{2}M_{2}^2}},
 $$ where $r$ is 0 when two sets of measurements are independent (therefore, the term including $r$ disappears), while $r$ is the correlation between $\ln{M_1}$ and $\ln{M_2}$. As discussed, we usually do not have an estimate for this correlation coefficient.
 
-Finally, we note that by using the basic properties of variance and the delta method, one can derive sampling variance for most of cases. Indeed, these were enough for us to derive sampling variance for 'new' effect sizes (e.g. $lnQ_{10}$; see the main text) and as in @Nakagawa2015 and @Senior2020. Also, see @Nakagawa2017 for more on the delta method (they explain the 'first and second-order' delta method)
+Finally, we note that by using the basic properties of variance and the delta method, one can derive sampling variance for most of cases. Indeed, these were enough for us to derive sampling variance for 'new' effect sizes (e.g. $lnQ_{10}$; see the main text) and as in @Nakagawa2015 and @Senior2020. Also, see @Nakagawa2017ab for more on the delta method (they explain the 'first and second-order' delta method)
 
 # References
