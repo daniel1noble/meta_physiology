@@ -86,7 +86,7 @@ where *r* is the correlation between a set of measurements $M_1$ and $M_2$ from 
 
 ### Sampling variance for the difference between two slopes
 
-Now let us assume that we want to know the difference between two different ARR values: female ARR, $\text{ARR}_{f}$ and Male ARR, $\text{ARR}_{m}$. Such a difference (ARRD) can be written as:
+Now let us assume that we want to know the difference between two different ARR values: female ARR, $\text{ARR}_{f}$ and male ARR, $\text{ARR}_{m}$. Such a difference (ARRD) can be written as:
 
 $$
 \text{ARRD} = \text{ARR}_{f} - \text{ARR}_{m}.
@@ -130,13 +130,13 @@ Also, note that the difference between slopes does not need to be that of males 
 
 ### Controlling for unitary differences and temperature across studies
 
-Calculating ARR assumes that the units for the mean difference across studies is consistent. Frequently, this will not be the case for meta-analyses that hope to synthesise a wide array of traits that vary in their units (e.g., ul/g, grams, seconds, minutes). Fortunately, $lnRR$ and SMD (Table 1) already controls for unitary differences. As such, we can apply similar logic that we discuss above so that SMD corrects for both temperature and unitary differences. Table 1 provides the formula for SMD, it's pooled standard deviation, and sampling variance. Just like with ARR, we can apply our temperature correction to the SMD formula as follows:
+Calculating ARR assumes that the units for the mean difference across studies is consistent. Frequently, this will not be the case for meta-analyses that hope to synthesise a wide array of traits that vary in their units (e.g., ul/g, grams, seconds, minutes). Fortunately, $lnRR$ and SMD (Table 1) already controls for unitary differences. As such, we can apply similar logic that we discuss above so that SMD corrects for both temperature and unitary differences. Table 1 provides the formula for SMD, its pooled standard deviation, and sampling variance. Just like with ARR, we can apply our temperature correction to the SMD formula as follows:
 
 $$
 SMD_{T} = \frac{\left(M_{1} - M_{2}\right)}{SD_{p}\left( T_{2} - T_{1}\right)}J
 $$
 
-Here, we can see that the difference between $M_1$ and $M_2$ is standardised by the pooled SD, essentially correcting for unitary differences. Additionally, dividing SMD by the temperature difference results in further correcting the effect size by temperature. To derive the sampling variance for $SMD_T$ we can apply the same principle as we did above to derive a sampling variance as:
+Here we can see that the difference between $M_1$ and $M_2$ is standardised by the pooled SD, essentially correcting for unitary differences. Additionally, dividing SMD by the temperature difference results in further correcting the effect size by temperature. To derive the sampling variance for $SMD_T$ we can apply the same principle as we did above to derive a sampling variance as:
 
 $$
 s_{SMD_{T}}^2 = \left (\frac{N_{1} + N_{2}}{N_{1}N_{2}}  + \frac{SMD_{T}^2}{2\left( N_{1} + N_{2}\right)} \right) \left(\frac{1}{{T_{2} - T_{1}}}\right)^2
@@ -144,7 +144,7 @@ $$
 
 ### The Delta Method
 
-Deriving sampling variances using common properties of variance has its limits. Therefore, we introduce a practical and widely applicable method to obtain approximate variance when the basic properties of variance cannot be applied. This is where the delta method comes in. The general form of this method can be written as:
+Deriving sampling variances using common properties of variance has its limits. Therefore, we introduce a practical and widely applicable method to obtain approximate variance when the basic properties of variance cannot be applied. This is where the Delta method comes in. The general form of this method can be written as:
 
 $$
 \text{Var}(f(M_1)) \approx \text{Var}(M_1)* \left( 
@@ -173,6 +173,6 @@ $$
 
 where r is the correlation between $\ln{M_1}$ and $\ln{M_2}$ when organisms are measured multiple times (with r often assumed to be 0.5), while r is 0 when two sets of measurements are independent.
 
-Finally, we note that, by using the basic properties of variance and the delta method, one can derive sampling variance for most effect size measures. For instances, these methods allowed us to derive sampling variance for 'new' effect sizes (e.g. $lnQ_{10}$; see the main text) and were used in @Nakagawa2015 and @Senior2020. We also refer the reader to @Nakagawa2017ab for additional details on the Delta method.
+Finally, we note that, by using the basic properties of variance and the Delta method, one can derive sampling variance for most effect size measures. For instances, these methods allowed us to derive sampling variance for our 'new' effect sizes (e.g. $lnQ_{10}$; see the main text) and were used in @Nakagawa2015 and @Senior2020. We also refer the reader to @Nakagawa2017ab for additional details on the Delta method.
 
 # References
