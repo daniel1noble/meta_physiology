@@ -84,6 +84,18 @@ tm2 <- theme(panel.background = element_rect(fill = background.colour),
 
 ## Sample of `r nrow(dat)` papers {.tabset} 
 
+### Publication years {.tabset .tabset-fade .tabset-pills}   
+
+```{r}
+dat %>% dplyr::group_by(pub_year) %>% dplyr::tally() %>% 
+  ggplot() + tm +
+  geom_col(aes(x = pub_year, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0),breaks=seq(1,13,2)) +
+  scale_x_continuous(breaks = min(dat$pub_year):max(dat$pub_year)) +
+  labs(x = "publication year",
+       y = "number of papers")
+```
+
 ### Meta-analysis {.tabset .tabset-fade .tabset-pills}   
 
 Answer to the question "Is paper self-describing as containing a meta-analysis (or meta-regression) or actually using meta-analysis/regression approach?".
@@ -101,21 +113,11 @@ dat %>% dplyr::group_by(meta_analysis_self_described) %>% dplyr::tally() %>%
 
 ### Comparative physiology {.tabset .tabset-fade .tabset-pills}   
 
-Answer to the question ""Is the study's main focus on comparative physiology?"
+Answer to the question "Is the study's main focus on comparative physiology?"
 
 - yes = focused only on physiological traits very clearly)  
 - no =  does have physiological traits, but is interested in broader questions involving many different traits   
 
-```{r}
-dat %>% dplyr::group_by(comparative_physiology_main_focus) %>% dplyr::tally() %>% 
-  ggplot() + tm +
-  geom_col(aes(x = comparative_physiology_main_focus, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
-  scale_y_continuous(expand=c(0,0)) +
-  labs(x = "main focus on comparative physiology",
-       y = "number of papers") 
-```
-
-How do the two categorisations (meta-analysis and comparative focus) combine?
 
 ```{r}
 dat %>% 
@@ -131,8 +133,11 @@ dat %>%
        fill = "meta-analysis") 
 ```
 
+## Meta-analytic models {.tabset} 
 
-### Effect Sizes Used {.tabset .tabset-fade .tabset-pills}   
+Note that single papers can report more than one approach (e.g., use different effect sizes and different models).
+
+### Effect sizes used {.tabset .tabset-fade .tabset-pills}   
 
 ```{r}
 dat %>% dplyr::group_by(effect_size_type) %>% janitor::tabyl(effect_size_type) %>%
@@ -143,9 +148,9 @@ dat %>% dplyr::group_by(effect_size_type) %>% janitor::tabyl(effect_size_type) %
                  Means = dplyr::if_else(grepl("mean/proportion/raw", effect_size_type), n, 0),
                  lnCVR = dplyr::if_else(grepl("lnCVR", effect_size_type), n, 0),
                  Slope = dplyr::if_else(grepl("slope", effect_size_type), n, 0)) %>% 
-  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = n / sum(n)) %>% arrange(effect) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = n / sum(n)) %>% arrange(prop) %>% mutate(effect=factor(effect,levels=unique(effect))) %>% 
   ggplot() + tm + theme(axis.title.y = element_blank(),
-                        axis.text.y = element_text(size=8)) +
+                        axis.text.y = element_text(size=10)) +
   geom_col(aes(x = effect, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
   scale_y_continuous(expand=c(0,0),breaks=seq(1,20,2)) +
   labs(x = "Effect Size",
@@ -154,9 +159,8 @@ dat %>% dplyr::group_by(effect_size_type) %>% janitor::tabyl(effect_size_type) %
 ```
 
 
-### Types of models used {.tabset .tabset-fade .tabset-pills}
+### Statistical models used {.tabset .tabset-fade .tabset-pills}
 
-What models are used. Note that you need to take this approach because some papers use many different models.
 
 ```{r}
 summary <-  dat %>% dplyr::group_by(stat_model_type) %>% janitor::tabyl(stat_model_type) %>%
@@ -167,14 +171,15 @@ summary <-  dat %>% dplyr::group_by(stat_model_type) %>% janitor::tabyl(stat_mod
                  `Vote Counting` = dplyr::if_else(grepl("vote counting", stat_model_type), n, 0),
                  `Weighted Regression` = dplyr::if_else(grepl("weighted regression including mixed effects models", stat_model_type), n, 0),
                  `Random Effects Model` = dplyr::if_else(grepl("random-effects meta-analysis", stat_model_type), n, 0)) %>% 
-  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = (n / sum(n))) %>% arrange(effect)
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = (n / sum(n))) %>% arrange(prop) %>% mutate(effect=factor(effect,levels=unique(effect)))
 rownames(summary) <- NULL
 
 summary %>% 
-  ggplot() + tm +
+  ggplot() + tm + theme(axis.title.y = element_blank(),
+                        axis.text.y = element_text(size=10)) +
   geom_col(aes(x = effect, y = prop), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
   scale_y_continuous(expand=c(0,0),limits = c(0,0.4)) +
-  labs(x = "Analytical Approach",
+  labs(title = "Analytical Approach",
        y = "Frequency") +
   coord_flip()
 ```
@@ -185,11 +190,12 @@ Were effect sizes used in the analysis weighted by sampling variance?
 
 ```{r}
 dat %>%  janitor::tabyl(meta_analysis_weighted) %>% 
-  ggplot() + tm +
+  ggplot() + tm +  theme(axis.title.y = element_blank(),
+                        axis.text.y = element_text(size=10)) +
   geom_col(aes(x = meta_analysis_weighted,  y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
   scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
-  labs(x = "Weighted Model?",
-       y = "Frequency") 
+  labs(y = "Frequency") +
+  coord_flip()
 ```
 
 How do the two categorisations (meta-analysis and weighting) combine?
@@ -208,36 +214,18 @@ dat %>%
        fill = "Weighted?") 
 ```
 
+## Heterogeneity {.tabset} 
+
 ### Effect size impacted by 'nuisance heterogeneity'? {.tabset .tabset-fade .tabset-pills}
 
-Could effect size be impacted by an additional continous predictor (e.g., temperature in thermal limit studies, dosage in hormone manipulation studies)?
+Could effect size be impacted by an additional continuous predictor (e.g., temperature in thermal limit studies, dosage in hormone manipulation studies)?
 
-```{r}
-dat %>%  janitor::tabyl(cont_moderator_variable) %>% 
-  ggplot() + tm +
-  geom_col(aes(x = cont_moderator_variable, y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
-  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
-  labs(x = "Nuisance Heterogenity?",
-       y = "Frequency") 
-```
-
-### Dealt with nuisance in model? {.tabset .tabset-fade .tabset-pills}
-
-Of the studies that said 'yes' how many actually modelled it or accounted for it?
-
-```{r}
-dat %>%  filter(!cont_moderator_variable_modelled=="") %>% janitor::tabyl(cont_moderator_variable_modelled) %>% 
-  ggplot() + tm +
-  geom_col(aes(x = cont_moderator_variable_modelled, y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
-  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
-  labs(x = "Nuisance Heterogenity Modelled?",
-       y = "Frequency") 
-```
+If "yes", does the study investigate any continuous environmental or methodological factors as moderators?
 
 ```{r}
 dat %>% mutate(cont_moderator_variable_modelled = if_else(cont_moderator_variable_modelled == "", "N/A", cont_moderator_variable_modelled)) %>% 
   ggplot() + tm +
-  geom_bar(aes(x = cont_moderator_variable,
+  geom_bar(aes(x = factor(cont_moderator_variable,levels=c("yes","no","unclear")),
                fill = cont_moderator_variable_modelled,
                y = ..count../sum(..count..)), width = 0.5,
            colour = text.colour, size = 0.5) +
@@ -250,42 +238,33 @@ dat %>% mutate(cont_moderator_variable_modelled = if_else(cont_moderator_variabl
 
 ### Reported Heterogeneity? {.tabset .tabset-fade .tabset-pills}
 
-Of the studies that are weighted how many actually reported measures of heterogeinity?
+Of the studies that are weighted how many actually reported measures of heterogeneity?
 
 ```{r}
-dat %>%  filter(!heterogeneity_reported=="N/A (e.g. they conducted unweighted meta-analysis)") %>% mutate(heterogeneity_reported = if_else(heterogeneity_reported == "unclear/other (add comment)", "other", heterogeneity_reported)) %>% janitor::tabyl(heterogeneity_reported) %>% 
+dat %>%  filter(!heterogeneity_reported=="N/A (e.g. they conducted unweighted meta-analysis)") %>% mutate(heterogeneity_reported = if_else(heterogeneity_reported == "unclear/other (add comment)", "other", heterogeneity_reported)) %>% janitor::tabyl(heterogeneity_reported) %>% dplyr::arrange(-n) %>% 
   ggplot() + tm +
-  geom_col(aes(x = heterogeneity_reported, y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  geom_col(aes(x = factor(heterogeneity_reported,levels=heterogeneity_reported), y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
   scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
   labs(x = "Heterogeneity reported?",
        y = "Frequency") 
 ```
 
-### Publication years {.tabset .tabset-fade .tabset-pills}   
-
-```{r}
-dat %>% dplyr::group_by(pub_year) %>% dplyr::tally() %>% 
-  ggplot() + tm +
-  geom_col(aes(x = pub_year, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
-  scale_y_continuous(expand=c(0,0),breaks=seq(1,13,2)) +
-  scale_x_continuous(breaks = min(dat$pub_year):max(dat$pub_year)) +
-  labs(x = "publication year",
-       y = "number of papers")
-```
-
+## Non-independence and publication bias {.tabset} 
 
 ### Handling sources of non-independence {.tabset .tabset-fade .tabset-pills}
 
 Did the analysis account for - or mention - additional non-independence arising from, e.g., phylogenetic relatedness or shared control treatments? The actual way of dealing with non-independence (n-i) will vary from study to study.
 
 ```{r}
-dat %>%  janitor::tabyl(nonindependence_mentioned) %>% 
-  ggplot() + tm +
-  geom_col(aes(x = nonindependence_mentioned, y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+dat %>%  janitor::tabyl(nonindependence_mentioned) %>% dplyr::arrange(n) %>% 
+  ggplot() + tm + theme(axis.title.y=element_blank(),
+                        axis.text.y = element_text(size=10)) +
+  geom_col(aes(x = factor(nonindependence_mentioned,levels=nonindependence_mentioned), y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
   scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
   scale_x_discrete(labels = c('n-i dealt with w/o modelling', 'n-i modelled', 'unclear/other/not mentioned')) +
-  labs(x = "Non-independence handling",
-       y = "Frequency") 
+  labs(title = "Non-independence handling",
+       y = "Frequency") +
+  coord_flip()
 ```
 
 ### Publication bias {.tabset .tabset-fade .tabset-pills}
@@ -300,20 +279,18 @@ dat %>% dplyr::group_by(pub_bias_type) %>% janitor::tabyl(pub_bias_type) %>%
                  TimeLag = dplyr::if_else(grepl("time-lag", pub_bias_type), n, 0),
                  OtherUnclear = dplyr::if_else(grepl("unclear", pub_bias_type), n, 0),
                  None = dplyr::if_else(grepl("no", pub_bias_type), n, 0)) %>% 
-  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = (n / sum(n)*100)) %>% arrange(effect) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = (n / sum(n)*100)) %>% arrange(n) %>% mutate(effect = factor(effect,levels=unique(effect))) %>% 
   ggplot() + tm + theme(axis.title.y = element_blank(),
-                        axis.text.y = element_text(size=8)) +
+                        axis.text.y = element_text(size=10)) +
   geom_col(aes(x = effect, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
   scale_y_continuous(expand=c(0,0),breaks=seq(1,30,2)) +
-  scale_x_discrete(limits = c("None", "GraphicalTest", "RegressionTest", "TrimAndFill",
-                              "TimeLag", "OtherUnclear")) +
   labs(x = "Effect Size",
        y = "Number of Papers") +
   coord_flip()
 ```
 
 
-### Synthetic plot
+## Other plots {.tabset} 
 
 ```{r}
 plot1 <- dat %>% 
