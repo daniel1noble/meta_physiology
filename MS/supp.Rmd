@@ -51,7 +51,8 @@ Before embarking on the case studies readers will need to load the necessary R p
 #install.packages("pacman")
 #devtools::install_github("itchyshin/orchard_plot", subdir = "orchaRd", force = TRUE)
 #devtools::install_github("daniel1noble/metaAidR")
-pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, tidyverse, metafor, orchaRd, here, osfr, magrittr, metaAidR)
+pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, formatR, magick,
+               tidyverse, metafor, orchaRd, here, osfr, magrittr, metaAidR)
 ```
 
 # Case Study 1: Multilevel meta-analysis approaches to control for differences in treatment magnitude
@@ -88,8 +89,8 @@ In this example, we will only use data measured on independent groups of animals
 
 # Calculate the effect sizes
 data_CS1a<-data_CS1a %>% 
-              mutate(ARR=(mean_high-mean_low)/(acc_temp_high - acc_temp_low),
-                     Var_ARR=((1/(acc_temp_high-acc_temp_low))^2*(sd_low^2/n_low_adj+sd_high^2/n_high_adj))) 
+              mutate(ARR=(mean_high_f-mean_low_f)/(acc_temp_high - acc_temp_low),
+                     Var_ARR=((1/(acc_temp_high-acc_temp_low))^2*(sd_low_f^2/n_low_f_adj+sd_high_f^2/n_high_f_adj))) 
 
 # Remove dependent effect sizes
 data_CS1a<-filter(data_CS1a,
@@ -209,7 +210,7 @@ Our prediction intervals suggest that heterogeneity is small to moderate, reflec
 
 # Case Study 2: Multilevel Meta-regression Approaches to Control for Dosages
 
-In the next case study we'll demonstrate how to use multilevel meta-regression models to correct overall meta-analytic means for dosage differences applied across studies. The data in question was collected by @Podmola2018. 
+In the next case study we'll demonstrate how to use multilevel meta-regression models to correct overall meta-analytic means for dosage differences applied across studies. The data in question was collected by @Podmola2018. The meta-analysis reviewed published studies reporting the outcomes of experiments that manipulated levels of steroid hormones (testosterone and corticosterone) and recorded the impact of such manipulations on offspring traits. The aim was to establish the generality and homogeneity of such experimental effects, and their dependence on several moderator variables, most importantly the type of measured ofspring traits, the type of hormone used, and several methodological factors (administration route, hormone vehicle, offspring developmental stage, etc. - for details please consult the original study). The data used here as a subset of the original data, limited to effect sizes recorded in experiments manipulating the hormones *in ovo*.
 
 ### Retrieve and Load the Data
 
@@ -221,58 +222,112 @@ We'll first download the data from OSF, and load this into R. You can do this by
 osfr::osf_retrieve_file("https://osf.io/j85h3/") %>% osfr::osf_download(conflicts = "overwrite")
 
 # Load the data file.
-data_CS2 <- read.csv(here::here("ms", "Dosage_EggHormones_CS2.csv"), sep = ";")
+data_CS2_all <- read.csv(here::here("Dosage_EggHormones_CS2.csv"), sep = ";")
 
 ```
 
 ### Interpreting Meta-analytic Means Controlling for Dosages
-The data contains two columns of dosages....EXPLAIN all this.
+
+The data contains two categorical moderator variables to be included in the model: `hormone1` - identifies the type of steroid hormone (*androgen* vs. *corticosterone*); `trait1` - the type of offpsring trait measured (physiology, behaviour, survival, reproduction). Random effects include study ID (`ID`), species ID (`species_lat`) and study ID (`paper`).
+
+The dosage variables are reported separately for each hormone in ng/yolk (`total_dose_T`, `total_dose_A4` & `total_dose_CORT`) and in fractions of natural per-yolk concentration (`total_dose_p_T`, etc.) The latter value is available only for studies that reported natural hormone concentrations (`T_yolk`, `A4_yolk`, `CORT_yolk`).
+
+Below we are considering a subset of data related to testosterone manipulation - this hormone is often mixed with androstendione, which further justifies analysing it separately.
 
 ```{r, class.source='klippy', results = 'hide'}
-# Centre the dosage data on the mean. Note that, for comparability, we'll exclude 'NA' in dose so that models are fit with the exact same data.
-          data_CS2 %<>% mutate(z_total_dose_T = scale(total_dose_T, center = TRUE, scale = FALSE)) %>% filter(!is.na(z_total_dose_T))
+# Centre the dosage data on the mean. Note that, for comparability, we'll exclude 'NA'
+# in dose so that models are fit with the exact same data.
+data_CS2 <- data_CS2_all %>% mutate(z_total_dose_T = scale(total_dose_T, center = TRUE, scale = FALSE),
+                     z_total_dose_p_T = scale(total_dose_p_T, center = TRUE, scale = FALSE)) %>% filter(!is.na(z_total_dose_T))
 
 # Model that ignores "nuisance heterogeneity" for dosage applied
-     model_CS2_MLMA <- metafor::rma.mv(d ~ 1, V = var_d, random = list(~1|ID, ~1|paper), test = "t", dfs = "contain", data = data_CS2)
-     print(model_CS2_MLMA)
-     
+model_CS2_MLMA_1 <- metafor::rma.mv(d ~ 1, V = var_d,
+                                    method="REML",
+                                  random = list(~1|ID, ~1|paper, ~1|species_lat),
+                                  test = "t", dfs = "contain", data = data_CS2)
+print(model_CS2_MLMA_1)
+
 # Calculate Prediction Intervals
-           pis_MLMA <- predict(model_CS2_MLMA)
-           print(pis_MLMA)
+pis_MLMA_1 <- predict(model_CS2_MLMA_1)
+print(pis_MLMA_1)
 
 # Calculate I2 as well
-                 I2 <- orchaRd::i2_ml(model_CS2_MLMA)
-                 print(I2)
+I2_1 <- orchaRd::i2_ml(model_CS2_MLMA_1)
+print(I2_1)
+
+# Plot the results
+orchard_plot(model_CS2_MLMA_1, mod="Int", xlab="Cohen's d")
 ```
 
-We can see from above that the model 'ignoring' the nuisance heterogenity (model_CS2_MLMA) (i.e., the variability in effects resulting from dosage differences across studies) estimates an overall meta-analytic mean as `r coef(model_CS2_MLMA)` with a 95\% CI from `r model_CS2_MLMA$ci.lb` to `r model_CS2_MLMA$ci.ub`. Our prediction intervals suggest that heterogenity is high, reflected also in our $I_{total}^2$ estimate of `r I2[1]*100`\% -- 95\% of the time we expect the mean in repeated samples to fall between `r pis_MLMA$pi.lb` to `r pis_MLMA$pi.ub`. Approximately, `r I2[3]*100`\% of the total heterogenity is the result of differences between studies. Given that we have not controlled for dosage differences across studies all we can say is that the average SMD is rather small is the sample of studies that have applied these sets of dosages. In otherwords, on average, the means from the treatment and control groups differ by `r coef(model_CS2_MLMA)` standard deviation units. 
+We can see from above that the model 'ignoring' the nuisance heterogenity (`model_CS2_MLMA_1`) (i.e., the variability in effects resulting from dosage differences across studies) estimates an overall meta-analytic mean as `r coef(model_CS2_MLMA_1)` with a 95\% CI from `r model_CS2_MLMA_1$ci.lb` to `r model_CS2_MLMA_1$ci.ub`. Our prediction intervals suggest that heterogenity is high, reflected also in our $I_{total}^2$ estimate of `r I2_1[1]*100`\% -- 95\% of the time we expect the mean in repeated samples to fall between `r pis_MLMA_1$pi.lb` to `r pis_MLMA_1$pi.ub`. Approximately, `r I2_1[3]*100`\% of the total heterogenity is the result of differences between studies. Given that we have not controlled for dosage differences across studies all we can say is that the average SMD is rather small in the sample of studies that have applied these sets of dosages. In other words, on average, the means from the treatment and control groups differ by `r coef(model_CS2_MLMA_1)` standard deviation units.
 
 We can now model these dosage effects to control for 'nuisance heterogenity' and make the overall mean more interpretable. We'll first start by fitting and interpreting the coefficient just for the raw total dosage applied in a given study. To do this, we can now fit a multilevel meta-regression model as follows:
 
 ```{r}
-
 # Model that re-calibrates the overall meta-analytic mean (Intercept) to control for dosage administration
-    model_CS2_nuisance1 <- metafor::rma.mv(d ~ total_dose_T, V = var_d, random = list(~1|ID, ~1|paper), test = "t", dfs = "contain", data = data_CS2)
-    print(model_CS2_nuisance1)
+model_CS2_nuisance1 <- metafor::rma.mv(d ~ total_dose_T, V = var_d,
+                                       method="REML",
+                                       random = list(~1|ID, ~1|paper, ~1|species_lat),
+                                       test = "t", dfs = "contain", data = data_CS2)
+print(model_CS2_nuisance1)
 ```
 
 We can see from our model that controls for nuisance heterogenity (model_CS2_nuisance1) that we now estimate an overall meta-analytic mean as `r coef(model_CS2_nuisance1)[1]` with a 95\% CI from `r model_CS2_nuisance1$ci.lb[1]` to `r model_CS2_nuisance1$ci.ub[1]`. Importantly, this is the mean effect size when the total dosage applied is 0, which doesn't make much sense. As such, we can center total dosage applied to make the mean more 'meaningful' (mind the pun). 
 
 ```{r}
 
-# Model that re-calibrates the overall meta-analytic mean (Intercept) to control for dosage administration but uses centered dosage
-     model_CS2_nuisance2 <- metafor::rma.mv(d ~ z_total_dose_T, V = var_d, random = list(~1|ID, ~1|paper), test = "t", dfs = "contain", data = data_CS2)
-     print(model_CS2_nuisance2)
+# Model that re-calibrates the overall meta-analytic mean (Intercept) to control for dosage
+# administration but uses centered dosage
+model_CS2_nuisance2 <- metafor::rma.mv(d ~ z_total_dose_T, V = var_d,
+                                       method="REML",
+                                       random = list(~1|ID, ~1|paper, ~1|species_lat),
+                                       test = "t", dfs = "contain", data = data_CS2)
+print(model_CS2_nuisance2)
 
 # Calculate Prediction Intervals
-           pis_nuisance2 <- predict(model_CS2_nuisance2, newmods = 0)
-           print(pis_nuisance2)
+pis_nuisance2 <- predict(model_CS2_nuisance2, newmods = 0)
+print(pis_nuisance2)
 # Calculate I2 as well
-            I2_nuisance2 <- orchaRd::i2_ml(model_CS2_nuisance2)
-            print(I2_nuisance2)
+I2_nuisance2 <- orchaRd::i2_ml(model_CS2_nuisance2)
+print(I2_nuisance2)
 ```
 
-Now that we have centered the total dosage around its mean (which is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` uL difference(Szymek, not sure on units, sorry)) our overall meta-analytic mean (now estimated to be `r coef(model_CS2_nuisance2)[1]`,  with a 95\% CI from `r model_CS2_nuisance2$ci.lb[1]` to `r model_CS2_MLMA$ci.ub[1]`) is interpreted differently. Overall, the meta-analytic mean difference between treatments that differ by an average of `r mean(data_CS2$total_dose_T, na.rm = TRUE)` uL is `r coef(model_CS2_nuisance2)[1]` standard deviation units different. Its still a small overall effect size, but it has a clearer interpretation now. We can again calculate PI's and $I^2$ using the model. Overall, our prediction intervals suggest that heterogenity is still high even after accounting for dosage reflected also in our $I_{total}^2$ estimate of `r I2_nuisance2[1]*100`\% --  95\% of the time we expect the mean in repeated samples to fall between `r pis_nuisance2$pi.lb[1]` to `r pis_nuisance2$pi.ub[1]` when the average dosage difference applied is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` uL. 
+Now that we have centered the total dosage around its mean (which is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/yolk, our overall meta-analytic mean (now estimated to be `r coef(model_CS2_nuisance2)[1]`,  with a 95\% CI from `r model_CS2_nuisance2$ci.lb[1]` to `r model_CS2_nuisance2$ci.ub[1]`) is interpreted differently. Overall, the meta-analytic mean difference between treatments that differ by an average of `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/yolk is `r coef(model_CS2_nuisance2)[1]` standard deviation units different. Its still a small overall effect size, but it has a clearer interpretation now. We can again calculate PI's and $I^2$ using the model. Overall, our prediction intervals suggest that heterogenity is still high even after accounting for dosage reflected also in our $I_{total}^2$ estimate of `r I2_nuisance2[1]*100`\% --  95\% of the time we expect the mean in repeated samples to fall between `r pis_nuisance2$pi.lb[1]` to `r pis_nuisance2$pi.ub[1]` when the average dosage difference applied is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/yolk. Notably, the prediction interval after modelling the nuisance heterogeneity shrink.
+
+An alternative formulation of the dosage effect could be used taking into account the fact that absolute dose may not reflect each dose's biological effect - the latter will likely depend on the original, natural concentration of the hormone, and how much it is modified by the experiment. The below model uses the alternative dosage formulation.
+
+```{r}
+# Model that re-calibrates the overall meta-analytic mean (Intercept) to control for dosage
+# administration but uses centered dosage (expressed as the fraction of natural hormone concentration)
+data_CS2 <- data_CS2 %>% filter(!is.na(z_total_dose_p_T))
+model_CS2_nuisance3 <- metafor::rma.mv(d ~ z_total_dose_p_T, V = var_d,
+                                       method="REML",
+                                       random = list(~1|ID, ~1|paper, ~1|species_lat),
+                                       test = "t", dfs = "contain", data = data_CS2)
+print(model_CS2_nuisance3)
+
+# Calculate Prediction Intervals
+pis_nuisance3 <- predict(model_CS2_nuisance3, newmods = 0)
+print(pis_nuisance3)
+# Calculate I2 as well
+I2_nuisance3 <- orchaRd::i2_ml(model_CS2_nuisance3)
+print(I2_nuisance3)
+```
+
+Follow-up steps could include expanding the model to comprise both hormone types (testosterone and corticosterone), modelling their impact using a categorical predictor (`hormone1`) and also possibly interacting the dosage effect with the type of hormone applied.
+
+```{r}
+data_CS2b <- data_CS2_all %>% mutate(z_total_dose = scale(total_dose, center = TRUE, scale = FALSE)) %>% filter(!is.na(z_total_dose))
+# Model that re-calibrates the overall meta-analytic mean (Intercept) to control for dosage
+# administration but uses centered dosage
+model_CS2_nuisance4 <- metafor::rma.mv(d ~ hormone1 * z_total_dose, V = var_d,
+                                       method="REML",
+                                       random = list(~1|ID, ~1|paper, ~1|species_lat),
+                                       test = "t", dfs = "contain", data = data_CS2b)
+print(model_CS2_nuisance4)
+
+```
+
 
 # Supplementary Materials for Survey Study Selection
 
@@ -280,7 +335,7 @@ Here we provide greater detail on the search strategy, keyword selection and the
 
 ```{r figS1, fig.align='center', echo = FALSE, fig.cap="PRISMA flowchart for study selection and inclusion"}
 
-img1 <- readPNG("../figs/PRISMA_diagram_v0.png")
+img1 <- readPNG(here::here("figs", "PRISMA_diagram_v0.png"))
 
 p1 <- cowplot::ggdraw()+
         cowplot::draw_image(img1)
@@ -291,7 +346,7 @@ p1
 
 ```{r tabS1,  echo = FALSE, tab.cap="Log of search string development"}
 
-table <- read.csv("../tables/Table_S1.csv")
+table <- read.csv(here::here("tables","Table_S1.csv"))
 
 table_s1 <- flextable(table)                                                                            %>% 
             flextable::compose(j = 1, part = "header", value = as_paragraph(as_b("Date")))              %>% 
@@ -306,7 +361,7 @@ table_s1 <- flextable(table)                                                    
 
 ```{r tabS2, echo = FALSE, tab.cap="Log of search string development"}
 
-table <- read.csv("../tables/Table_S2.csv")
+table <- read.csv(here::here("tables","Table_S2.csv"))
 
 table_s2 <- flextable(table)                                                                            %>% 
             flextable::compose(j = 1, part = "header", value = as_paragraph(as_b("Journal Name")))      %>% 
