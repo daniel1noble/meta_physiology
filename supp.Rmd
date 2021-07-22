@@ -89,8 +89,8 @@ In this example, we will only use data measured on independent groups of animals
 
 # Calculate the effect sizes
 data_CS1a<-data_CS1a %>% 
-              mutate(ARR=(mean_high_f-mean_low_f)/(acc_temp_high - acc_temp_low),
-                     Var_ARR=((1/(acc_temp_high-acc_temp_low))^2*(sd_low_f^2/n_low_f_adj+sd_high_f^2/n_high_f_adj))) 
+              mutate(ARR=(mean_high-mean_low)/(acc_temp_high - acc_temp_low),
+                     Var_ARR=((1/(acc_temp_high-acc_temp_low))^2*(sd_low^2/n_low_adj+sd_high^2/n_high_adj))) 
 
 # Remove dependent effect sizes
 data_CS1a<-filter(data_CS1a,
@@ -161,15 +161,16 @@ The sampling variance was then calculated as per `formula XXX`
 As before, we will only use data measured on independent groups of animals, thus excluding data measured twice on the same cohort of animals (i.e. animals sharing the same `shared_measurement_ID` in the data).
 
 ```{r, class.source='klippy', results = 'hide'}
-data_CS1b<-data_CS1b %>% # calculate effect sizes
 
-  mutate(ARR_f=((mean_high_f-mean_low_f)/(acc_temp_high-acc_temp_low))) %>% 
-  mutate(ARR_m=((mean_high_m-mean_low_m)/(acc_temp_high-acc_temp_low))) %>% 
-  mutate(ARRD=ARR_f - ARR_m) %>% 
-  mutate(Var_ARRD=((1/(acc_temp_high-acc_temp_low))^2*(sd_low_f^2/n_low_f_adj+sd_high_f^2/n_high_f_adj+sd_low_m^2/n_low_m_adj+sd_high_m^2/n_high_m_adj)))  
+# calculate effect sizes
+data_CS1b<-data_CS1b %>% 
+  mutate(ARR_f=((mean_high_f-mean_low_f)/(acc_temp_high-acc_temp_low)),
+         ARR_m=((mean_high_m-mean_low_m)/(acc_temp_high-acc_temp_low)),
+         ARRD= ARR_f - ARR_m,
+         Var_ARRD=((1/(acc_temp_high-acc_temp_low))^2*(sd_low_f^2/n_low_f_adj+sd_high_f^2/n_high_f_adj+sd_low_m^2/n_low_m_adj+sd_high_m^2/n_high_m_adj)))  
 
 # Remove dependent effect sizes
-data_CS1b<-filter(data_CS1b,
+data_CS1b <- filter(data_CS1b,
                     es_ID!="es85"&
                     es_ID!="es86"&
                     es_ID!="es87"&
