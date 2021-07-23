@@ -1,9 +1,9 @@
 ---
-title: "Supplemental Materials for: Meta-analytic approaches and new effect sizes to account for heterogeneous effects in comparative physiology"
+title: "Supplemental Materials for: Meta-analytic approaches and effect sizes to account for ‘nuisance heterogeneity’ in comparative physiology"
 author: Daniel W.A. Noble, Patrice Pottier, Samantha Burke, Szymon M. Drobniak, Malgorzata Lagisz, Rose E. O’Dea, Shinichi Nakagawa
 date: "`r Sys.Date()`"
-bibliography: ../bib/refs.bib
-csl: ../bib/the-journal-of-experimental-biology.csl
+bibliography: ./bib/refs.bib
+csl: ./bib/the-journal-of-experimental-biology.csl
 output: 
   bookdown::html_document2:
     code_folding: hide
@@ -33,11 +33,11 @@ klippy::klippy(tooltip_message = 'Click to Copy Code', tooltip_success = 'Done',
 # Citation
 This supplement is associated with a special issue review paper and can be cited as follows:
 
-Daniel W.A. Noble, Patrice Pottier, Sammantha Burke, Szymon M. Drobniak, Malgorzata Lagisz, Rose E. O’Dea, Shinichi Nakagawa (2022) *Meta-analytic approaches and "new" effect sizes to account for heterogeneous effects in comparative physiology*. **Journal of Experimental Biology**
+Daniel W.A. Noble, Patrice Pottier, Malgorzata Lagisz, Samantha Burke, Szymon M. Drobniak, Rose E. O’Dea, Shinichi Nakagawa (2022) *Meta-analytic approaches and effect sizes to account for ‘nuisance heterogeneity’ in comparative physiology*. **Journal of Experimental Biology**
 
 # Introduction
 
-In this supplement we will demonstrate some of the principles we describe in our review paper. We'll show readers ways they can apply some of the 'new' effect sizes we describe to account for 'nuisance heterogeneity' in combination with multilevel meta-analytic models (MLMA) and/or multilevel meta-regression models. We realise that 'nuisance heterogeneity' may be a misnomer in some senses because such forms of heterogeneity may actually be the main interest of a given meta-analysis; in which case, multilevel meta-regressions are the way to go! 
+In this supplement, we will demonstrate some of the principles we describe in our review paper. We'll show readers ways they can apply some of the 'new' effect sizes we describe to account for 'nuisance heterogeneity' in combination with multilevel meta-analytic models (MLMA) and/or multilevel meta-regression models. We realise that 'nuisance heterogeneity' may be a misnomer in some senses because such forms of heterogeneity may actually be the main interest of a given meta-analysis; in which case, multilevel meta-regressions are the way to go! 
 
 We will overview two different case studies. The first case study will show readers how to account for known drivers of effect heterogeneity in the effect size, followed by how we can fit a MLMA (intercept only) model to estimate an overall meta-analytic mean. We then show readers how to interpret this mean and associated heterogeneity. In the second case study, we use a common effect size metric and instead model the 'nuisance' heterogeneity using a multi-level meta-regression approach. We also focus on showing readers how to interpret effects from this model along with heterogeneity. 
 
@@ -45,7 +45,7 @@ Throughout the supplement R code is contained within code blocks. We provide exa
 
 # Loading Data and R Packages
 
-Before embarking on the case studies readers will need to load the necessary R packages. Note that the first two lines are commented out. If you don't have these packages, just install these by removing the `#`. 
+Before embarking on the case studies, readers will need to load the necessary R packages. Note that the first two lines are commented out. If you don't have these packages, just install these by removing the `#`. 
 
 ```{r loadpackages, echo = TRUE, results = "hide", messages = FALSE, class.source='klippy'}
 #install.packages("pacman")
@@ -55,13 +55,13 @@ pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, formatR, magick,
                tidyverse, metafor, orchaRd, here, osfr, magrittr, metaAidR)
 ```
 
-# Case Study 1: Multilevel meta-analysis approaches to control for differences in treatment magnitude
+# Case Study 1: Multilevel Meta-analysis Approaches to Control for Nuisance Heterogeneity at the Effect Size Level
 
-Here, we will demonstrate how to use analyse variation in slopes and differences in slopes between two groups. In this example, we will account for effects of known drivers of 'nuisance heterogeneity' at the level of the effect size. We use a case study by Pottier et al. *in review* which investigated the association between acclimation temperature, thermal tolerance and sex. We first demonstrate how to use meta-analytic approaches to investigate the variation in the relationship between acclimation temperature and thermal tolerance (i.e. variation in slope), and then demonstrate how to meta-analyse differences in slopes between two groups (i.e. sexes). 
+Here, we will demonstrate how to analyse variation and differences in slopes between two groups. In this example, we will account for effects of known drivers of 'nuisance heterogeneity' at the level of the effect size. We use a case study by Pottier et al. *in review* which investigated the association between acclimation temperature, thermal tolerance and sex. We first demonstrate how to use meta-analytic approaches to investigate the variation in the relationship between acclimation temperature and thermal tolerance (i.e. variation in slope), and then demonstrate how to meta-analyse differences in slopes between two groups (i.e. sexes). 
 
-## Multilvel meta-analysis of slopes
+## Multilevel Meta-analysis of Slopes
 
-We first download the data from OSF, and load this into R. You can do this by copying and pasting the code below.
+We first download the data from OSF and load this into R. You can do this by copying and pasting the code below.
 
 ```{r class.source='klippy', results = 'hide'}
 
@@ -74,11 +74,11 @@ data_CS1a <- read.csv(here::here("CTmax_ARR.csv"))
 
 ### Calculate Effect Size
 
-In this section, we demonstrate how to calculate slope effect sizes and their associated sampling variance. Note that calculating slopes require the response variable to be measured with the same unit and does not apply to all meta-analyses. While this example focuses on thermal tolerance, the meta-analysis of slope may also be applicable to investigate changes in thermal preference, or metabolic scaling for example. 
+In this section, we demonstrate how to calculate slope effect sizes and their associated sampling variance. Note that calculating slopes requires the response variable to be measured with the same unit and does not apply to all meta-analyses. While this example focuses on thermal tolerance, the meta-analysis of slope may also be applicable to investigate changes in thermal preference or metabolic scaling, for example. 
 
-In this example, we use a simplified data set from Pottier et al. *in review* and we demonstrate how to investigate the mean effect of acclimation temperature on heat tolerance. Because heat tolerance was consistently measured in degrees Celsius (`CTmax`) in the studies compiled, we can calculate the slope between acclimation temperature and heat tolerance, which is termed as the acclimation response ratio (`ARR`) in the literature. 
+In this example, we use a simplified data set from Pottier et al. *in review*, and we demonstrate how to investigate the mean effect of acclimation temperature on heat tolerance. Because heat tolerance was consistently measured in degrees Celsius (`CTmax`) in the studies compiled, we can calculate the slope between acclimation temperature and heat tolerance, which is termed as the acclimation response ratio (`ARR`) in the literature. 
 This effect size is calculated as the difference between the heat tolerance at the higher (`mean_high`) and the lower (`mean_low`) acclimation temperatures, divided by the difference between acclimation temperatures (`acc_temp_high` - `acc_temp_low`). 
-The sampling variance of the slope (`Var_ARR`) can then be defined using properties of variance as per 'formula XXX` 
+The sampling variance of the slope (`Var_ARR`) can then be defined using properties of variance as per Box 1 in the main manuscript. 
 
 In this example, the slopes were calculated with stepwise comparisons between acclimation treatments. This method created a source of non-independence, with some treatments being involved in multiple comparisons (`shared_trt_ID`).
 To account for this, we divided by half the sample size of the observations in these non-independent comparisons (`n_low_adj` and `n_high_adj`) to divide by half the weight of these estimates. 
@@ -107,7 +107,8 @@ data_CS1a<-filter(data_CS1a,
 ### Meta-analysis
 
 Then, we can run the multi-level meta-analytic model using the `rma.mv` function in the `metafor` package. 
-In this model, we used two random effects: `species_ID` and `es_ID` to account for between species variation and the variation associated with the residuals. Note that it is possible to assess the variation due to phylogenetic relatedness but we will keep it simple for demonstration purposes. We also did not assessed variation due to between-study differences because the levels of this variable was almost entirely overlapping with `species_ID` (i.e. `species_ID` and `study_ID` were indistinguishable). 
+In this model, we used two random effects: `species_ID` and `es_ID` to account for between species variation and the variation associated with the residuals. Note that it is possible to assess the variation due to phylogenetic relatedness but we will keep it simple for demonstration purposes. We also did not assess variation due to between-study differences because the levels of this variable were almost entirely overlapping with `species_ID` (i.e. `species_ID` and `study_ID` were indistinguishable). 
+
 While we only present  an intercept-only model, this structure can be used to fit meta-regressions by fitting moderator variables. 
 
 ```{r, class.source='klippy'}
@@ -133,15 +134,15 @@ print(I2_CS1a)
 orchard_plot(model_CS1a_MLMA, mod="Int", xlab="ARR")
 ```
 
-We can see from above that the model estimates an overall meta-analytic mean as `r coef(model_CS1a_MLMA)` with a 95\% CI from `r model_CS1a_MLMA$ci.lb` to `r model_CS1a_MLMA$ci.ub`. In other words, for each degree variation in acclimation temperature, the heat tolerance of the animals included in this data set vary by `r coef(model_CS1a_MLMA)` degrees on average. 95\% of the time we expect the mean in repeated samples to fall between `r PI_CS1a_MLMA$cr.lb` to `r PI_CS1a_MLMA$cr.ub`.
-Our prediction intervals suggest that heterogeneity is high, reflected also in our $I_{total}^2$ estimate of `r I2_CS1a[1]*100`\%.  Approximately, `r I2_CS1a[2]*100`\% of the total heterogeneity is the result of differences between species and `r I2_CS1a[3]*100`\% of the total heterogeneity is associated with the residuals. 
+We can see from above that the model estimates an overall meta-analytic mean as `r coef(model_CS1a_MLMA)` with a 95\% CI from `r model_CS1a_MLMA$ci.lb` to `r model_CS1a_MLMA$ci.ub`. In other words, for each degree variation in acclimation temperature, the heat tolerance of the animals included in this data set vary by `r coef(model_CS1a_MLMA)` degrees on average. 95\% of the time we expect the mean in repeated samples to fall between `r PI_CS1a_MLMA$cr.lb` and `r PI_CS1a_MLMA$cr.ub`.
+Our prediction intervals suggest that heterogeneity is high, reflected in our $I_{total}^2$ estimate of `r I2_CS1a[1]*100`\%.  Approximately, `r I2_CS1a[2]*100`\% of the total heterogeneity is the result of differences between species, and `r I2_CS1a[3]*100`\% of the total heterogeneity is associated with the residuals. 
 With this effect size (slope), the 'nuisance heterogeneity' is accounted for, to some extent, at the level of the effect size.
 
 
 ## Multi-level Meta-analysis of Slope Differences between Two Groups 
 
 We can imagine cases where one might be interested in comparing the slopes of two groups or treatments. 
-In this example, we demonstrate how to derive and analyse effect sizes when investigating differences in slopes. As per the previous example, such analysis require responses variables to be measured with the same unit. 
+In this example, we demonstrate how to derive and analyse effect sizes when investigating differences in slopes. As per the previous example, such analysis requires response variables to be measured with the same unit. 
 We use the same data set as before, but formatted in a slightly different way (i.e. columns were re-organised in a "wide" format to calculate differences between sexes). In this example, rather than investigating overall variation in `ARR`, we will investigate the difference in `ARR` between males and females. 
 
 ```{r class.source='klippy', results = 'hide'}
@@ -156,7 +157,7 @@ data_CS1b <- read.csv(here::here("CTmax_ARR_sex.csv"))
 
 First, we need to calculate the `ARR` of females (`ARR_f`) and males (`ARR_m`) with the formula we presented earlier. 
 We can then use the mean difference between `ARR_f` and `ARR_m` as an effect size, which we term here as `ARRD`. 
-The sampling variance was then calculated as per `formula XXX`
+The sampling variance was then calculated as per Box 1 in the main manuscript.
 
 As before, we will only use data measured on independent groups of animals, thus excluding data measured twice on the same cohort of animals (i.e. animals sharing the same `shared_measurement_ID` in the data).
 
@@ -205,17 +206,16 @@ print(I2_CS1b)
 orchard_plot(model_CS1b_MLMA, mod="Int", xlab="ARR")
 ```
 
-We can see from above that the model estimates an overall meta-analytic mean as 0.002 with a 95\% CI from `r model_CS1b_MLMA$ci.lb` to `r model_CS1b_MLMA$ci.ub`. In other words, for each degree variation in acclimation temperature, the heat tolerance of females vary by an average of 0.002 degrees more than males. Note that the confidence intervals overlap with zero, which indicates that the difference between females and males is small, and not statistically significant. 95\% of the time we expect the mean in repeated samples to fall between `r PI_CS1b_MLMA$cr.lb` to `r PI_CS1b_MLMA$cr.ub`.
-Our prediction intervals suggest that heterogeneity is small to moderate, reflected also in our $I_{total}^2$ estimate of `r I2_CS1b[1]*100`\%. Approximately, `r I2_CS1b[2]*100`\% of the total heterogeneity is the result of differences between species and `r I2_CS1b[3]*100`\% of the total heterogeneity is associated with the residuals. 
-
+We can see from above that the model estimates an overall meta-analytic mean as 0.002 with a 95\% CI from `r model_CS1b_MLMA$ci.lb` to `r model_CS1b_MLMA$ci.ub`. In other words, for each degree variation in acclimation temperature, the heat tolerance of females vary by an average of 0.002 degrees more than males. Note that the confidence intervals overlap with zero, which indicates that the difference between females and males is small, and not statistically significant. 95\% of the time, we expect the mean in repeated samples to fall between `r PI_CS1b_MLMA$cr.lb` and `r PI_CS1b_MLMA$cr.ub`.
+Our prediction intervals suggest that heterogeneity is small to moderate, reflected in our $I_{total}^2$ estimate of `r I2_CS1b[1]*100`\%. Approximately, `r I2_CS1b[2]*100`\% of the total heterogeneity is the result of differences between species, and `r I2_CS1b[3]*100`\% of the total heterogeneity is associated with the residuals. 
 
 # Case Study 2: Multilevel Meta-regression Approaches to Control for Dosages
 
-In the next case study we'll demonstrate how to use multilevel meta-regression models to correct overall meta-analytic means for dosage differences applied across studies. The data in question was collected by @Podmola2018. The meta-analysis reviewed published studies reporting the outcomes of experiments that manipulated levels of steroid hormones (testosterone and corticosterone) and recorded the impact of such manipulations on offspring traits. The aim was to establish the generality and homogeneity of such experimental effects, and their dependence on several moderator variables, most importantly the type of measured ofspring traits, the type of hormone used, and several methodological factors (administration route, hormone vehicle, offspring developmental stage, etc. - for details please consult the original study). The data used here as a subset of the original data, limited to effect sizes recorded in experiments manipulating the hormones *in ovo*.
+In the next case study we'll demonstrate how to use multilevel meta-regression models to correct the overall meta-analytic mean for dosage differences applied across studies. The data in question was collected by @Podmola2018. The meta-analysis reviewed published studies reporting the outcomes of experiments that manipulated levels of steroid hormones (testosterone and corticosterone) and recorded the impact of such manipulations on offspring traits. The aim was to establish the generality and homogeneity of such experimental effects, and their dependence on several moderator variables, most importantly the type of measured offspring traits, the type of hormone used, and several methodological factors (administration route, hormone vehicle, offspring developmental stage, etc. - for details please consult the original study). The data used here as a subset of the original data, limited to effect sizes recorded in experiments manipulating the hormones *in ovo*.
 
 ### Retrieve and Load the Data
 
-We'll first download the data from OSF, and load this into R. You can do this by copying and pasting the code below.
+We'll first download the data from OSF and load this into R. You can do this by copying and pasting the code below.
 
 ```{r, class.source='klippy', results = 'hide'}
 
@@ -229,23 +229,25 @@ data_CS2_all <- read.csv(here::here("Dosage_EggHormones_CS2.csv"), sep = ";")
 
 ### Interpreting Meta-analytic Means Controlling for Dosages
 
-The data contains two categorical moderator variables to be included in the model: `hormone1` - identifies the type of steroid hormone (*androgen* vs. *corticosterone*); `trait1` - the type of offpsring trait measured (physiology, behaviour, survival, reproduction). Random effects include study ID (`ID`), species ID (`species_lat`) and study ID (`paper`).
+The data contains two categorical moderator variables to be included in the model: `hormone1` - identifies the type of steroid hormone (*androgen* vs. *corticosterone*); `trait1` - the type of offspring trait measured (physiology, behaviour, survival, reproduction). Random effects include study / observation ID (`ID`), species ID (`species_lat`) and study ID (`paper`).
 
-The dosage variables are reported separately for each hormone in ng/yolk (`total_dose_T`, `total_dose_A4` & `total_dose_CORT`) and in fractions of natural per-yolk concentration (`total_dose_p_T`, etc.) The latter value is available only for studies that reported natural hormone concentrations (`T_yolk`, `A4_yolk`, `CORT_yolk`).
+The dosage variables are reported separately for each hormone in ng/g yolk (`total_dose_T`, `total_dose_A4` & `total_dose_CORT`) and in fractions of natural per-yolk concentration (`total_dose_p_T`, etc.) The latter value is available only for studies that reported natural hormone concentrations (`T_yolk`, `A4_yolk`, `CORT_yolk`).
 
 Below we are considering a subset of data related to testosterone manipulation - this hormone is often mixed with androstendione, which further justifies analysing it separately.
 
 ```{r, class.source='klippy', results = 'hide'}
 # Centre the dosage data on the mean. Note that, for comparability, we'll exclude 'NA'
 # in dose so that models are fit with the exact same data.
-data_CS2 <- data_CS2_all %>% mutate(z_total_dose_T = scale(total_dose_T, center = TRUE, scale = FALSE),
-                     z_total_dose_p_T = scale(total_dose_p_T, center = TRUE, scale = FALSE)) %>% filter(!is.na(z_total_dose_T))
+data_CS2 <- data_CS2_all %>% 
+            mutate(z_total_dose_T = scale(total_dose_T, center = TRUE, scale = FALSE),
+                   z_total_dose_p_T = scale(total_dose_p_T, center = TRUE, scale = FALSE)) %>% 
+            filter(!is.na(z_total_dose_T))
 
 # Model that ignores "nuisance heterogeneity" for dosage applied
 model_CS2_MLMA_1 <- metafor::rma.mv(d ~ 1, V = var_d,
                                     method="REML",
-                                  random = list(~1|ID, ~1|paper, ~1|species_lat),
-                                  test = "t", dfs = "contain", data = data_CS2)
+                                    random = list(~1|ID, ~1|paper, ~1|species_lat),
+                                    test = "t", dfs = "contain", data = data_CS2)
 print(model_CS2_MLMA_1)
 
 # Calculate Prediction Intervals
@@ -260,9 +262,9 @@ print(I2_1)
 orchard_plot(model_CS2_MLMA_1, mod="Int", xlab="Cohen's d")
 ```
 
-We can see from above that the model 'ignoring' the nuisance heterogenity (`model_CS2_MLMA_1`) (i.e., the variability in effects resulting from dosage differences across studies) estimates an overall meta-analytic mean as `r coef(model_CS2_MLMA_1)` with a 95\% CI from `r model_CS2_MLMA_1$ci.lb` to `r model_CS2_MLMA_1$ci.ub`. Our prediction intervals suggest that heterogenity is high, reflected also in our $I_{total}^2$ estimate of `r I2_1[1]*100`\% -- 95\% of the time we expect the mean in repeated samples to fall between `r pis_MLMA_1$pi.lb` to `r pis_MLMA_1$pi.ub`. Approximately, `r I2_1[3]*100`\% of the total heterogenity is the result of differences between studies. Given that we have not controlled for dosage differences across studies all we can say is that the average SMD is rather small in the sample of studies that have applied these sets of dosages. In other words, on average, the means from the treatment and control groups differ by `r coef(model_CS2_MLMA_1)` standard deviation units.
+We can see from above that the model 'ignoring' the nuisance heterogeneity (`model_CS2_MLMA_1`) (i.e., the variability in effects resulting from dosage differences across studies) estimates an overall meta-analytic mean as `r as.numeric(coef(model_CS2_MLMA_1))` with a 95\% CI from `r model_CS2_MLMA_1$ci.lb` to `r model_CS2_MLMA_1$ci.ub`. Our prediction intervals suggest that heterogeneity is high, reflected in our $I_{total}^2$ estimate of `r I2_1[1]*100`\% -- 95\% of the time we expect the mean in repeated samples to fall between `r pis_MLMA_1$pi.lb` and `r pis_MLMA_1$pi.ub`. Approximately `r I2_1[3]*100`\% of the total heterogeneity is the result of differences between studies. Given that we have not controlled for dosage differences across studies, all we can say is that the average SMD is rather small in the sample of studies that have applied these sets of dosages. In other words, on average, the means from the treatment and control groups differ by `r coef(model_CS2_MLMA_1)` standard deviation units.
 
-We can now model these dosage effects to control for 'nuisance heterogenity' and make the overall mean more interpretable. We'll first start by fitting and interpreting the coefficient just for the raw total dosage applied in a given study. To do this, we can now fit a multilevel meta-regression model as follows:
+We can now model these dosage effects to control for 'nuisance heterogeneity' and make the overall mean more interpretable. We'll first start by fitting and interpreting the coefficient just for the raw total dosage applied in a given study. To do this, we can now fit a multilevel meta-regression model as follows:
 
 ```{r}
 # Model that re-calibrates the overall meta-analytic mean (Intercept) to control for dosage administration
@@ -273,10 +275,9 @@ model_CS2_nuisance1 <- metafor::rma.mv(d ~ total_dose_T, V = var_d,
 print(model_CS2_nuisance1)
 ```
 
-We can see from our model that controls for nuisance heterogenity (model_CS2_nuisance1) that we now estimate an overall meta-analytic mean as `r coef(model_CS2_nuisance1)[1]` with a 95\% CI from `r model_CS2_nuisance1$ci.lb[1]` to `r model_CS2_nuisance1$ci.ub[1]`. Importantly, this is the mean effect size when the total dosage applied is 0, which doesn't make much sense. As such, we can center total dosage applied to make the mean more 'meaningful' (mind the pun). 
+We can see from our model that controls for nuisance heterogeneity (model_CS2_nuisance1) that we now estimate an overall meta-analytic mean as `r as.numeric(coef(model_CS2_nuisance1))[1]` with a 95\% CI from `r model_CS2_nuisance1$ci.lb[1]` to `r model_CS2_nuisance1$ci.ub[1]`. Importantly, this is the mean effect size when the total dosage applied is 0, which doesn't make much sense. We can center the total dosage applied to make the mean more 'meaningful' (mind the pun). 
 
 ```{r}
-
 # Model that re-calibrates the overall meta-analytic mean (Intercept) to control for dosage
 # administration but uses centered dosage
 model_CS2_nuisance2 <- metafor::rma.mv(d ~ z_total_dose_T, V = var_d,
@@ -288,14 +289,15 @@ print(model_CS2_nuisance2)
 # Calculate Prediction Intervals
 pis_nuisance2 <- predict(model_CS2_nuisance2, newmods = 0)
 print(pis_nuisance2)
+
 # Calculate I2 as well
 I2_nuisance2 <- orchaRd::i2_ml(model_CS2_nuisance2)
 print(I2_nuisance2)
 ```
 
-Now that we have centered the total dosage around its mean (which is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/yolk, our overall meta-analytic mean (now estimated to be `r coef(model_CS2_nuisance2)[1]`,  with a 95\% CI from `r model_CS2_nuisance2$ci.lb[1]` to `r model_CS2_nuisance2$ci.ub[1]`) is interpreted differently. Overall, the meta-analytic mean difference between treatments that differ by an average of `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/yolk is `r coef(model_CS2_nuisance2)[1]` standard deviation units different. Its still a small overall effect size, but it has a clearer interpretation now. We can again calculate PI's and $I^2$ using the model. Overall, our prediction intervals suggest that heterogenity is still high even after accounting for dosage reflected also in our $I_{total}^2$ estimate of `r I2_nuisance2[1]*100`\% --  95\% of the time we expect the mean in repeated samples to fall between `r pis_nuisance2$pi.lb[1]` to `r pis_nuisance2$pi.ub[1]` when the average dosage difference applied is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/yolk. Notably, the prediction interval after modelling the nuisance heterogeneity shrink.
+Now that we have centered the total dosage around its mean (which is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/ g yolk, our overall meta-analytic mean (now estimated to be `r coef(model_CS2_nuisance2)[1]`,  with a 95\% CI from `r model_CS2_nuisance2$ci.lb[1]` to `r model_CS2_nuisance2$ci.ub[1]`) is interpreted differently. Overall, the meta-analytic mean difference between treatments that differ by an average of `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/ g yolk is `r coef(model_CS2_nuisance2)[1]` standard deviation units different. Its still a small overall effect size, but it has a clearer interpretation now. We can again calculate PI's and $I^2$ using the model. Overall, our prediction intervals suggest that heterogeneity is still high even after accounting for dosage reflected also in our $I_{total}^2$ estimate of `r I2_nuisance2[1]*100`\% --  95\% of the time we expect the mean in repeated samples to fall between `r pis_nuisance2$pi.lb[1]` to `r pis_nuisance2$pi.ub[1]` when the average dosage difference applied is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/ g yolk. Notably, the prediction interval after modelling the nuisance heterogeneity shrink.
 
-An alternative formulation of the dosage effect could be used taking into account the fact that absolute dose may not reflect each dose's biological effect - the latter will likely depend on the original, natural concentration of the hormone, and how much it is modified by the experiment. The below model uses the alternative dosage formulation.
+An alternative formulation of the dosage effect could take into account the fact that absolute dose may not reflect each dose's biological effect. In other words,the effect will likely depend on the original, natural concentration of the hormone, and how much it is modified by the experiment. The model below model uses this alternative dosage formulation.
 
 ```{r}
 # Model that re-calibrates the overall meta-analytic mean (Intercept) to control for dosage
@@ -330,8 +332,9 @@ print(model_CS2_nuisance4)
 ```
 
 
-# Supplementary Materials for Survey Study Selection
+# Supplementary Materials for Survey 
 
+### Details on Study Selection
 Here we provide greater detail on the search strategy, keyword selection and the numbers of final studies included at each step pf the screening process for our survey. Figure \@ref(fig:figS1) outlines our PRSIMA flowchart detailing the number of papers hit, their sources and how many records were excluded and included at each screening phase. The full search strings used to refine our search query can be found in Table \@ref(tab:tabS1). Note that results from our final searches (25 & 28) are the ones we used. Our query was restricted to a pre-specified set of comparative physiology journals within the last 6 years of publication. The journals used and their ISSN numbers are provided in Table \@ref(tab:tabS2). In total, out of the 79 papers screened at the full-text stage we ended up including 62 full texts. We excluded N = 17 meta-/comparative analyses because they: 1) did not include physiological traits (N = 4); 2) were empirical studies that collected their own data and did not collate data from the literature (N = 10); 3) Were not actual quantitative syntheses, but rather systematic reviews (N = 1) and 4) were studies with a focus on biomechanics (N = 2).
 
 ```{r figS1, fig.align='center', echo = FALSE, fig.cap="PRISMA flowchart for study selection and inclusion"}
@@ -369,6 +372,343 @@ table_s2 <- flextable(table)                                                    
             flextable::compose(j = 2, part = "header", value = as_paragraph(as_b("ISSN Number")))       %>% 
             flextable::width(j = 1, 5)
 table_s2
+```
+
+## Additional Survey Results
+
+We collected data on additional questions about studies that maybe of use. Below, we present these results.
+
+```{r setup2, include=FALSE}
+rm(list=ls())
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+pacman::p_load(dplyr,ggplot2,here, pander, janitor, magrittr,ggalluvial,ggpubr)
+
+# loading data
+raw <- read.csv(here("data","MA_CompPysio_Survey.csv"))
+metadata <- read.csv(here("data","MA_CompPysio_Survey_metadata.csv"))
+
+# tidying data
+dat <- raw
+names(dat) <- metadata$Procesed.Column.Name[match(names(dat), metadata$Raw.Column.Name)]
+
+# tidying categorical options
+dat$meta_analysis_self_described <- factor(gsub(" \\(.*", "", dat$meta_analysis_self_described), levels = c("yes","no","unclear/other"))
+dat$comparative_physiology_main_focus <- factor(gsub(" \\(.*", "", dat$comparative_physiology_main_focus), levels = c("yes","no","unclear/other"))
+
+# fixing format of journals
+
+#dat$DOI[dat$journal=="2017"] # Typo
+dat$journal[dat$journal=="2017"] <- "Biology Letters"
+
+#dat$DOI[grep("Proceedings", dat$journal)] # all the same journal
+dat$journal[grep("Proceedings", dat$journal)] <- "Proceedings of the Royal Society B: Biological Sciences"
+
+# standardising DOI format
+dat$DOI <- gsub(".*org/", "", dat$DOI)
+dat$DOI <-gsub(".* ", "", dat$DOI)
+
+# ggplot2 theme for plots
+background.colour <- "white"
+text.colour <- "black"
+# Font Choice
+#loadfonts()
+text.font <- "Helvetica"
+line.width <- 0.6
+
+tm <- theme(panel.background = element_rect(fill = background.colour),
+            plot.background = element_rect(fill = background.colour),
+            panel.grid = element_blank(),
+            text =  element_text(family = text.font, colour = text.colour),
+            axis.text = element_text(colour = text.colour),
+            axis.title.x = element_text(margin = margin(10,0,0,0)),
+            axis.title.y = element_text(margin = margin(0,10,0,0)),
+            axis.line = element_line(colour = text.colour, size = line.width),,
+            axis.ticks = element_line(colour = text.colour, size = line.width),
+            plot.title = element_text(hjust = line.width),
+            legend.background = element_rect(fill = background.colour),
+            legend.key = element_rect(fill = background.colour),
+            plot.margin = margin(6,6,6,6))
+
+tm2 <- theme(panel.background = element_rect(fill = background.colour),
+            plot.background = element_rect(fill = background.colour),
+            panel.grid = element_blank(),
+            text =  element_text(family = text.font, colour = text.colour, size = 15),
+            axis.text = element_text(colour = text.colour),
+            axis.text.y = element_text(angle = 90, vjust = 0.5, hjust = 0.5),
+            axis.title.x = element_text(margin = margin(10,0,0,0)),
+            axis.title.y = element_text(margin = margin(0,10,0,0)),
+            axis.line = element_line(colour = text.colour, size = line.width),,
+            axis.ticks = element_line(colour = text.colour, size = line.width),
+            plot.title = element_text(hjust = line.width),
+            legend.background = element_rect(fill = background.colour),
+            legend.key = element_rect(fill = background.colour),
+            plot.margin = margin(15,15,15,15))
+```
+
+## Sample of `r nrow(dat)` papers {.tabset} 
+### Meta-analysis {.tabset .tabset-fade .tabset-pills}   
+
+#### Self describing as a meta-analysis?
+Answer to the question "Is paper self-describing as containing a meta-analysis (or meta-regression) or actually using meta-analysis/regression approach?".
+
+```{r}
+dat %>% dplyr::group_by(meta_analysis_self_described) %>% dplyr::tally() %>% 
+  ggplot() + tm +
+  geom_col(aes(x = meta_analysis_self_described, y = n),
+           width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0)) +
+  labs(x = "meta-analysis or meta-regression",
+       y = "number of papers") 
+```
+
+
+#### Comparative physiology {.tabset .tabset-fade .tabset-pills}   
+
+Answer to the question "Is the study's main focus on comparative physiology?"
+
+- yes = focused only on physiological traits very clearly)  
+- no =  does have physiological traits, but is interested in broader questions involving many different traits   
+
+
+```{r}
+dat %>% 
+  ggplot() + tm +
+  geom_bar(aes(x = comparative_physiology_main_focus,
+               fill = meta_analysis_self_described,
+               y = ..count../sum(..count..)), width = 0.5,
+           colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0)) +
+  scale_fill_viridis_d() +
+  labs(x = "main focus on comparative physiology",
+       y = "number of papers",
+       fill = "meta-analysis") 
+```
+
+### Meta-analytic models {.tabset .tabset-fade .tabset-pills}
+
+Note that single papers can report more than one approach (e.g., use different effect sizes and different models).
+
+#### Effect sizes used
+
+```{r}
+dat %>% dplyr::group_by(effect_size_type) %>% janitor::tabyl(effect_size_type) %>%
+  dplyr::summarise(SMD = dplyr::if_else(grepl("SMD", effect_size_type), n, 0),
+                  lnRR = dplyr::if_else(grepl("Response Ratio", effect_size_type), n, 0),
+                    Zr = dplyr::if_else(grepl("correlation", effect_size_type), n, 0),
+                 Other = dplyr::if_else(grepl("other|Q10", effect_size_type), n, 0),
+                 Means = dplyr::if_else(grepl("mean/proportion/raw", effect_size_type), n, 0),
+                 lnCVR = dplyr::if_else(grepl("lnCVR", effect_size_type), n, 0),
+                 Slope = dplyr::if_else(grepl("slope", effect_size_type), n, 0)) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = n / sum(n)) %>% arrange(prop) %>% mutate(effect=factor(effect,levels=unique(effect))) %>% 
+  ggplot() + tm + theme(axis.title.y = element_blank(),
+                        axis.text.y = element_text(size=10)) +
+  geom_col(aes(x = effect, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0),breaks=seq(1,20,2)) +
+  labs(x = "Effect Size",
+       y = "Number of Papers") +
+  coord_flip()
+```
+
+
+#### Statistical models used
+
+What statistical models were used?
+
+```{r}
+summary <-  dat %>% dplyr::group_by(stat_model_type) %>% janitor::tabyl(stat_model_type) %>%
+  dplyr::summarise(`Multilevel Meta-analysis Model` = dplyr::if_else(grepl("multilevel meta-analysis", stat_model_type), n, 0),
+                  `Multilevel Metaregression Model` = dplyr::if_else(grepl("meta-regression models", stat_model_type), n, 0),
+                    `Linear Regression` = dplyr::if_else(grepl("linear regression", stat_model_type), n, 0),
+                 Other = dplyr::if_else(grepl("unclear/other", stat_model_type), n, 0),
+                 `Vote Counting` = dplyr::if_else(grepl("vote counting", stat_model_type), n, 0),
+                 `Weighted Regression` = dplyr::if_else(grepl("weighted regression including mixed effects models", stat_model_type), n, 0),
+                 `Random Effects Model` = dplyr::if_else(grepl("random-effects meta-analysis", stat_model_type), n, 0)) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = (n / sum(n))) %>% arrange(prop) %>% mutate(effect=factor(effect,levels=unique(effect)))
+rownames(summary) <- NULL
+
+summary %>% 
+  ggplot() + tm + theme(axis.title.y = element_blank(),
+                        axis.text.y = element_text(size=10)) +
+  geom_col(aes(x = effect, y = prop), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0),limits = c(0,0.4)) +
+  labs(title = "Analytical Approach",
+       y = "Frequency") +
+  coord_flip()
+```
+
+#### Weighted models?
+
+Were effect sizes used in the analysis weighted by sampling variance?
+
+```{r}
+dat %>%  janitor::tabyl(meta_analysis_weighted) %>% 
+  ggplot() + tm +  theme(axis.title.y = element_blank(),
+                        axis.text.y = element_text(size=10)) +
+  geom_col(aes(x = meta_analysis_weighted,  y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  labs(y = "Frequency") +
+  coord_flip()
+```
+
+How do the two categorisations (meta-analysis and weighting) combine?
+
+```{r}
+dat %>% 
+  ggplot() + tm +
+  geom_bar(aes(x = meta_analysis_self_described,
+               fill = meta_analysis_weighted,
+               y = ..count../sum(..count..)), width = 0.5,
+           colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  scale_fill_viridis_d() +
+  labs(x = "Meta-analysis?",
+       y = "Proportion",
+       fill = "Weighted?") 
+```
+
+### Heterogeneity {.tabset .tabset-fade .tabset-pills} 
+
+#### Effect size impacted by 'nuisance heterogeneity'? 
+
+Could effect size be impacted by an additional continuous predictor (e.g., temperature in thermal limit studies, dosage in hormone manipulation studies)?
+
+If "yes", does the study investigate any continuous environmental or methodological factors as moderators?
+
+```{r}
+dat %>% mutate(cont_moderator_variable_modelled = if_else(cont_moderator_variable_modelled == "", "N/A", cont_moderator_variable_modelled)) %>% 
+  ggplot() + tm +
+  geom_bar(aes(x = factor(cont_moderator_variable,levels=c("yes","no","unclear")),
+               fill = cont_moderator_variable_modelled,
+               y = ..count../sum(..count..)), width = 0.5,
+           colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  scale_fill_viridis_d() +
+  labs(x = "Nuisance Heterogeneity?",
+       y = "Proportion",
+       fill = "Modeled Nuisance\n Heterogeneity?") 
+```
+
+#### Reported Heterogeneity? 
+
+Of the studies that are weighted how many actually reported measures of heterogeneity?
+
+```{r}
+dat %>%  filter(!heterogeneity_reported=="N/A (e.g. they conducted unweighted meta-analysis)") %>% mutate(heterogeneity_reported = if_else(heterogeneity_reported == "unclear/other (add comment)", "other", heterogeneity_reported)) %>% janitor::tabyl(heterogeneity_reported) %>% dplyr::arrange(-n) %>% 
+  ggplot() + tm +
+  geom_col(aes(x = factor(heterogeneity_reported,levels=heterogeneity_reported), y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  labs(x = "Heterogeneity reported?",
+       y = "Frequency") 
+```
+
+### Non-independence and publication bias {.tabset .tabset-fade .tabset-pills} 
+
+#### Handling sources of non-independence 
+
+Did the analysis account for - or mention - additional non-independence arising from, e.g., phylogenetic relatedness or shared control treatments? The actual way of dealing with non-independence (n-i) will vary from study to study.
+
+```{r}
+dat %>%  janitor::tabyl(nonindependence_mentioned) %>% dplyr::arrange(n) %>% 
+  ggplot() + tm + theme(axis.title.y=element_blank(),
+                        axis.text.y = element_text(size=10)) +
+  geom_col(aes(x = factor(nonindependence_mentioned,levels=nonindependence_mentioned), y = percent), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0), limits = c(0,1)) +
+  scale_x_discrete(labels = c('n-i dealt with w/o modelling', 'n-i modeled', 'unclear/other/not mentioned')) +
+  labs(title = "Non-independence handling",
+       y = "Frequency") +
+  coord_flip()
+```
+
+#### Publication bias 
+
+What type of publication bias analysis was used in the analysis? Multiple metrics can be used per paper, hence frequencies won't sum to 100%.
+
+```{r}
+dat %>% dplyr::group_by(pub_bias_type) %>% janitor::tabyl(pub_bias_type) %>%
+  dplyr::summarise(GraphicalTest = dplyr::if_else(grepl("graphical tests", pub_bias_type), n, 0),
+                  RegressionTest = dplyr::if_else(grepl("regression test", pub_bias_type), n, 0),
+                    TrimAndFill = dplyr::if_else(grepl("trim-and-fill", pub_bias_type), n, 0),
+                 TimeLag = dplyr::if_else(grepl("time-lag", pub_bias_type), n, 0),
+                 OtherUnclear = dplyr::if_else(grepl("unclear", pub_bias_type), n, 0),
+                 None = dplyr::if_else(grepl("no", pub_bias_type), n, 0)) %>% 
+  colSums(.) %>% data.frame(effect = names(.), n = .) %>% mutate(prop = (n / sum(n)*100)) %>% arrange(n) %>% mutate(effect = factor(effect,levels=unique(effect))) %>% 
+  ggplot() + tm + theme(axis.title.y = element_blank(),
+                        axis.text.y = element_text(size=10)) +
+  geom_col(aes(x = effect, y = n), width = 0.5, fill = background.colour, colour = text.colour, size = 0.5) +
+  scale_y_continuous(expand=c(0,0),breaks=seq(1,30,2)) +
+  labs(x = "Effect Size",
+       y = "Number of Papers") +
+  coord_flip()
+```
+
+
+### Other plots {.tabset .tabset-fade .tabset-pills}
+
+```{r, message=FALSE, warning=FALSE}
+plot1 <- dat %>% 
+  ggplot() + tm2 + theme(legend.position = "top") +
+  geom_bar(aes(x = comparative_physiology_main_focus,
+               fill = cont_moderator_variable,
+               y = ..count../sum(..count..)), width = 0.5,
+           colour = NA, size = 0.5) +
+  scale_y_continuous(expand=c(0,0)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(x = "Main focus on comparative physiology",
+       y = "Frequency",
+       fill = "Continuous predictor present")
+plot1
+
+plot2 <- dat %>% 
+  ggplot() + tm2 + theme(legend.position = "top") +
+  geom_bar(aes(x = pub_year,
+               fill = meta_analysis_self_described,
+               y = ..count../sum(..count..)), width = 0.5,
+           colour = NA, size = 0.5) +
+  scale_y_continuous(expand=c(0,0)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(x = "Year of publication",
+       y = "Frequency",
+       fill = "Meta-analysis")
+plot2
+
+plot3 <- dat %>%
+  ggplot(mapping = aes(x = comparative_physiology_main_focus,
+               y = meta_analysis_self_described)) + tm2 +
+  theme(panel.border = element_rect(size = 0.5, fill = NA),
+        panel.grid.major = element_line(colour = "grey92"),
+        axis.text.y = element_text(angle = 90)) +
+  geom_count(mapping = aes(size = ..n.., colour = "A")) +
+  scale_size_continuous(range = c(20,40), guide = F) +
+  scale_colour_brewer(palette = "Set2", guide = F) +
+  # scale_y_continuous(expand=c(0,0)) +
+  # scale_fill_viridis_d() +
+  labs(x = "Main focus on comparative physiology?",
+       y = "Self described as a meta-analysis?")
+plot3
+
+plot4 <- dat %>%
+  ggplot(aes(axis1 = meta_analysis_self_described,
+             axis2 = comparative_physiology_main_focus,
+             axis3 = cont_moderator_variable)) +
+  ggalluvial::geom_alluvium(aes(fill = comparative_physiology_main_focus), width = 1/4, alpha = 0.8) +
+  tm2 + theme(axis.line = element_blank(), axis.ticks = element_blank()) +
+  theme(legend.position = "none", panel.grid = element_blank(), axis.text.y = element_blank()) +
+  scale_fill_brewer(palette = "Set2") +
+  ggalluvial::geom_stratum(fill = 'white', colour = 'black', width = 1/4) +
+  geom_text(stat = 'stratum',
+            aes(label = after_stat(stratum)),
+            # label = c('weighted', 'unweighted', 'unclear'),
+            colour = 'black') +
+  scale_x_discrete(expand = c(.1, .1), limits = c("Meta-analysis", "Comparative physiol.", "Cont. moderator"))
+plot4
+
+
+panels <- ggarrange(ggarrange(plot1, plot2, nrow = 1),
+                    ggarrange(plot3, plot4, nrow = 1, widths = c(1,2)),
+                    nrow = 2, ncol = 1)
+ggsave(panels, filename = "multipanel.pdf", device = "pdf")
+
 ```
 
 # Session Information
