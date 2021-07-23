@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## *BOX 1: Examples of how to derive sampling variances*
 
-Here, we show how to obtain sampling variance for a slope (or a 'rate of change') when you have measurements of a physiological trait at two points along an environmental gradient (e.g., temperature, salinity, acidity). We then derive sampling variance for the difference between two slopes, and demonstrate how *SMD* can be corrected to account for differences in both units (e.g. cm or mg) and points on an environmental gradient (e.g. temperature of 24 and 30 \&degC). Finally, we introduce a useful approximation technique known as 'the delta method'. The sampling variances associated with these 'new' effect sizes below will allow comparative physiologists to take advantage of powerful meta-analytic models.
+Here, we show how to obtain sampling variance for a slope (or a 'rate of change') when you have measurements of a physiological trait at two points along an environmental gradient (e.g., temperature, salinity, acidity). We then derive sampling variance for the difference between two slopes, and demonstrate how *SMD* can be corrected to account for differences in both units (e.g. cm or mg) and points on an environmental gradient (e.g. temperature of 24 and 30 \&degC). Finally, we introduce a useful approximation technique known as 'the Delta method'. The sampling variances associated with these 'new' effect sizes below will allow comparative physiologists to take advantage of powerful meta-analytic models.
 
 ### Sampling variance for a slope between two points
 
@@ -36,20 +36,20 @@ $$
 
 where *T* stands for temperature in degrees Celsius and $T_{2} > T_{1}$, and $M_{1}$ and $M_{2}$ are the average physiological responses (e.g., mean CTmax) at temperature points $T_{1}$ and $T_{2}$.
 
-To obtain the sampling variance for this equation (slope), we first need to describe some basic properties of variance. Let's assume $M_{1}$ is a random variable, which means that this variable has a mean and standard deviation [note that this standard deviation is not the 'sample' but the 'sampling' standard deviation, which is often referred to as standard error - see Figure 1 in @Nakagawa2021b]. Multiplying a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $M_{1}$. This can be summarized as:
+To obtain the sampling variance for this equation (slope), we first need to describe some basic properties of variance. Let's assume $M_{1}$ is a random variable drawn from a distribution that can be characterised by a mean and standard deviation [note that this standard deviation is not the 'sample' but the 'sampling' standard deviation, which is often referred to as standard error - see Figure 1 in @Nakagawa2021b]. Multiplying it by a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $M_{1}$. This can be summarized as:
 
 $$
 \sigma^2(aM_1 \pm b)=a^2 * \sigma^2_{M_{1}}
 $$
 
-Also, when adding two random variables ($M_{1}$ and $M_{2}$), the combined variance is the sum of the variance of $X_{1}$ and the variance of $X_{2}$ plus 2 times the covariance between $M_{1}$ and $M_{2}$. This relationship can be written as:
+Also, when adding two random variables ($M_{1}$ and $M_{2}$), the combined variance is the sum of the variance of $M_{1}$ and the variance of $M_{2}$ plus 2 times the covariance between $M_{1}$ and $M_{2}$. This relationship can be written as:
 
 $$
 \sigma^2(M_1 \pm M_2) = \sigma^2_{M_1} + \sigma^2_{M_2} \pm 2\text{Cov}(M_1,M_2) 
 = \sigma^2_{M_1} + \sigma^2_{M_2} \pm 2\text{Cor}(M_1,M_2)\sqrt{ \sigma^2_{M_1} \sigma^2_{M_2} }
 $$
 
-where the co-variance $\text{Cov}(M_1,M_2)$ equals to the correlation multiplied by the square-root of the two variances $2\text{Cor}(M_1,M_2)\sqrt{ \sigma^2_{M_1} \sigma^2_{M_2} }$.
+where the co-variance $\text{Cov}(M_1,M_2)$ equals to the correlation multiplied by the square-root of the product of two variances $2\text{Cor}(M_1,M_2)\sqrt{ \sigma^2_{M_1} \sigma^2_{M_2} }$.
 
 Importantly, when $M_{1}$ and $M_{2}$ are independent to each other their covariance is 0. In other words, if measurements are taken on two different groups of animals at two different temperatures ($T_1$ and $T_2$), then the covariances between these two sets of measurements are 0.
 
@@ -60,7 +60,7 @@ $$
 \left( \frac{SD^2_{1}} {N_{1}} + \frac{SD^2_{2}} {N_{2}} \right)
 $$
 
-where $SD_{1}$ and $SD_{2}$ and $N_{1}$ and $N_{2}$ are standard deviations and sampling sizes at temperature $T_{1}$ and $T_{2}$. Readers may find it difficult to see how we obtained this equation. Let us explain further. The (sampling) standard error for $X_{1}$ is $SE_{1} = SD_{1} / \sqrt{N_{1}}$. Given this, the sampling variance for $X_{1}$ is $SD^2_{1} / N_{1}$, and the sampling variance for $X_{2}$ is $SD^2_{2} / N_{2}$. You can see those elements of the sampling variance of *ARR* in the formula above. The term $(1/(T_{2} - T_{1}))^2$ comes from recognizing $1/(T_{2} - T_{1})$ as a constant.
+where $SD_{1}$ and $SD_{2}$ and $N_{1}$ and $N_{2}$ are standard deviations and sampling sizes at temperature $T_{1}$ and $T_{2}$. Readers may find it difficult to see how we obtained this equation. Let us explain further. The (sampling) standard error for $M_{1}$ is $SE_{1} = SD_{1} / \sqrt{N_{1}}$. Given this, the sampling variance for $M_{1}$ is $SD^2_{1} / N_{1}$, and the sampling variance for $M_{2}$ is $SD^2_{2} / N_{2}$. You can see those elements of the sampling variance of *ARR* in the formula above. The term $(1/(T_{2} - T_{1}))^2$ comes from recognizing $1/(T_{2} - T_{1})$ as a constant.
 
 In ecological and evolutionary studies, it is not uncommon that we measure the same group of organisms at two temperatures. If we do, however, then we need to add the covariance between $M_{1}$ and $M_{2}$ ($\text{Cov}(M_{1},M_{2})$) in the equation. Note that, as above, the covariance equals the correlation multiplied by the square-root of two (sampling) variances. Therefore, the sampling variance of *ARR* can be now written as:
 
@@ -71,7 +71,7 @@ $$
 \right)
 $$
 
-By assuming the number of organisms (*N*) are the same at the two temperatures, we can slightly simplify this formula:
+By assuming the numbers of organisms (*N*) are the same at the two temperatures, we can slightly simplify this formula:
 
 $$ 
 \sigma^2_{AAR} = \left( 
@@ -86,7 +86,7 @@ where *r* is the correlation between a set of measurements $M_1$ and $M_2$ from 
 
 ### Sampling variance for the difference between two slopes
 
-Now let us assume that we want to know the difference between two different *ARR* values: female *ARR*, $\text{ARR}_{f}$ and male *ARR*, $\text{ARR}_{m}$. Such a difference (*ARRD*) can be written as:
+Now let us assume that we want to know the difference between two different *ARR* values: e.g., female *ARR*, $\text{ARR}_{f}$ and male *ARR*, $\text{ARR}_{m}$. Such a difference (*ARRD*) can be written as:
 
 $$
 \text{ARRD} = \text{ARR}_{f} - \text{ARR}_{m}.
@@ -113,7 +113,7 @@ $$
 \right).
 $$
 
-Here we have derived sampling variances for 'temperature' *ARR* and *ARRD* for both independent and dependent cases. These formulas can also be applied to changes in other factors (e.g., salinity, pH, oxygen) by changing the temperature constant. For example, it may be possible that males and females were measured in slightly different temperatures; say females at $T_3$ and $T_4$ ($T_4 > T_3$) and male at $T_5$ and $T_6$ ($T_6 > T_5$) like below:
+Here we have derived sampling variances for 'temperature' *ARR* and *ARRD* for both independent and dependent cases. These formulas can also be applied to changes in other factors (e.g., salinity, pH, oxygen) by changing the temperature constant. Also, our calculation can easily account for methodological inconsistencies. For example, it may be possible that males and females were measured in slightly different temperatures; say females at $T_3$ and $T_4$ ($T_4 > T_3$) and male at $T_5$ and $T_6$ ($T_6 > T_5$) like below:
 
 $$
 \sigma^2_{ARRD} = \left( \frac{1} {T_4 - T_3} \right)^2 
@@ -128,7 +128,7 @@ $$
 
 Also, note that the difference between slopes does not need to be that of males and females. This formula can be used to compare any two treatments or biological groups.
 
-### Controlling for unitary differences and temperature across studies
+### Controlling for unit differences and temperature across studies
 
 Calculating *ARR* assumes that the units for the mean difference across studies is consistent. Frequently, this will not be the case for meta-analyses that hope to synthesise a wide array of traits that vary in their units (e.g., ul/g, grams, seconds, minutes). Fortunately, *$lnRR$* and *SMD* (Table 1) already controls for unitary differences. As such, we can apply similar logic that we discuss above so that *SMD* corrects for both temperature and unitary differences. Table 1 provides the formula for *SMD*, its pooled standard deviation, and sampling variance. Just like with *ARR*, we can apply our temperature correction to the *SMD* formula as follows:
 
@@ -136,7 +136,7 @@ $$
 SMD_{T} = \frac{\left(M_{1} - M_{2}\right)}{SD_{p}\left( T_{2} - T_{1}\right)}J
 $$
 
-Here we can see that the difference between $M_1$ and $M_2$ is standardised by the pooled SD, essentially correcting for unitary differences. Additionally, dividing SMD by the temperature difference results in further correcting the effect size by temperature. To derive the sampling variance for $SMD_T$ we can apply the same principle as we did above to derive a sampling variance as:
+Here we can see that the difference between $M_1$ and $M_2$ is standardised by the pooled SD, essentially correcting for differences in measurement units. Additionally, dividing *SMD* by the temperature difference results in further correcting the effect size by the applied temperature difference. To derive the sampling variance for $SMD_T$ we can apply the same principle as we did above to derive a sampling variance as:
 
 $$
 s_{SMD_{T}}^2 = \left (\frac{N_{1} + N_{2}}{N_{1}N_{2}}  + \frac{SMD_{T}^2}{2\left( N_{1} + N_{2}\right)} \right) \left(\frac{1}{{T_{2} - T_{1}}}\right)^2
@@ -147,12 +147,12 @@ $$
 Deriving sampling variances using common properties of variance has its limits. Therefore, we introduce a practical and widely applicable method to obtain approximate variance when the basic properties of variance cannot be applied. This is where the Delta method comes in. The general form of this method can be written as:
 
 $$
-\text{Var}(f(M_1)) \approx \text{Var}(M_1)* \left( 
-f'(M_1)
+\text{Var}(f(X)) \approx \text{Var}(X)* \left( 
+f'(X)
 \right)^2,
 $$
 
-where $f(M_1)$ represents the function of the random variable $M_1$, and importantly, $f'(M_1)$ is the first derivative of $f(M_1)$. Let's demonstrate this with a concrete example by re-deriving the sampling variance for $\ln{RR}$ defined as:
+where $f(X)$ represents the function of the random variable $X$, and importantly, $f'(X)$ is the first derivative of $f(X)$. Let's demonstrate this with a concrete example by re-deriving the sampling variance for $\ln{RR}$ defined as:
 
 $$
 \ln{RR} = \ln \left ( \frac{M_{1}}{M_{2}}\right ) = \ln{M_1} -\ln{M_2}.
