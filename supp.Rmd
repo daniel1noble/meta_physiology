@@ -121,7 +121,7 @@ model_CS1a_MLMA <- metafor::rma.mv(ARR ~ 1, V = Var_ARR,
                    test="t",
                    data=data_CS1a)
 print(model_CS1a_MLMA)
-
+B <- coef(model_CS1a_MLMA)
 # Calculate Prediction Intervals
 PI_CS1a_MLMA <- predict(model_CS1a_MLMA)
 print(PI_CS1a_MLMA)
@@ -134,7 +134,7 @@ print(I2_CS1a)
 orchard_plot(model_CS1a_MLMA, mod="Int", xlab="ARR")
 ```
 
-We can see from above that the model estimates an overall meta-analytic mean as `r coef(model_CS1a_MLMA)` with a 95\% CI from `r model_CS1a_MLMA$ci.lb` to `r model_CS1a_MLMA$ci.ub`. In other words, for each degree variation in acclimation temperature, the heat tolerance of the animals included in this data set vary by `r coef(model_CS1a_MLMA)` degrees on average. 95\% of the time we expect the mean in repeated samples to fall between `r PI_CS1a_MLMA$cr.lb` and `r PI_CS1a_MLMA$cr.ub`.
+We can see from above that the model estimates an overall meta-analytic mean as `r model_CS1a_MLMA$b` with a 95\% CI from `r model_CS1a_MLMA$ci.lb` to `r model_CS1a_MLMA$ci.ub`. In other words, for each degree variation in acclimation temperature, the heat tolerance of the animals included in this data set vary by `r model_CS1a_MLMA$b` degrees on average. 95\% of the time we expect the mean in repeated samples to fall between `r PI_CS1a_MLMA$cr.lb` and `r PI_CS1a_MLMA$cr.ub`.
 Our prediction intervals suggest that heterogeneity is high, reflected in our $I_{total}^2$ estimate of `r I2_CS1a[1]*100`\%.  Approximately, `r I2_CS1a[2]*100`\% of the total heterogeneity is the result of differences between species, and `r I2_CS1a[3]*100`\% of the total heterogeneity is associated with the residuals. 
 With this effect size (slope), the nuisance heterogeneity is accounted for, to some extent, at the level of the effect size.
 
@@ -262,7 +262,7 @@ print(I2_1)
 orchard_plot(model_CS2_MLMA_1, mod="Int", xlab="Cohen's d")
 ```
 
-We can see from above that the model 'ignoring' the nuisance heterogeneity (`model_CS2_MLMA_1`) (i.e., the variability in effects resulting from dosage differences across studies) estimates an overall meta-analytic mean as `r as.numeric(coef(model_CS2_MLMA_1))` with a 95\% CI from `r model_CS2_MLMA_1$ci.lb` to `r model_CS2_MLMA_1$ci.ub`. Our prediction intervals suggest that heterogeneity is high, reflected in our $I_{total}^2$ estimate of `r I2_1[1]*100`\% -- 95\% of the time we expect the mean in repeated samples to fall between `r pis_MLMA_1$pi.lb` and `r pis_MLMA_1$pi.ub`. Approximately `r I2_1[3]*100`\% of the total heterogeneity is the result of differences between studies. Given that we have not controlled for dosage differences across studies, all we can say is that the average SMD is rather small in the sample of studies that have applied these sets of dosages. In other words, on average, the means from the treatment and control groups differ by `r coef(model_CS2_MLMA_1)` standard deviation units.
+We can see from above that the model 'ignoring' the nuisance heterogeneity (`model_CS2_MLMA_1`) (i.e., the variability in effects resulting from dosage differences across studies) estimates an overall meta-analytic mean as `r model_CS2_MLMA_1$b` with a 95\% CI from `r model_CS2_MLMA_1$ci.lb` to `r model_CS2_MLMA_1$ci.ub`. Our prediction intervals suggest that heterogeneity is high, reflected in our $I_{total}^2$ estimate of `r I2_1[1]*100`\% -- 95\% of the time we expect the mean in repeated samples to fall between `r pis_MLMA_1$pi.lb` and `r pis_MLMA_1$pi.ub`. Approximately `r I2_1[3]*100`\% of the total heterogeneity is the result of differences between studies. Given that we have not controlled for dosage differences across studies, all we can say is that the average SMD is rather small in the sample of studies that have applied these sets of dosages. In other words, on average, the means from the treatment and control groups differ by `r model_CS2_MLMA_1$b` standard deviation units.
 
 We can now model these dosage effects to control for nuisance heterogeneity and make the overall mean more interpretable. We'll first start by fitting and interpreting the coefficient just for the raw total dosage applied in a given study. To do this, we can now fit a multilevel meta-regression model as follows:
 
@@ -275,7 +275,7 @@ model_CS2_nuisance1 <- metafor::rma.mv(d ~ total_dose_T, V = var_d,
 print(model_CS2_nuisance1)
 ```
 
-We can see from our model that controls for nuisance heterogeneity (model_CS2_nuisance1) that we now estimate an overall meta-analytic mean as `r as.numeric(coef(model_CS2_nuisance1))[1]` with a 95\% CI from `r model_CS2_nuisance1$ci.lb[1]` to `r model_CS2_nuisance1$ci.ub[1]`. Importantly, this is the mean effect size when the total dosage applied is 0, which doesn't make much sense. We can center the total dosage applied to make the mean more 'meaningful' (mind the pun). 
+We can see from our model that controls for nuisance heterogeneity (model_CS2_nuisance1) that we now estimate an overall meta-analytic mean as `r model_CS2_nuisance1$b[1]` with a 95\% CI from `r model_CS2_nuisance1$ci.lb[1]` to `r model_CS2_nuisance1$ci.ub[1]`. Importantly, this is the mean effect size when the total dosage applied is 0, which doesn't make much sense. We can center the total dosage applied to make the mean more 'meaningful' (mind the pun). 
 
 ```{r}
 # Model that re-calibrates the overall meta-analytic mean (Intercept) to control for dosage
@@ -295,7 +295,7 @@ I2_nuisance2 <- orchaRd::i2_ml(model_CS2_nuisance2)
 print(I2_nuisance2)
 ```
 
-Now that we have centered the total dosage around its mean (which is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/ g yolk, our overall meta-analytic mean (now estimated to be `r coef(model_CS2_nuisance2)[1]`,  with a 95\% CI from `r model_CS2_nuisance2$ci.lb[1]` to `r model_CS2_nuisance2$ci.ub[1]`) is interpreted differently. Overall, the meta-analytic mean difference between treatments that differ by an average of `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/ g yolk is `r coef(model_CS2_nuisance2)[1]` standard deviation units different. Its still a small overall effect size, but it has a clearer interpretation now. We can again calculate PI's and $I^2$ using the model. Overall, our prediction intervals suggest that heterogeneity is still high even after accounting for dosage reflected also in our $I_{total}^2$ estimate of `r I2_nuisance2[1]*100`\% --  95\% of the time we expect the mean in repeated samples to fall between `r pis_nuisance2$pi.lb[1]` to `r pis_nuisance2$pi.ub[1]` when the average dosage difference applied is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/ g yolk. Notably, the prediction interval after modelling the nuisance heterogeneity shrink.
+Now that we have centered the total dosage around its mean (which is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/ g yolk, our overall meta-analytic mean (now estimated to be `r model_CS2_nuisance2$b[1]`,  with a 95\% CI from `r model_CS2_nuisance2$ci.lb[1]` to `r model_CS2_nuisance2$ci.ub[1]`) is interpreted differently. Overall, the meta-analytic mean difference between treatments that differ by an average of `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/ g yolk is `r model_CS2_nuisance2$b[1]` standard deviation units different. It's still a small overall effect size, but it has a clearer interpretation now. We can again calculate PI's and $I^2$ using the model. Overall, our prediction intervals suggest that heterogeneity is still high even after accounting for dosage reflected also in our $I_{total}^2$ estimate of `r I2_nuisance2[1]*100`\% --  95\% of the time we expect the mean in repeated samples to fall between `r pis_nuisance2$pi.lb[1]` to `r pis_nuisance2$pi.ub[1]` when the average dosage difference applied is `r mean(data_CS2$total_dose_T, na.rm = TRUE)` ng/ g yolk. Notably, the prediction interval after modelling the nuisance heterogeneity shrink.
 
 An alternative formulation of the dosage effect could take into account the fact that absolute dose may not reflect each dose's biological effect. In other words,the effect will likely depend on the original, natural concentration of the hormone, and how much it is modified by the experiment. The model below model uses this alternative dosage formulation.
 
@@ -374,7 +374,7 @@ table_s2 <- flextable(table)                                                    
 table_s2
 ```
 
-## Additional Survey Results
+# Supplementary Survey Results
 
 We collected data on additional questions about studies that maybe of use. Below, we present these results.
 
