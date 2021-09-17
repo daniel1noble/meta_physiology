@@ -262,7 +262,7 @@ eqns_vi <- c("\\frac{SD^2}{N}",
 # Maybe add some examples for each effect size in a new column. SHould help
 eg <- c("CTmin, CTmax, LC50, LT50, Metabolic Rate (MR)",
         "Variability in CTmin, CTmax, Metabolic Rate (MR)",
-        "Ratio between BPA treatment (BPA-exposed group) and control (no BPA)",
+        "Ratio between pollutant exposed treatment (e.g., BPA-exposed group) and control (no pollutant)",
         "Difference in immune response between males and females or performance difference in the presence of stressor compared to absence of stressor",
         "Relationship between sex hormones and immune responses or metabolic rate and behaviour")
 
