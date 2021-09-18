@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## *BOX 1: Examples of how to derive sampling variances*
 
-Here, we show how to obtain sampling variance for a slope (or a 'rate of change') when you have measurements of a physiological trait at two points along an environmental gradient (e.g., temperature, salinity, acidity). We then derive sampling variance for the difference between two slopes, and demonstrate how *SMD* can be corrected to account for differences in both units (e.g. cm or mg) and points on an environmental gradient (e.g. temperature of 24 and 30 °C). Finally, we introduce a useful approximation technique known as 'the Delta method'. The sampling variances associated with these 'new' effect sizes below will allow comparative physiologists to take advantage of powerful meta-analytic models.
+Here, we show how to obtain sampling variance for a slope (or a 'rate of change') when you have measurements of a physiological trait at two points along an environmental gradient (e.g., temperature, salinity, pH). We then derive sampling variance for the difference between two slopes, and demonstrate how *SMD* can be corrected to account for differences in both units (e.g. cm or mg) and points on an environmental gradient (e.g. temperature of 24 and 30 °C). Finally, we introduce a useful approximation technique known as 'the Delta method'. The sampling variances associated with these 'new' effect sizes below will allow comparative physiologists to take advantage of powerful meta-analytic models.
 
 ### Sampling variance for a slope between two points
 
