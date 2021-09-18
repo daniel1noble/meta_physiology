@@ -477,7 +477,7 @@ Comparative physiologists are interested in meta-analysing effects across a dive
 
 ## **Acknowledgements**
 
-We would like to thank the Editorial board (Craig Franklin, Michaela Handel and Charlotte Rutledge) for inviting us to contribute to this special issue along with feedback on previous drafts. We would also like to thank Megan Head for comments on a previous draft. DWAN, SMD, SN, ML and REO were supported by ARC Discovery Projects (DP210101152 to DWAN, DE180100202 to SMD, and DP200100367 to SN, ML and DWAN). PP and SB were supported by a UNSW Scientia PhD Scholarship.
+We would like to thank the Editorial board (Craig Franklin, Michaela Handel and Charlotte Rutledge) for inviting us to contribute to this special issue along with feedback on previous drafts. We would also like to thank Megan Head and two anonymous reviewers for helpful comments on previous drafts. DWAN, SMD, SN, ML and REO were supported by ARC Discovery Projects (DP210101152 to DWAN, DE180100202 to SMD, and DP200100367 to SN, ML and DWAN). PP and SB were supported by a UNSW Scientia PhD Scholarship.
 
 ## **Author Contributions**
 DWAN, SN: Project Administration, Conceptualization, Writing - original draft, Visualization, Funding acquisition, Resources, Formal Analysis, Methodology, Software; ML, PP, REO, SD, SB: Writing – review & editing, Visualization, Validation, Software, Data Curation, Formal analysis.
