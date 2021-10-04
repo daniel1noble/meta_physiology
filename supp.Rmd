@@ -332,8 +332,34 @@ print(model_CS2_nuisance4)
 ```
 
 
-# Supplementary Materials for Survey 
+# Supplementary Material for Box 1
 
+In Box 1 we briefly mention how *ARR* can be derived for studies manipulating a single variable, temperature. In reality studies often employ a fully factorial design, manipulating two variables at once (e.g., temperture and pH). We can easily derive *ARR* to accomodate the estimation of the main effects of, and even the interaction between, the two variables. Recall that *ARR* is defined as follows:
+
+$$
+\text{ARR} = \frac{M_{1} - M_{2}}{T_2 - T_1},
+$$
+
+If we have a fully factorial study manipulating temperature and pH we can estimate the main effect of temperature across the pH treatments and its sampling error (assuming groups are independent and equal sample sizes) as:
+
+$$
+\text{ARR}_{m} = \frac{ \left( M_{pH1,T1} + M_{pH2,T1} \right) - \left( M_{pH1,T2} + M_{pH2,T2} \right)}{2\left( T_2 - T_1 \right)}
+$$
+$$
+\sigma^2_{ARR_{m}} = \left( \frac{1} {2\left( T_2 - T_1 \right)} \right)^2 
+\left( \left(\frac{SD^2_{pH1,T1}} {N_{pH1,T1}} + \frac{SD^2_{pH2,T1}} {N_{pH2,T1}}\right)+ \left(\frac{SD^2_{pH1,T2}} {N_{pH1,T2}} + \frac{SD^2_{pH2,T2}} {N_{pH2,T2}}\right) \right)
+$$
+
+The interaction (i), to be clear, can be calculated as:
+
+$$
+\text{ARR}_{m} = \frac{ \left( M_{pH1,T1} - M_{pH2,T1} \right) - \left( M_{pH1,T2} - M_{pH2,T2} \right)}{T_2 - T_1 }
+$$
+$$
+\sigma^2_{ARR_{m}} = \left( \frac{1} {T_2 - T_1} \right)^2 
+\left( \frac{SD^2_{pH1,T1}} {N_{pH1,T1}} + \frac{SD^2_{pH1,T2}} {N_{pH1,T2}}+ \frac{SD^2_{pH2,T1}} {N_{pH2,T1}} + \frac{SD^2_{pH2,T2}} {N_{pH2,T2}} \right)
+$$
+# Supplementary Materials for Survey 
 ### Details on Study Selection
 Here we provide greater detail on the search strategy, keyword selection and the numbers of final studies included at each step of the screening process for our survey. We searched for studies that included: ‘meta-analysis,’ ‘meta regression’ , ‘comparative analysis,’ ‘comprehensive analysis’ ‘global analysis’ or ‘macro physiology’ in their title or abstract, restricting our search to key comparative physiology journals (detailed in Table S1 and S2 - Supplementary Materials) within the last 6 years. The journals used and their ISSN numbers are provided in Table \@ref(tab:tabS2). The full search strings used to refine our search query can be found in Table \@ref(tab:tabS1). Initial searches were conducted in Scopus between May 16 and 18, 2021. We updated our survey with an additional search on September 1, 2021 with the addition of new journals (See Table \@ref(tab:tabS1) and \@ref(tab:tabS2)).  We expected this to provide a contemporary overview of quantitative syntheses in comparative physiology while making the survey and screening feasible. Note that results from our final searches are the ones we used.
 
