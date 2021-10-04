@@ -34,7 +34,7 @@ $$
 \text{ARR} = \frac{M_{1} - M_{2}}{T_2 - T_1},
 $$
 
-where *T* stands for temperature in degrees Celsius and $T_{2} > T_{1}$, and $M_{1}$ and $M_{2}$ are the average physiological responses (e.g., mean CTmax) at temperature points $T_{1}$ and $T_{2}$.
+where *T* stands for temperature in degrees Celsius and $T_{2} > T_{1}$, and $M_{1}$ and $M_{2}$ are the average physiological responses (e.g., mean CTmax) at temperature points $T_{1}$ and $T_{2}$. Many studies might manipulate multiple variables using a fully factorial design (e.g., temperature and pH), however, for simplicity we assume the study only manipulates temperature. In the supplement, we also show how to derive *ARR* from fully factorial studies (i.e., main effects and interactions).
 
 To obtain the sampling variance for this equation (slope), we first need to describe some basic properties of variance. Let's assume $M_{1}$ is a random variable drawn from a distribution that can be characterised by a mean and standard deviation [note that this standard deviation is not the 'sample' but the 'sampling' standard deviation, which is often referred to as standard error - see Figure 1 in @Nakagawa2021b]. Multiplying it by a constant ($a$) will change the variance by the square of that constant ($a^2$) while adding or subtracting the constant ($b$) does not change the variance of $M_{1}$. This can be summarized as:
 
@@ -56,7 +56,7 @@ Importantly, when $M_{1}$ and $M_{2}$ are independent to each other their covari
 Therefore, when $M_{1}$ and $M_{2}$ are independent, we can obtain the sampling variance for *ARR* as:
 
 $$
-\sigma^2_{AAR} = \left( \frac{1} {T_2 - T_1} \right)^2 
+\sigma^2_{ARR} = \left( \frac{1} {T_2 - T_1} \right)^2 
 \left( \frac{SD^2_{1}} {N_{1}} + \frac{SD^2_{2}} {N_{2}} \right)
 $$
 
@@ -82,7 +82,7 @@ $$
 \right)
 $$
 
-where *r* is the correlation between a set of measurements $M_1$ and $M_2$ from the same individuals at two points $T_1$ and $T_2$. As you may notice, we need the raw data to calculate *r*. Therefore, in reality, we often need to assume a certain value of *r*. When we do not have an estimate of *r* we can reasonably assume it to be 0.5 [@Noble2017].
+where *r* is the correlation between a set of measurements $M_1$ and $M_2$ from the same individuals at two points $T_1$ and $T_2$. As you may notice, we need the raw data to calculate *r*. Therefore, in reality, we often need to assume a certain value of *r*. When we do not have an estimate of *r* we can reasonably assume it to be 0.5 [@Noble2017]. 
 
 ### Sampling variance for the difference between two slopes
 
