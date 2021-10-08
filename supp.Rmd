@@ -373,7 +373,7 @@ We included comparative studies / meta-analyses that were focused on physiologic
 
 ```{r figS1, fig.align='center', echo = FALSE, fig.cap="PRISMA flowchart for study selection and inclusion"}
 
-img1 <- readPNG(here::here("figs", "PRISMA_diagram_v0.png"))
+img1 <- readPNG(here::here("figs", "PRISMA_diagram_v1.png"))
 
 p1 <- cowplot::ggdraw()+
         cowplot::draw_image(img1)
