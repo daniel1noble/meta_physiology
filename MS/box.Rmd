@@ -28,7 +28,7 @@ Here, we show how to obtain sampling variance for a slope (or a 'rate of change'
 
 ### Sampling variance for a slope between two points
 
-Let's start with a real example that comparative physiologists can easily relate with, the slope of responses to temperature acclimation, or as we call it, the acclimation response ratio (*ARR*). *ARR* can be defined as a slope for acclimated physiological responses at two different temperature points, defined as:
+Let's start with a real example that comparative physiologists can easily relate with, the slope of responses to temperature acclimation, or as we call it, the acclimation response ratio (*ARR*) [@Pottier2021]. *ARR* can be defined as a slope for acclimated physiological responses at two different temperature points, defined as:
 
 $$
 \text{ARR} = \frac{M_{1} - M_{2}}{T_2 - T_1},
