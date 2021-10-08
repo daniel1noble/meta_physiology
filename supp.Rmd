@@ -57,7 +57,7 @@ pacman::p_load(devtools, png, jpeg, pander, cowplot, flextable, formatR, magick,
 
 # Case Study 1: Multilevel Meta-analysis Approaches to Control for Nuisance Heterogeneity at the Effect Size Level
 
-Here, we will demonstrate how to analyse variation and differences in slopes between two groups. In this example, we will account for effects of known drivers of nuisance heterogeneity at the level of the effect size. We use a case study by Pottier et al. *in review* which investigated the association between acclimation temperature, thermal tolerance and sex. We first demonstrate how to use meta-analytic approaches to investigate the variation in the relationship between acclimation temperature and thermal tolerance (i.e. variation in slope), and then demonstrate how to meta-analyse differences in slopes between two groups (i.e. sexes). 
+Here, we will demonstrate how to analyse variation and differences in slopes between two groups. In this example, we will account for effects of known drivers of nuisance heterogeneity at the level of the effect size. We use a case study by @Pottier2021 which investigated the association between acclimation temperature, thermal tolerance and sex. We first demonstrate how to use meta-analytic approaches to investigate the variation in the relationship between acclimation temperature and thermal tolerance (i.e. variation in slope), and then demonstrate how to meta-analyse differences in slopes between two groups (i.e. sexes). 
 
 ## Multilevel Meta-analysis of Slopes
 
@@ -76,7 +76,7 @@ data_CS1a <- read.csv(here::here("CTmax_ARR.csv"))
 
 In this section, we demonstrate how to calculate slope effect sizes and their associated sampling variance. Note that calculating slopes requires the response variable to be measured with the same unit and does not apply to all meta-analyses. While this example focuses on thermal tolerance, the meta-analysis of slope may also be applicable to investigate changes in thermal preference or metabolic scaling, for example. 
 
-In this example, we use a simplified data set from Pottier et al. *in review*, and we demonstrate how to investigate the mean effect of acclimation temperature on heat tolerance. Because heat tolerance was consistently measured in degrees Celsius (`CTmax`) in the studies compiled, we can calculate the slope between acclimation temperature and heat tolerance, which is termed as the acclimation response ratio (`ARR`) in the literature. 
+In this example, we use a simplified data set from @Pottier2021, and we demonstrate how to investigate the mean effect of acclimation temperature on heat tolerance. Because heat tolerance was consistently measured in degrees Celsius (`CTmax`) in the studies compiled, we can calculate the slope between acclimation temperature and heat tolerance, which is termed as the acclimation response ratio (`ARR`) in the literature. 
 This effect size is calculated as the difference between the heat tolerance at the higher (`mean_high`) and the lower (`mean_low`) acclimation temperatures, divided by the difference between acclimation temperatures (`acc_temp_high` - `acc_temp_low`). 
 The sampling variance of the slope (`Var_ARR`) can then be defined using properties of variance as per Box 1 in the main manuscript. 
 
@@ -107,6 +107,7 @@ data_CS1a<-filter(data_CS1a,
 ### Meta-analysis
 
 Then, we can run the multi-level meta-analytic model using the `rma.mv` function in the `metafor` package. 
+
 In this model, we used two random effects: `species_ID` and `es_ID` to account for between species variation and the variation associated with the residuals. Note that it is possible to assess the variation due to phylogenetic relatedness but we will keep it simple for demonstration purposes. We also did not assess variation due to between-study differences because the levels of this variable were almost entirely overlapping with `species_ID` (i.e. `species_ID` and `study_ID` were indistinguishable). 
 
 While we only present  an intercept-only model, this structure can be used to fit meta-regressions by fitting moderator variables. 
@@ -135,6 +136,7 @@ orchard_plot(model_CS1a_MLMA, mod="Int", xlab="ARR")
 ```
 
 We can see from above that the model estimates an overall meta-analytic mean as `r model_CS1a_MLMA$b` with a 95\% CI from `r model_CS1a_MLMA$ci.lb` to `r model_CS1a_MLMA$ci.ub`. In other words, for each degree variation in acclimation temperature, the heat tolerance of the animals included in this data set vary by `r model_CS1a_MLMA$b` degrees on average. 95\% of the time we expect the mean in repeated samples to fall between `r PI_CS1a_MLMA$cr.lb` and `r PI_CS1a_MLMA$cr.ub`.
+
 Our prediction intervals suggest that heterogeneity is high, reflected in our $I_{total}^2$ estimate of `r I2_CS1a[1]*100`\%.  Approximately, `r I2_CS1a[2]*100`\% of the total heterogeneity is the result of differences between species, and `r I2_CS1a[3]*100`\% of the total heterogeneity is associated with the residuals. 
 With this effect size (slope), the nuisance heterogeneity is accounted for, to some extent, at the level of the effect size.
 
