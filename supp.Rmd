@@ -359,6 +359,9 @@ $$
 \sigma^2_{ARR_{m}} = \left( \frac{1} {T_2 - T_1} \right)^2 
 \left( \frac{SD^2_{pH1,T1}} {N_{pH1,T1}} + \frac{SD^2_{pH1,T2}} {N_{pH1,T2}}+ \frac{SD^2_{pH2,T1}} {N_{pH2,T1}} + \frac{SD^2_{pH2,T2}} {N_{pH2,T2}} \right)
 $$
+
+We can apply similar logic to other effect size measures  of interest. 
+
 # Supplementary Materials for Survey 
 ### Details on Study Selection
 Here we provide greater detail on the search strategy, keyword selection and the numbers of final studies included at each step of the screening process for our survey. We searched for studies that included: ‘meta-analysis,’ ‘meta regression’ , ‘comparative analysis,’ ‘comprehensive analysis’ ‘global analysis’ or ‘macro physiology’ in their title or abstract, restricting our search to key comparative physiology journals (detailed in Table S1 and S2 - Supplementary Materials) within the last 6 years. The journals used and their ISSN numbers are provided in Table \@ref(tab:tabS2). The full search strings used to refine our search query can be found in Table \@ref(tab:tabS1). Initial searches were conducted in Scopus between May 16 and 18, 2021. We updated our survey with an additional search on September 1, 2021 with the addition of new journals (See Table \@ref(tab:tabS1) and \@ref(tab:tabS2)).  We expected this to provide a contemporary overview of quantitative syntheses in comparative physiology while making the survey and screening feasible. Note that results from our final searches are the ones we used.
