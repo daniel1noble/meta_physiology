@@ -83,7 +83,7 @@ The sampling variance of the slope (`Var_ARR`) can then be defined using propert
 In this example, the slopes were calculated with stepwise comparisons between acclimation treatments. This method created a source of non-independence, with some treatments being involved in multiple comparisons (`shared_trt_ID`).
 To account for this, we divided by half the sample size of the observations in these non-independent comparisons (`n_low_adj` and `n_high_adj`) to divide by half the weight of these estimates. 
 
-In this example, we will only use data measured on independent groups of animals, thus excluding data measured twice on the same cohort of animals (i.e. animals sharing the same `shared_measurement_ID` in the data). Note that it is possible to model this dependency and examples are provided in Noble et al. (2017) and Pottier et al. *in review* 
+In this example, we will only use data measured on independent groups of animals, thus excluding data measured twice on the same cohort of animals (i.e. animals sharing the same `shared_measurement_ID` in the data). Note that it is possible to model this dependency and examples are provided in Noble et al. (2017) and @Pottier2021. 
 
 ```{r, class.source='klippy', results = 'hide'}
 
