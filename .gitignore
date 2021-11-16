@@ -11,6 +11,10 @@ survey_data_results_files
 supp_cache/
 supp_files/
 .DS_Store
+ms.html
+box.html
+R/survey_data_results.html
+ms/ms_priorConflict.html
 Dosage_EggHormones_CS2.csv
 BPA_example.csv
 ms/box.docx
