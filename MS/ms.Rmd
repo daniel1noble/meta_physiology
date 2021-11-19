@@ -216,8 +216,10 @@ p3 <- summary %>%
   theme(legend.position = "none") +
   coord_flip()
 
-p1 + p2 + p3 + plot_annotation(tag_levels = c("A"), tag_prefix = "(", tag_suffix = ")")
+plot <- p1 + p2 + p3 + plot_annotation(tag_levels = c("A"), tag_prefix = "(", tag_suffix = ")")
+plot
 
+quartz.save(file = "fig2.pdf", type = "pdf", height = 6.5, width = 14)
 ```
 
 ```{r tablea, echo = FALSE, tab.cap = "**Common effect sizes used throughout meta-analyses in comparative physiology, their associated sampling variances and examples on when they might be used**. M: mean; SD: standard deviation; N: sample size; CTmin: critical thermal minimum; CTmax: critical thermal maximum; LC_50: median lethal concentration; LT_50: median lethal temperature; BPA: bisphenol A."}
